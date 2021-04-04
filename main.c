@@ -93,6 +93,28 @@ int set(){
 	}
 }
 
+int init(){
+	if(SDL_Init(SDL_INIT_VIDEO < 0)){
+		printf("Erreur d'initialisation de la SDL : %s",SDL_GetError());
+		return EXIT_FAILURE;
+	}
+	atexit(SDL_Quit);
+
+	if(SDL_CreateWindowAndRenderer(1920, 1080, SDL_WINDOW_SHOWN, &fenetrePrincipale, &renduPrincipale) < 0){
+		printf("Erreur création fenetre : %s",SDL_GetError());
+		SDL_Quit();
+		return EXIT_FAILURE;
+	}
+
+    SDL_RenderClear(renduPrincipale);
+    SDL_RenderPresent(renduPrincipale);
+
+    SDL_SetWindowTitle(fenetrePrincipale, "Ultron");
+
+	main_surface = SDL_LoadBMP("./Sprites/main.bmp");
+	main_texture = SDL_CreateTextureFromSurface(renduPrincipale,main_surface);
+}
+
 int input(){
 	if(SDL_PollEvent(&touche)){
 		switch(touche.type){
@@ -202,26 +224,4 @@ int fermeture_sdl(){
 int get_screensize(){
 	SDL_GetWindowSize(fenetrePrincipale, &width_windows, &height_windows);
 	return 0;
-}
-
-int init(){
-	if(SDL_Init(SDL_INIT_VIDEO < 0)){
-		printf("Erreur d'initialisation de la SDL : %s",SDL_GetError());
-		return EXIT_FAILURE;
-	}
-	atexit(SDL_Quit);
-
-	if(SDL_CreateWindowAndRenderer(1920, 1080, SDL_WINDOW_SHOWN, &fenetrePrincipale, &renduPrincipale) < 0){
-		printf("Erreur création fenetre : %s",SDL_GetError());
-		SDL_Quit();
-		return EXIT_FAILURE;
-	}
-
-    SDL_RenderClear(renduPrincipale);
-    SDL_RenderPresent(renduPrincipale);
-
-    SDL_SetWindowTitle(fenetrePrincipale, "Ultron");
-
-	main_surface = SDL_LoadBMP("./Sprites/main.bmp");
-	main_texture = SDL_CreateTextureFromSurface(renduPrincipale,main_surface);
 }
