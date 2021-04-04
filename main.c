@@ -23,6 +23,9 @@ int tableau_deplacement;
 int score = 0;
 int taille_score = 6;
 
+int terrain_x = 0;
+int terrain_y = 0;
+
 position posi_main = {0,0};
 position posi_fond = {0,0};
 
@@ -34,6 +37,9 @@ SDL_Renderer* renduPrincipale = NULL;
 SDL_Surface* main_surface = NULL;
 SDL_Texture* main_texture = NULL;
 
+SDL_Surface* background_score_surface = NULL;
+SDL_Texture* background_score_texture = NULL;
+
 int init(void);
 int input(void);
 int update(void);
@@ -44,6 +50,7 @@ int dessin_fond(void);
 int get_screensize(void);
 int tab_deplacement(int x, int y);
 int fermeture_sdl(void);
+int dessin_background_score(void);
 
 int main(int argc, char *argv[]){
 	init();
@@ -65,16 +72,25 @@ int dessin_tete(){
 	return 0;
 }
 
+int dessin_background_score(){
+	SDL_Rect dest = { terrain_x+1, 0, width_windows - terrain_x , height_windows};
+	SDL_RenderCopy(renduPrincipale,background_score_texture,NULL,&dest);
+	return 0;
+}
+
 int dessin_fond(){
 	SDL_SetRenderDrawColor(renduPrincipale,22, 22, 22, 255);
 	SDL_RenderClear(renduPrincipale);
-	SDL_SetRenderDrawColor(renduPrincipale,55, 55, 55, 255);
+	SDL_SetRenderDrawColor(renduPrincipale,77, 77, 77, 255);
 
-	for(int x = 0; x <= ((width_windows/size_main)* size_main) - taille_score*size_main; x += size_main){
+	terrain_x = ((width_windows/size_main)* size_main) - taille_score*size_main;
+	terrain_y = ((height_windows/size_main) * size_main) + size_main;
+
+	for(int x = 0; x <= terrain_x; x += size_main){
 		SDL_RenderDrawLine(renduPrincipale, x, 0, x, height_windows);
 	}
 
-	for(int y = 0; y < ((height_windows/size_main) * size_main) + size_main; y += size_main){
+	for(int y = 0; y < terrain_y; y += size_main){
 		SDL_RenderDrawLine(renduPrincipale, 0, y, width_windows-taille_score*size_main, y);
 	}
 
@@ -85,8 +101,10 @@ int dessin_fond(){
 int set(){
 	if(dir){
 		dessin_tete();
+		dessin_background_score();
 		SDL_RenderPresent(renduPrincipale);
 	}else{
+		dessin_background_score();
 		dessin_fond();
 		dessin_tete();
 		SDL_RenderPresent(renduPrincipale);
@@ -113,6 +131,9 @@ int init(){
 
 	main_surface = SDL_LoadBMP("./Sprites/main.bmp");
 	main_texture = SDL_CreateTextureFromSurface(renduPrincipale,main_surface);
+
+	background_score_surface = SDL_LoadBMP("./Sprites/background_score.bmp");
+	background_score_texture = SDL_CreateTextureFromSurface(renduPrincipale,background_score_surface);
 }
 
 int input(){
