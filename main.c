@@ -61,7 +61,7 @@ int main(int argc, char *argv[]){
 		update();
 		set();
 		delay_game();
-		SDL_Log("1 - debug : dir = %d , Position x = %d , position y = %d \n 2 - debug : TICKS : %d, DELAY : %d \n 3 - debug : width_windows : %d height_windows : %d",dir, posi_main.x, posi_main.y,lastTicks,delay,width_windows,height_windows);
+		SDL_Log("1 - debug : dir = %d , Position x = %d , position y = %d \n 2 - debug : TICKS : %d, DELAY : %d \n 3 - debug : width_windows : %d height_windows : %d \n 4 - debug : terrain_x : %d terrain_y : %d",dir, posi_main.x, posi_main.y,lastTicks,delay,width_windows,height_windows,terrain_x,terrain_y);
 	}
 	return 0;
 }
@@ -83,15 +83,15 @@ int dessin_fond(){
 	SDL_RenderClear(renduPrincipale);
 	SDL_SetRenderDrawColor(renduPrincipale,77, 77, 77, 255);
 
-	terrain_x = ((width_windows/size_main)* size_main) - taille_score*size_main;
-	terrain_y = ((height_windows/size_main) * size_main) + size_main;
+	terrain_x = width_windows - taille_score*size_main;
+	terrain_y = height_windows;
 
 	for(int x = 0; x <= terrain_x; x += size_main){
 		SDL_RenderDrawLine(renduPrincipale, x, 0, x, height_windows);
 	}
 
 	for(int y = 0; y < terrain_y; y += size_main){
-		SDL_RenderDrawLine(renduPrincipale, 0, y, width_windows-taille_score*size_main, y);
+		SDL_RenderDrawLine(renduPrincipale, 0, y, terrain_x, y);
 	}
 
 	SDL_RenderPresent(renduPrincipale);
@@ -104,8 +104,8 @@ int set(){
 		dessin_background_score();
 		SDL_RenderPresent(renduPrincipale);
 	}else{
-		dessin_background_score();
 		dessin_fond();
+		dessin_background_score();
 		dessin_tete();
 		SDL_RenderPresent(renduPrincipale);
 	}
@@ -184,17 +184,17 @@ int update(){
 			tab_deplacement(posi_main.x,posi_main.y);
 			break;
 		case 2:
-			if(posi_main.y>height_windows-32){
-				posi_main.y = height_windows-32;
-			}else if(posi_main.y<height_windows-32){
+			if(posi_main.y>terrain_y-32){
+				posi_main.y = terrain_y-32;
+			}else if(posi_main.y<terrain_y-32){
 				posi_main.y+=size_main;
 			}
 			tab_deplacement(posi_main.x,posi_main.y);
 			break;
 		case 3:
-			if(posi_main.x>width_windows-32){
-				posi_main.x = width_windows-32;
-			}else if(posi_main.x<width_windows-32){
+			if(posi_main.x>terrain_x-32){
+				posi_main.x = terrain_x-32;
+			}else if(posi_main.x<terrain_x-32){
 				posi_main.x+=size_main;
 			}
 			tab_deplacement(posi_main.x,posi_main.y);
