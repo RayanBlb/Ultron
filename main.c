@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_ttf.h>
 
 typedef struct position_struct{
 	int x;
@@ -26,6 +27,8 @@ int taille_score = 6;
 int terrain_x = 0;
 int terrain_y = 0;
 
+char score_texte[20];
+
 position posi_main = {0,0};
 position posi_fond = {0,0};
 
@@ -40,6 +43,8 @@ SDL_Texture* main_texture = NULL;
 SDL_Surface* background_score_surface = NULL;
 SDL_Texture* background_score_texture = NULL;
 
+TTF_Font* font_score = NULL;
+
 int init(void);
 int input(void);
 int update(void);
@@ -51,6 +56,7 @@ int get_screensize(void);
 int tab_deplacement(int x, int y);
 int fermeture_sdl(void);
 int dessin_background_score(void);
+int dessin_score(void);
 
 int main(int argc, char *argv[]){
 	init();
@@ -78,6 +84,19 @@ int dessin_background_score(){
 	return 0;
 }
 
+int dessin_score(){
+	SDL_Color couleur_font = {255, 255, 255};
+
+	sprintf(score_texte,"Score : %d", score);
+
+	SDL_Surface* score_surface = TTF_RenderText_Solid(font_score,score_texte, couleur_font);
+	SDL_Texture* score_texture = SDL_CreateTextureFromSurface(renduPrincipale, score_surface);
+	
+	SDL_Rect dest = {terrain_x+10,10,175,50};
+
+	SDL_RenderCopy(renduPrincipale, score_texture, NULL, &dest);
+}
+
 int dessin_fond(){
 	SDL_SetRenderDrawColor(renduPrincipale,22, 22, 22, 255);
 	SDL_RenderClear(renduPrincipale);
@@ -102,21 +121,29 @@ int set(){
 	if(dir){
 		dessin_tete();
 		dessin_background_score();
+		dessin_score();
 		SDL_RenderPresent(renduPrincipale);
 	}else{
 		dessin_fond();
 		dessin_background_score();
 		dessin_tete();
+		dessin_score();
 		SDL_RenderPresent(renduPrincipale);
 	}
 }
 
 int init(){
+
 	if(SDL_Init(SDL_INIT_VIDEO < 0)){
 		printf("Erreur d'initialisation de la SDL : %s",SDL_GetError());
 		return EXIT_FAILURE;
 	}
 	atexit(SDL_Quit);
+
+	if(TTF_Init() < 0){
+		printf("TTF_Init: %s\n", TTF_GetError());
+		return EXIT_FAILURE;
+	}
 
 	if(SDL_CreateWindowAndRenderer(1920, 1080, SDL_WINDOW_SHOWN, &fenetrePrincipale, &renduPrincipale) < 0){
 		printf("Erreur création fenetre : %s",SDL_GetError());
@@ -134,6 +161,8 @@ int init(){
 
 	background_score_surface = SDL_LoadBMP("./Sprites/background_score.bmp");
 	background_score_texture = SDL_CreateTextureFromSurface(renduPrincipale,background_score_surface);
+
+	font_score = TTF_OpenFont("./Font/font.ttf", 15);
 }
 
 int input(){
@@ -184,17 +213,17 @@ int update(){
 			tab_deplacement(posi_main.x,posi_main.y);
 			break;
 		case 2:
-			if(posi_main.y>terrain_y-32){
-				posi_main.y = terrain_y-32;
-			}else if(posi_main.y<terrain_y-32){
+			if(posi_main.y>terrain_y-size_main){
+				posi_main.y = terrain_y-size_main;
+			}else if(posi_main.y<terrain_y-size_main){
 				posi_main.y+=size_main;
 			}
 			tab_deplacement(posi_main.x,posi_main.y);
 			break;
 		case 3:
-			if(posi_main.x>terrain_x-32){
-				posi_main.x = terrain_x-32;
-			}else if(posi_main.x<terrain_x-32){
+			if(posi_main.x>terrain_x-size_main){
+				posi_main.x = terrain_x-size_main;
+			}else if(posi_main.x<terrain_x-size_main){
 				posi_main.x+=size_main;
 			}
 			tab_deplacement(posi_main.x,posi_main.y);
@@ -210,7 +239,12 @@ int update(){
 		case 5:
 			break;
 	}
-	score++;
+	if(dir != 5){
+		if(dir != 0){
+			score++;
+		}
+	}
+
 	return 0;
 }
 
