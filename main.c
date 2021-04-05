@@ -107,10 +107,10 @@ int dessin_game_over(){
 	SDL_Surface* score_surface = TTF_RenderText_Solid(font_general,game_over_texte, couleur_font);
 	SDL_Texture* score_texture = SDL_CreateTextureFromSurface(renduPrincipale, score_surface);
 
-	int size_game_over_x = 275*4;
+	int size_game_over_x = 325*4;
 	int size_game_over_y = 50*4;
 	
-	SDL_Rect dest = {(width_windows - size_game_over_x)/2,(height_windows - size_game_over_y*1.5)/2 ,size_game_over_x,size_game_over_y};
+	SDL_Rect dest = {(terrain_x - size_game_over_x)/2,(terrain_y - size_game_over_y*1.5)/2 ,size_game_over_x,size_game_over_y};
 
 	SDL_RenderCopy(renduPrincipale, score_texture, NULL, &dest);
 }
