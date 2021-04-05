@@ -3,6 +3,7 @@
 #include <time.h>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
+#include <SDL2/SDL_mixer.h>
 
 typedef struct position_struct{
 	int x;
@@ -61,6 +62,7 @@ int fermeture_sdl(void);
 int dessin_background_score(void);
 int dessin_score(void);
 int dessin_game_over(void);
+int play_musique(void);
 
 int main(int argc, char *argv[]){
 	init();
@@ -108,7 +110,7 @@ int dessin_game_over(){
 	int size_game_over_x = 275*4;
 	int size_game_over_y = 50*4;
 	
-	SDL_Rect dest = {(width_windows - size_game_over_x)/2,(height_windows - size_game_over_y)/2 ,size_game_over_x,size_game_over_y};
+	SDL_Rect dest = {(width_windows - size_game_over_x)/2,(height_windows - size_game_over_y*1.5)/2 ,size_game_over_x,size_game_over_y};
 
 	SDL_RenderCopy(renduPrincipale, score_texture, NULL, &dest);
 }
@@ -157,14 +159,24 @@ int set(){
 int init(){
 
 	if(SDL_Init(SDL_INIT_VIDEO < 0)){
-		printf("Erreur d'initialisation de la SDL : %s",SDL_GetError());
+		printf("Erreur d'initialisation de SDL VIDEO: %s",SDL_GetError());
 		return EXIT_FAILURE;
 	}
+
+	if(SDL_Init(SDL_INIT_AUDIO) < 0){
+		printf("Erreur d'initialisation de SDL AUDIO : %s",SDL_GetError());
+		return EXIT_FAILURE;
+	}
+
 	atexit(SDL_Quit);
 
 	if(TTF_Init() < 0){
 		printf("TTF_Init: %s\n", TTF_GetError());
 		return EXIT_FAILURE;
+	}
+
+	if(Mix_OpenAudio( 22050, MIX_DEFAULT_FORMAT, 2, 4096 ) == -1 ){
+		printf("Audio mix : %s", Mix_GetError());
 	}
 
 	if(SDL_CreateWindowAndRenderer(1920, 1080, SDL_WINDOW_SHOWN, &fenetrePrincipale, &renduPrincipale) < 0){
