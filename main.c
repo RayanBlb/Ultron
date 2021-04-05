@@ -28,6 +28,7 @@ int terrain_x = 0;
 int terrain_y = 0;
 
 char score_texte[20];
+char game_over_texte[43];
 
 position posi_main = {0,0};
 position posi_fond = {0,0};
@@ -43,7 +44,9 @@ SDL_Texture* main_texture = NULL;
 SDL_Surface* background_score_surface = NULL;
 SDL_Texture* background_score_texture = NULL;
 
-TTF_Font* font_score = NULL;
+TTF_Font* font_general = NULL;
+
+SDL_Color couleur_font = {255, 255, 255};
 
 int init(void);
 int input(void);
@@ -57,6 +60,7 @@ int tab_deplacement(int x, int y);
 int fermeture_sdl(void);
 int dessin_background_score(void);
 int dessin_score(void);
+int dessin_game_over(void);
 
 int main(int argc, char *argv[]){
 	init();
@@ -85,14 +89,26 @@ int dessin_background_score(){
 }
 
 int dessin_score(){
-	SDL_Color couleur_font = {255, 255, 255};
-
 	sprintf(score_texte,"Score : %d", score);
 
-	SDL_Surface* score_surface = TTF_RenderText_Solid(font_score,score_texte, couleur_font);
+	SDL_Surface* score_surface = TTF_RenderText_Solid(font_general,score_texte, couleur_font);
 	SDL_Texture* score_texture = SDL_CreateTextureFromSurface(renduPrincipale, score_surface);
-	
+
 	SDL_Rect dest = {terrain_x+10,10,175,50};
+
+	SDL_RenderCopy(renduPrincipale, score_texture, NULL, &dest);
+}
+
+int dessin_game_over(){
+	sprintf(game_over_texte,"GAME OVER !!! SCORE FINAL : %d ", score);
+
+	SDL_Surface* score_surface = TTF_RenderText_Solid(font_general,game_over_texte, couleur_font);
+	SDL_Texture* score_texture = SDL_CreateTextureFromSurface(renduPrincipale, score_surface);
+
+	int size_game_over_x = 275*4;
+	int size_game_over_y = 50*4;
+	
+	SDL_Rect dest = {(width_windows - size_game_over_x)/2,(height_windows - size_game_over_y)/2 ,size_game_over_x,size_game_over_y};
 
 	SDL_RenderCopy(renduPrincipale, score_texture, NULL, &dest);
 }
@@ -118,10 +134,16 @@ int dessin_fond(){
 }
 
 int set(){
-	if(dir){
+	if(dir && dir !=6){
 		dessin_tete();
 		dessin_background_score();
 		dessin_score();
+		SDL_RenderPresent(renduPrincipale);
+	}else if(dir == 6){
+		dessin_fond();
+		dessin_background_score();
+		dessin_score();
+		dessin_game_over();
 		SDL_RenderPresent(renduPrincipale);
 	}else{
 		dessin_fond();
@@ -162,7 +184,7 @@ int init(){
 	background_score_surface = SDL_LoadBMP("./Sprites/background_score.bmp");
 	background_score_texture = SDL_CreateTextureFromSurface(renduPrincipale,background_score_surface);
 
-	font_score = TTF_OpenFont("./Font/font.ttf", 15);
+	font_general = TTF_OpenFont("./Font/font.ttf", 16);
 }
 
 int input(){
@@ -177,19 +199,19 @@ int input(){
 				break;
 
 			case SDL_KEYDOWN:
-				if (touche.key.keysym.sym == SDLK_z){
+				if (touche.key.keysym.sym == SDLK_z && dir !=6){
 					dir = 1;
 
-				}else if(touche.key.keysym.sym == SDLK_s){
+				}else if(touche.key.keysym.sym == SDLK_s && dir !=6){
 					dir = 2;
 
-				}else if(touche.key.keysym.sym == SDLK_d){
+				}else if(touche.key.keysym.sym == SDLK_d && dir !=6){
 					dir = 3;
 					
-				}else if(touche.key.keysym.sym == SDLK_q){
+				}else if(touche.key.keysym.sym == SDLK_q && dir !=6){
 					dir = 4;
 					
-				}else if(touche.key.keysym.sym == SDLK_SPACE){
+				}else if(touche.key.keysym.sym == SDLK_SPACE && dir !=6){
 					dir = 5;
 
 				}else if(touche.key.keysym.sym == SDLK_ESCAPE){
@@ -236,12 +258,14 @@ int update(){
 			}
 			tab_deplacement(posi_main.x,posi_main.y);
 			break;
-		case 5:
+		default:
 			break;
 	}
 	if(dir != 5){
 		if(dir != 0){
-			score++;
+			if (dir != 6){
+				score++;
+			}
 		}
 	}
 
@@ -252,9 +276,7 @@ int tab_deplacement(int x, int y){
 	int tableau_deplacement[width_windows][height_windows];
 
 	if(tableau_deplacement[x][y] == 1){
-		fermeture_sdl();
-		SDL_Log("Score : %d \n game over !!! \n",score);
-		exit(EXIT_SUCCESS);
+		dir = 6;
 	}else if(tableau_deplacement[x][y] == 0){
 		tableau_deplacement[x][y] = 1;
 	}
