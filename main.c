@@ -10,15 +10,15 @@ typedef struct position_struct{
 	int y;
 }position;
 
-int lastTicks;
+int lastTicks = 0;
 int maxFPS = 15;
 int delay = 0;
 
 int dir = 0;
 int size_main = 32;
 
-int width_windows;
-int height_windows;
+int width_windows = 0;
+int height_windows = 0;
 
 int tableau_deplacement;
 
@@ -32,9 +32,9 @@ char score_texte[20];
 char game_over_texte[43];
 
 position posi_main = {0,0};
-position posi_fond = {0,0};
 
 SDL_Event touche;
+SDL_Color couleur_font = {255, 255, 255};
 
 SDL_Window* fenetrePrincipale = NULL;
 SDL_Renderer* renduPrincipale = NULL;
@@ -47,7 +47,8 @@ SDL_Texture* background_score_texture = NULL;
 
 TTF_Font* font_general = NULL;
 
-SDL_Color couleur_font = {255, 255, 255};
+Mix_Music* music_de_fond = NULL;
+Mix_Chunk* explosion = NULL;
 
 int init(void);
 int input(void);
@@ -63,11 +64,13 @@ int dessin_background_score(void);
 int dessin_score(void);
 int dessin_game_over(void);
 int play_musique(void);
+int play_explosion(void);
 
 int main(int argc, char *argv[]){
 	init();
 	get_screensize();
 	set();
+	play_musique();
 	while(1){
 		input();
 		update();
@@ -175,7 +178,7 @@ int init(){
 		return EXIT_FAILURE;
 	}
 
-	if(Mix_OpenAudio( 22050, MIX_DEFAULT_FORMAT, 2, 4096 ) == -1 ){
+	if(Mix_OpenAudio( 44100, MIX_DEFAULT_FORMAT, 2, 4096 ) == -1 ){
 		printf("Audio mix : %s", Mix_GetError());
 	}
 
@@ -289,6 +292,8 @@ int tab_deplacement(int x, int y){
 
 	if(tableau_deplacement[x][y] == 1){
 		dir = 6;
+		Mix_FreeMusic(music_de_fond);
+		play_explosion();
 	}else if(tableau_deplacement[x][y] == 0){
 		tableau_deplacement[x][y] = 1;
 	}
@@ -306,6 +311,7 @@ int delay_game(){
 int fermeture_sdl(){
 	SDL_DestroyRenderer(renduPrincipale);
 	SDL_DestroyWindow(fenetrePrincipale);
+	Mix_FreeChunk(explosion);
 	SDL_Quit();
 	return 0;
 }
@@ -313,4 +319,14 @@ int fermeture_sdl(){
 int get_screensize(){
 	SDL_GetWindowSize(fenetrePrincipale, &width_windows, &height_windows);
 	return 0;
+}
+
+int play_musique(){
+	music_de_fond = Mix_LoadMUS("../../Documents/music.mp3");
+	Mix_PlayMusic(music_de_fond, -1);
+}
+
+int play_explosion(){
+	explosion = Mix_LoadWAV("../../Documents/explosion.wav");
+	Mix_PlayChannel(-1, explosion, 0);
 }
