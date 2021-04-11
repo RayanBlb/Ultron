@@ -5,6 +5,7 @@
 #include <SDL2/SDL_ttf.h>
 #include <SDL2/SDL_mixer.h>
 #include "survie.h"
+#include "main.h"
 
 typedef struct position_struct{
 	int x;
@@ -26,14 +27,6 @@ SDL_Renderer* renduPrincipale_main = NULL;
 
 TTF_Font* font_general_main = NULL;
 
-int init_main(void);
-int input_main(void);
-int set_main(void);
-int delay_game_main(void);
-int get_screensize_main(void);
-int fermeture_sdl_main(void);
-int dessin_texte_main(char *texte, SDL_Color couleur,int coef_position,int size_font_x,int size_font_y);
-
 int main(int argc, char *argv[]){
 	init_main();
 	get_screensize_main();
@@ -47,7 +40,7 @@ int main(int argc, char *argv[]){
 	return 0;
 }
 
-int dessin_menu(){
+int dessin_menu_main(){
 	SDL_Color couleur_font_selection = {255, 0, 0};
 	if(etat_main == 1){
 		dessin_texte_main("Start Survie",couleur_font_selection,-1,400,125);
@@ -90,7 +83,7 @@ int dessin_texte_main(char *texte, SDL_Color couleur,int coef_position,int size_
 	SDL_RenderCopy(renduPrincipale_main, play_survie_texture, NULL, &play_survie);
 }
 
-int dessin_fond(){
+int dessin_fond_main(){
 	SDL_SetRenderDrawColor(renduPrincipale_main,22, 22, 22, 255);
 	SDL_RenderClear(renduPrincipale_main);
 	SDL_SetRenderDrawColor(renduPrincipale_main,77, 77, 77, 255);
@@ -109,9 +102,9 @@ int dessin_fond(){
 }
 
 int set_main(){
-	dessin_fond();
+	dessin_fond_main();
 	dessin_texte_main("ULTRON",couleur_font_main,-2,600,175);
-	dessin_menu();
+	dessin_menu_main();
 	SDL_RenderPresent(renduPrincipale_main);
 }
 
