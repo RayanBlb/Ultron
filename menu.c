@@ -43,7 +43,7 @@ int set_menu(){
 	SDL_RenderPresent(renduPrincipale_menu);
 }
 
-int dessin_texte_menu(char *texte, SDL_Color couleur,int coef_position,int size_font_x,int size_font_y){
+int dessin_texte_menu(char *texte, SDL_Color couleur,int coef_position,int size_font_x,int size_font_y){ //il faut changer les variables de cette fonction
 
 	SDL_Surface* play_survie_surface = TTF_RenderText_Solid(font_general_menu, texte , couleur);
 	SDL_Texture* play_survie_texture = SDL_CreateTextureFromSurface(renduPrincipale_menu, play_survie_surface);
