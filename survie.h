@@ -16,6 +16,7 @@ int dessin_score_survie(void);
 int dessin_game_over_survie(void);
 int play_musique_survie(void);
 int play_explosion_survie(void);
+int switch_screen_survie(void);
 int survie(void);
 
 #endif
