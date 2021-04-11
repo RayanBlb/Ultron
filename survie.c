@@ -17,21 +17,12 @@ int size_main_survie = 32;
 int width_windows_survie = 0;
 int height_windows_survie = 0;
 
-int tableau_deplacement_survie;
-
 int score_survie = 0;
-int taille_score_survie = 6;
 
 int terrain_x_survie = 0;
 int terrain_y_survie = 0;
 
-char score_texte_survie[20];
-char game_over_texte_survie[43];
-
 position posi_main_survie = {0,0};
-
-SDL_Event touche_survie;
-SDL_Color couleur_font_survie = {255, 255, 255};
 
 SDL_Window* fenetrePrincipale_survie = NULL;
 SDL_Renderer* renduPrincipale_survie = NULL;
@@ -76,6 +67,9 @@ int dessin_background_score_survie(){
 }
 
 int dessin_score_survie(){
+	char score_texte_survie[20];
+	SDL_Color couleur_font_survie = {255, 255, 255};
+
 	sprintf(score_texte_survie,"Score : %d", score_survie);
 
 	SDL_Surface* score_surface = TTF_RenderText_Solid(font_general_survie,score_texte_survie, couleur_font_survie);
@@ -87,6 +81,9 @@ int dessin_score_survie(){
 }
 
 int dessin_game_over_survie(){
+	char game_over_texte_survie[43];
+	SDL_Color couleur_font_survie = {255, 255, 255};
+
 	sprintf(game_over_texte_survie,"GAME OVER !!! SCORE FINAL : %d ", score_survie);
 
 	SDL_Surface* score_surface = TTF_RenderText_Solid(font_general_survie,game_over_texte_survie, couleur_font_survie);
@@ -101,6 +98,7 @@ int dessin_game_over_survie(){
 }
 
 int dessin_fond_survie(){
+	int taille_score_survie = 6;
 	SDL_SetRenderDrawColor(renduPrincipale_survie,22, 22, 22, 255);
 	SDL_RenderClear(renduPrincipale_survie);
 	SDL_SetRenderDrawColor(renduPrincipale_survie,77, 77, 77, 255);
@@ -185,6 +183,9 @@ int init_survie(){
 }
 
 int input_survie(){
+
+	SDL_Event touche_survie;
+
 	if(SDL_PollEvent(&touche_survie)){
 		switch(touche_survie.type){
 			case SDL_MOUSEMOTION:
