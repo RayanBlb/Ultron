@@ -176,13 +176,12 @@ int input_survie(){
 					direction_survie = 5;
 
 				}else if(touche.key.keysym.sym == SDLK_ESCAPE){
-					fermeture_sdl_survie();
+					switch_screen_survie();
 				}
 				break;
 			}
 		}
 	}
-
 
 int update_survie(){
 	int size_main = 32;
@@ -278,10 +277,10 @@ int switch_screen_survie(){
 	SDL_DestroyRenderer(renduPrincipale_survie);
 	SDL_DestroyWindow(fenetrePrincipale_survie);
 
-	Mix_FreeMusic(music_de_fond_survie);
-
 	SDL_DestroyTexture(main_texture_survie);
 	SDL_FreeSurface(main_surface_survie);
+
+	menu();
 
 	return 0;
 }
