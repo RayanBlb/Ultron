@@ -7,12 +7,17 @@
 #include "survie.h"
 #include "menu.h"
 
+#define START_SURVIE 1
+#define OPTION 2
+#define HIGH_SCORE 3
+#define QUITTER 4
+
 typedef struct position_struct{
 	int x;
 	int y;
 }position;
 
-int etat_menu = 1;
+int etat_menu = START_SURVIE;
 
 int width_windows_menu = 0;
 int height_windows_menu = 0;
@@ -25,6 +30,7 @@ SDL_Renderer* renduPrincipale_menu = NULL;
 TTF_Font* font_general_menu = NULL;
 
 int menu(){
+	reinitialisation_menu();
 	init_menu();
 	get_screensize_menu();
 	set_menu();
@@ -32,7 +38,13 @@ int menu(){
 		input_menu();
 		set_menu();
 		delay_game_menu();
+		SDL_Log("etat : %d ",etat_menu);
 	}
+	return 0;
+}
+
+int reinitialisation_menu(){
+	etat_menu = START_SURVIE;
 	return 0;
 }
 
@@ -43,22 +55,22 @@ int set_menu(){
 	SDL_RenderPresent(renduPrincipale_menu);
 }
 
-int dessin_texte_menu(char *texte, SDL_Color couleur,int coef_position,int size_font_x,int size_font_y){ //il faut changer les variables de cette fonction
+int dessin_texte_menu(char *texte, SDL_Color couleur,int coef_position,int size_font_x,int size_font_y){
 
-	SDL_Surface* play_survie_surface = TTF_RenderText_Solid(font_general_menu, texte , couleur);
-	SDL_Texture* play_survie_texture = SDL_CreateTextureFromSurface(renduPrincipale_menu, play_survie_surface);
+	SDL_Surface* texte_menu_surface = TTF_RenderText_Solid(font_general_menu, texte , couleur);
+	SDL_Texture* texte_menu_texture = SDL_CreateTextureFromSurface(renduPrincipale_menu, texte_menu_surface);
 
 	int x_centre = (width_windows_menu - size_font_x)/2;
 	int y_centre = (height_windows_menu - size_font_y)/2;
 
-	position posi_play_survie = {x_centre,y_centre+size_font_y*coef_position};
+	position posi_texte_menu = {x_centre,y_centre+size_font_y*coef_position};
 	
-	SDL_Rect play_survie = {posi_play_survie.x, posi_play_survie.y, size_font_x, size_font_y};
+	SDL_Rect texte_menu = {posi_texte_menu.x, posi_texte_menu.y, size_font_x, size_font_y};
 
-	SDL_RenderCopy(renduPrincipale_menu, play_survie_texture, NULL, &play_survie);
+	SDL_RenderCopy(renduPrincipale_menu, texte_menu_texture, NULL, &texte_menu);
 
-	SDL_DestroyTexture(play_survie_texture);
-	SDL_FreeSurface(play_survie_surface);
+	SDL_DestroyTexture(texte_menu_texture);
+	SDL_FreeSurface(texte_menu_surface);
 }
 
 int dessin_fond_menu(){
@@ -84,26 +96,23 @@ int dessin_fond_menu(){
 int dessin_menu_menu(){
 	SDL_Color couleur_font_selection = {255, 0, 0};
 
-	if(etat_menu == 1){
-		dessin_texte_menu("Start Survie",couleur_font_selection,-1,400,125);
+	if(etat_menu == START_SURVIE){
+		dessin_texte_menu("Jouer !",couleur_font_selection,-1,400,125);
 		dessin_texte_menu("Option",couleur_font_menu,0,400,125);
 		dessin_texte_menu("High Score",couleur_font_menu,1,400,125);
 		dessin_texte_menu("Quitter",couleur_font_menu,2,400,125);
-
-	}else if(etat_menu == 2 ){
-		dessin_texte_menu("Start Survie",couleur_font_menu,-1,400,125);
+	}else if(etat_menu == OPTION ){
+		dessin_texte_menu("Jouer !",couleur_font_menu,-1,400,125);
 		dessin_texte_menu("Option",couleur_font_selection,0,400,125);
 		dessin_texte_menu("High Score",couleur_font_menu,1,400,125);
 		dessin_texte_menu("Quitter",couleur_font_menu,2,400,125);
-
-	}else if(etat_menu == 3 ){
-		dessin_texte_menu("Start Survie",couleur_font_menu,-1,400,125);
+	}else if(etat_menu == HIGH_SCORE ){
+		dessin_texte_menu("Jouer !",couleur_font_menu,-1,400,125);
 		dessin_texte_menu("Option",couleur_font_menu,0,400,125);
 		dessin_texte_menu("High Score",couleur_font_selection,1,400,125);
 		dessin_texte_menu("Quitter",couleur_font_menu,2,400,125);
-		
-	}else if(etat_menu == 4 ){
-		dessin_texte_menu("Start Survie",couleur_font_menu,-1,400,125);
+	}else if(etat_menu == QUITTER ){
+		dessin_texte_menu("Jouer !",couleur_font_menu,-1,400,125);
 		dessin_texte_menu("Option",couleur_font_menu,0,400,125);
 		dessin_texte_menu("High Score",couleur_font_menu,1,400,125);
 		dessin_texte_menu("Quitter",couleur_font_selection,2,400,125);	
@@ -120,32 +129,30 @@ int input_menu(){
 				break;
 			case SDL_QUIT:
 				fermeture_sdl_menu();
-				exit(EXIT_SUCCESS);
 				break;
 
 			case SDL_KEYDOWN:
 				if (touche.key.keysym.sym == SDLK_UP ){
-					if (etat_menu > 1){
+					if(etat_menu > START_SURVIE){
 						etat_menu--;
 					}
 
 				}else if(touche.key.keysym.sym == SDLK_DOWN ){
-					if (etat_menu < 4){
+					if(etat_menu < QUITTER){
 						etat_menu++;
 					}
 
 				}else if(touche.key.keysym.sym == SDLK_ESCAPE){
 					fermeture_sdl_menu();
-					exit(EXIT_SUCCESS);
 
 				}else if(touche.key.keysym.sym == SDLK_RETURN){
-					if (etat_menu == 1){
+					if (etat_menu == START_SURVIE){
 						switch_screen_menu();
-					}else if(etat_menu == 2){
+					}else if(etat_menu == OPTION){
 
-					}else if(etat_menu == 3){
+					}else if(etat_menu == HIGH_SCORE){
 						
-					}else if(etat_menu == 4){
+					}else if(etat_menu == QUITTER){
 						fermeture_sdl_menu();
 					}
 				}
@@ -153,7 +160,6 @@ int input_menu(){
 			}
 		}
 	}
-
 
 int init_menu(){
 

@@ -18,5 +18,7 @@ int play_musique_survie(void);
 int play_explosion_survie(void);
 int switch_screen_survie(void);
 int survie(void);
+int reinitialisation_survie(void);
+int dessin_pause_survie(void);
 
 #endif

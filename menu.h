@@ -12,5 +12,7 @@ int get_screensize_menu(void);
 int init_menu(void);
 int menu(void);
 int switch_screen_menu(void);
+int reinitialisation_menu(void);
+int dessin_menu_menu_jeu(void);
 
 #endif

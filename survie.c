@@ -7,12 +7,20 @@
 #include "survie.h"
 #include "menu.h"
 
+#define START 0
+#define UP 1
+#define DOWN 2
+#define RIGHT 3
+#define LEFT 4
+#define PAUSE 5
+#define GAME_OVER 6
+
 typedef struct position_struct{
 	int x;
 	int y;
 }position;
 
-int direction_survie = 0;
+int etat_survie = START;
 
 int width_windows_survie = 0;
 int height_windows_survie = 0;
@@ -42,15 +50,25 @@ Mix_Chunk* explosion_survie = NULL;
 int survie(){
 	init_survie();
 	get_screensize_survie();
-	set_survie();
+	reinitialisation_survie();
 	play_musique_survie();
+	set_survie();
 	while(1){
 		input_survie();
 		update_survie();
 		set_survie();
 		delay_game_survie();
-		SDL_Log("1 - debug : direction_survie = %d , Position x = %d , position y = %d \n 2 - debug : width_windows_survie : %d height_windows_survie : %d \n 3 - debug : terrain_x_survie : %d terrain_y_survie : %d",direction_survie, posi_main_survie.x, posi_main_survie.y,width_windows_survie,height_windows_survie,terrain_x_survie,terrain_y_survie);
+		SDL_Log("1 - debug : etat_survie = %d , Position x = %d , position y = %d \n 2 - debug : width_windows_survie : %d height_windows_survie : %d \n 3 - debug : terrain_x_survie : %d terrain_y_survie : %d",etat_survie, posi_main_survie.x, posi_main_survie.y,width_windows_survie,height_windows_survie,terrain_x_survie,terrain_y_survie);
 	}
+	return 0;
+}
+
+int reinitialisation_survie(){
+	etat_survie = START;
+	score_survie = 0;
+	posi_main_survie.x = 0;
+	posi_main_survie.y = 0;
+
 	return 0;
 }
 
@@ -103,6 +121,20 @@ int dessin_game_over_survie(){
 	SDL_FreeSurface(score_surface);
 }
 
+int dessin_pause_survie(){
+	SDL_Color couleur_font = {255, 255, 255};
+
+	SDL_Surface* score_surface = TTF_RenderText_Solid(font_general_survie,"PAUSE", couleur_font);
+	SDL_Texture* score_texture = SDL_CreateTextureFromSurface(renduPrincipale_survie, score_surface);
+
+	SDL_Rect dest = {terrain_x_survie+10,(terrain_y_survie-50)/2,175,50};
+
+	SDL_RenderCopy(renduPrincipale_survie, score_texture, NULL, &dest);
+
+	SDL_DestroyTexture(score_texture);
+	SDL_FreeSurface(score_surface);
+}
+
 int dessin_fond_survie(){
 	int taille_score = 6;
 	int size_main = 32;
@@ -127,16 +159,21 @@ int dessin_fond_survie(){
 }
 
 int set_survie(){
-	if(direction_survie && direction_survie !=6){
+	if(etat_survie && etat_survie != GAME_OVER && etat_survie != PAUSE){
 		dessin_main_survie();
 		dessin_background_score_survie();
 		dessin_score_survie();
 		SDL_RenderPresent(renduPrincipale_survie);
-	}else if(direction_survie == 6){
+	}else if(etat_survie == GAME_OVER){
 		dessin_fond_survie();
 		dessin_background_score_survie();
 		dessin_score_survie();
 		dessin_game_over_survie();
+		SDL_RenderPresent(renduPrincipale_survie);
+	}else if (etat_survie == PAUSE){
+		dessin_background_score_survie();
+		dessin_score_survie();
+		dessin_pause_survie();
 		SDL_RenderPresent(renduPrincipale_survie);
 	}else{
 		dessin_fond_survie();
@@ -160,20 +197,20 @@ int input_survie(){
 				break;
 
 			case SDL_KEYDOWN:
-				if (touche.key.keysym.sym == SDLK_z && direction_survie !=6){
-					direction_survie = 1;
+				if (touche.key.keysym.sym == SDLK_z && etat_survie != GAME_OVER){
+					etat_survie = UP;
 
-				}else if(touche.key.keysym.sym == SDLK_s && direction_survie !=6){
-					direction_survie = 2;
+				}else if(touche.key.keysym.sym == SDLK_s && etat_survie != GAME_OVER){
+					etat_survie = DOWN;
 
-				}else if(touche.key.keysym.sym == SDLK_d && direction_survie !=6){
-					direction_survie = 3;
+				}else if(touche.key.keysym.sym == SDLK_d && etat_survie != GAME_OVER){
+					etat_survie = RIGHT;
 					
-				}else if(touche.key.keysym.sym == SDLK_q && direction_survie !=6){
-					direction_survie = 4;
+				}else if(touche.key.keysym.sym == SDLK_q && etat_survie != GAME_OVER){
+					etat_survie = LEFT;
 					
-				}else if(touche.key.keysym.sym == SDLK_SPACE && direction_survie !=6){
-					direction_survie = 5;
+				}else if(touche.key.keysym.sym == SDLK_SPACE && etat_survie != GAME_OVER){
+					etat_survie = PAUSE;
 
 				}else if(touche.key.keysym.sym == SDLK_ESCAPE){
 					switch_screen_survie();
@@ -186,8 +223,8 @@ int input_survie(){
 int update_survie(){
 	int size_main = 32;
 
-	switch(direction_survie){
-		case 1:
+	switch(etat_survie){
+		case UP:
 			if(posi_main_survie.y<0){
 				posi_main_survie.y = 0;
 			}else if(posi_main_survie.y>0){
@@ -195,7 +232,7 @@ int update_survie(){
 			}
 			tab_deplacement_survie(posi_main_survie.x,posi_main_survie.y);
 			break;
-		case 2:
+		case DOWN:
 			if(posi_main_survie.y>terrain_y_survie-size_main){
 				posi_main_survie.y = terrain_y_survie-size_main;
 			}else if(posi_main_survie.y<terrain_y_survie-size_main){
@@ -203,7 +240,7 @@ int update_survie(){
 			}
 			tab_deplacement_survie(posi_main_survie.x,posi_main_survie.y);
 			break;
-		case 3:
+		case RIGHT:
 			if(posi_main_survie.x>terrain_x_survie-size_main){
 				posi_main_survie.x = terrain_x_survie-size_main;
 			}else if(posi_main_survie.x<terrain_x_survie-size_main){
@@ -211,7 +248,7 @@ int update_survie(){
 			}
 			tab_deplacement_survie(posi_main_survie.x,posi_main_survie.y);
 			break;
-		case 4:
+		case LEFT:
 			if(posi_main_survie.x<0){
 				posi_main_survie.x = 0;
 			}else if(posi_main_survie.x>0){
@@ -222,9 +259,9 @@ int update_survie(){
 		default:
 			break;
 	}
-	if(direction_survie != 5){
-		if(direction_survie != 0){
-			if (direction_survie != 6){
+	if(etat_survie != PAUSE){
+		if(etat_survie != START){
+			if (etat_survie != GAME_OVER){
 				score_survie++;
 			}
 		}
@@ -237,7 +274,7 @@ int tab_deplacement_survie(int x, int y){
 	int tableau_deplacement[width_windows_survie][height_windows_survie];
 
 	if(tableau_deplacement[x][y] == 1){
-		direction_survie = 6;
+		etat_survie = GAME_OVER;
 		Mix_FreeMusic(music_de_fond_survie);
 		play_explosion_survie();
 	}else if(tableau_deplacement[x][y] == 0){
@@ -276,6 +313,10 @@ int fermeture_sdl_survie(){
 int switch_screen_survie(){
 	SDL_DestroyRenderer(renduPrincipale_survie);
 	SDL_DestroyWindow(fenetrePrincipale_survie);
+
+	if(etat_survie != GAME_OVER){
+		Mix_FreeMusic(music_de_fond_survie);
+	}
 
 	SDL_DestroyTexture(main_texture_survie);
 	SDL_FreeSurface(main_surface_survie);
