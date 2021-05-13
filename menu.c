@@ -33,10 +33,9 @@ int menu(){
 	reinitialisation_menu();
 	init_menu();
 	get_screensize_menu();
-	set_menu();
+	set_fond_menu_menu();
 	while(1){
 		input_menu();
-		set_menu();
 		delay_game_menu();
 		SDL_Log("etat : %d ",etat_menu);
 	}
@@ -49,11 +48,17 @@ int reinitialisation_menu(){
 }
 
 int set_menu(){
+	dessin_menu_menu();
+	SDL_RenderPresent(renduPrincipale_menu);
+}
+
+int set_fond_menu_menu(){
 	dessin_fond_menu();
 	dessin_texte_menu("ULTRON",couleur_font_menu,-2,600,175);
 	dessin_menu_menu();
 	SDL_RenderPresent(renduPrincipale_menu);
 }
+
 
 int dessin_texte_menu(char *texte, SDL_Color couleur,int coef_position,int size_font_x,int size_font_y){
 
@@ -136,11 +141,13 @@ int input_menu(){
 					if(etat_menu > START_SURVIE){
 						etat_menu--;
 					}
+					set_menu();
 
 				}else if(touche.key.keysym.sym == SDLK_DOWN ){
 					if(etat_menu < QUITTER){
 						etat_menu++;
 					}
+					set_menu();
 
 				}else if(touche.key.keysym.sym == SDLK_ESCAPE){
 					fermeture_sdl_menu();
@@ -184,7 +191,7 @@ int init_menu(){
 		printf("Audio mix : %s", Mix_GetError());
 	}
 
-	if(SDL_CreateWindowAndRenderer(1920, 1080, SDL_WINDOW_SHOWN, &fenetrePrincipale_menu, &renduPrincipale_menu) < 0){
+	if(SDL_CreateWindowAndRenderer(1600, 900, SDL_WINDOW_SHOWN, &fenetrePrincipale_menu, &renduPrincipale_menu) < 0){
 		printf("Erreur création fenetre : %s",SDL_GetError());
 		SDL_Quit();
 		return EXIT_FAILURE;
@@ -200,7 +207,7 @@ int init_menu(){
 
 int delay_game_menu(){
 	int lastTicks = 0;
-	int maxFPS = 15;
+	int maxFPS = 60;
 	int delay = 0;
 
 	lastTicks = SDL_GetTicks();

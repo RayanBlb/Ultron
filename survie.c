@@ -364,7 +364,7 @@ int init_survie(){
 		printf("Audio mix : %s", Mix_GetError());
 	}
 
-	if(SDL_CreateWindowAndRenderer(1920, 1080, SDL_WINDOW_SHOWN, &fenetrePrincipale_survie, &renduPrincipale_survie) < 0){
+	if(SDL_CreateWindowAndRenderer(1600, 900, SDL_WINDOW_SHOWN, &fenetrePrincipale_survie, &renduPrincipale_survie) < 0){
 		printf("Erreur création fenetre : %s",SDL_GetError());
 		SDL_Quit();
 		return EXIT_FAILURE;

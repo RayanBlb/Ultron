@@ -14,5 +14,6 @@ int menu(void);
 int switch_screen_menu(void);
 int reinitialisation_menu(void);
 int dessin_menu_menu_jeu(void);
+int set_fond_menu_menu(void);
 
 #endif
