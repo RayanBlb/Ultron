@@ -20,9 +20,9 @@ int switch_screen_survie(void);
 int survie(void);
 int reinitialisation_survie(void);
 int dessin_pause_survie(void);
-int set_start_surie(void);
+int set_start_survie(void);
 int set_game_over_survie(void);
-int allocation_tableau(void);
-int free_tableau(void);
+int allocation_tableau_survie(void);
+int free_tableau_survie(void);
 
 #endif

@@ -55,9 +55,9 @@ int survie(){
 	init_survie();
 	get_screensize_survie();
 	reinitialisation_survie();
-	allocation_tableau();
+	allocation_tableau_survie();
 	play_musique_survie();
-	set_start_surie();
+	set_start_survie();
 	while(etat_survie != GAME_OVER){
 		input_survie();
 		update_survie();
@@ -76,7 +76,7 @@ int reinitialisation_survie(){
 	posi_main_survie.y = 0;
 
 	if(tableau_deplacement){
-		free_tableau();
+		free_tableau_survie();
 	}
 
 	return 0;
@@ -196,7 +196,7 @@ int set_game_over_survie(){
 	}
 }
 
-int set_start_surie(){
+int set_start_survie(){
 	if(etat_survie == START){
 		dessin_fond_survie();
 		dessin_background_score_survie();
@@ -288,7 +288,7 @@ int update_survie(){
 	return 0;
 }
 
-int allocation_tableau(){
+int allocation_tableau_survie(){
   
     tableau_deplacement = (int **)malloc(width_windows_survie * sizeof(int *));
     for (int i=0; i<width_windows_survie; i++)
@@ -303,7 +303,7 @@ int allocation_tableau(){
    return 0;
 }
 
-int free_tableau(){
+int free_tableau_survie(){
 	for (int i = 0; i < width_windows_survie ; ++i){
 			free(tableau_deplacement[i]);
 		}
