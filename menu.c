@@ -8,9 +8,11 @@
 #include "menu.h"
 
 #define START_SURVIE 1
-#define OPTION 2
-#define HIGH_SCORE 3
-#define QUITTER 4
+#define START_VERSUS 2
+#define START_IA 3
+#define OPTION 4
+#define HIGH_SCORE 5
+#define QUITTER 6
 
 typedef struct position_struct{
 	int x;
@@ -102,25 +104,47 @@ int dessin_menu_menu(){
 	SDL_Color couleur_font_selection = {255, 0, 0};
 
 	if(etat_menu == START_SURVIE){
-		dessin_texte_menu("Jouer !",couleur_font_selection,-1,400,125);
-		dessin_texte_menu("Option",couleur_font_menu,0,400,125);
-		dessin_texte_menu("High Score",couleur_font_menu,1,400,125);
-		dessin_texte_menu("Quitter",couleur_font_menu,2,400,125);
+		dessin_texte_menu("Survie",couleur_font_selection,-2,400,100);
+		dessin_texte_menu("2 VS 2",couleur_font_menu,-1,400,100);
+		dessin_texte_menu("VS IA",couleur_font_menu,0,400,100);
+		dessin_texte_menu("Option",couleur_font_menu,1,400,100);
+		dessin_texte_menu("High Score",couleur_font_menu,2,400,100);
+		dessin_texte_menu("Quitter",couleur_font_menu,3,400,100);
+	}else if(etat_menu == START_VERSUS ){
+		dessin_texte_menu("Survie",couleur_font_menu,-2,400,100);
+		dessin_texte_menu("2 VS 2",couleur_font_selection,-1,400,100);
+		dessin_texte_menu("VS IA",couleur_font_menu,0,400,100);
+		dessin_texte_menu("Option",couleur_font_menu,1,400,100);
+		dessin_texte_menu("High Score",couleur_font_menu,2,400,100);
+		dessin_texte_menu("Quitter",couleur_font_menu,3,400,100);
+	}else if(etat_menu == START_IA ){
+		dessin_texte_menu("Survie",couleur_font_menu,-2,400,100);
+		dessin_texte_menu("2 VS 2",couleur_font_menu,-1,400,100);
+		dessin_texte_menu("VS IA",couleur_font_selection,0,400,100);
+		dessin_texte_menu("Option",couleur_font_menu,1,400,100);
+		dessin_texte_menu("High Score",couleur_font_menu,2,400,100);
+		dessin_texte_menu("Quitter",couleur_font_menu,3,400,100);
 	}else if(etat_menu == OPTION ){
-		dessin_texte_menu("Jouer !",couleur_font_menu,-1,400,125);
-		dessin_texte_menu("Option",couleur_font_selection,0,400,125);
-		dessin_texte_menu("High Score",couleur_font_menu,1,400,125);
-		dessin_texte_menu("Quitter",couleur_font_menu,2,400,125);
+		dessin_texte_menu("Survie",couleur_font_menu,-2,400,100);
+		dessin_texte_menu("2 VS 2",couleur_font_menu,-1,400,100);
+		dessin_texte_menu("VS IA",couleur_font_menu,0,400,100);
+		dessin_texte_menu("Option",couleur_font_selection,1,400,100);
+		dessin_texte_menu("High Score",couleur_font_menu,2,400,100);
+		dessin_texte_menu("Quitter",couleur_font_menu,3,400,100);
 	}else if(etat_menu == HIGH_SCORE ){
-		dessin_texte_menu("Jouer !",couleur_font_menu,-1,400,125);
-		dessin_texte_menu("Option",couleur_font_menu,0,400,125);
-		dessin_texte_menu("High Score",couleur_font_selection,1,400,125);
-		dessin_texte_menu("Quitter",couleur_font_menu,2,400,125);
+		dessin_texte_menu("Survie",couleur_font_menu,-2,400,100);
+		dessin_texte_menu("2 VS 2",couleur_font_menu,-1,400,100);
+		dessin_texte_menu("VS IA",couleur_font_menu,0,400,100);
+		dessin_texte_menu("Option",couleur_font_menu,1,400,100);
+		dessin_texte_menu("High Score",couleur_font_selection,2,400,100);
+		dessin_texte_menu("Quitter",couleur_font_menu,3,400,100);
 	}else if(etat_menu == QUITTER ){
-		dessin_texte_menu("Jouer !",couleur_font_menu,-1,400,125);
-		dessin_texte_menu("Option",couleur_font_menu,0,400,125);
-		dessin_texte_menu("High Score",couleur_font_menu,1,400,125);
-		dessin_texte_menu("Quitter",couleur_font_selection,2,400,125);	
+		dessin_texte_menu("Survie",couleur_font_menu,-2,400,100);
+		dessin_texte_menu("2 VS 2",couleur_font_menu,-1,400,100);
+		dessin_texte_menu("VS IA",couleur_font_menu,0,400,100);
+		dessin_texte_menu("Option",couleur_font_menu,1,400,100);
+		dessin_texte_menu("High Score",couleur_font_menu,2,400,100);
+		dessin_texte_menu("Quitter",couleur_font_selection,3,400,100);	
 	}
 }
 
