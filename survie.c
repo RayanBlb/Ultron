@@ -30,6 +30,10 @@ int score_survie = 0;
 int terrain_x_survie = 0;
 int terrain_y_survie = 0;
 
+int size_main = 32;//8/16/32
+
+int **tableau_deplacement;
+
 position posi_main_survie = {0,0};
 
 SDL_Window* fenetrePrincipale_survie = NULL;
@@ -51,15 +55,17 @@ int survie(){
 	init_survie();
 	get_screensize_survie();
 	reinitialisation_survie();
+	allocation_tableau();
 	play_musique_survie();
-	set_survie();
-	while(1){
+	set_start_surie();
+	while(etat_survie != GAME_OVER){
 		input_survie();
 		update_survie();
 		set_survie();
 		delay_game_survie();
 		SDL_Log("1 - debug : etat_survie = %d , Position x = %d , position y = %d \n 2 - debug : width_windows_survie : %d height_windows_survie : %d \n 3 - debug : terrain_x_survie : %d terrain_y_survie : %d",etat_survie, posi_main_survie.x, posi_main_survie.y,width_windows_survie,height_windows_survie,terrain_x_survie,terrain_y_survie);
 	}
+	set_game_over_survie();
 	return 0;
 }
 
@@ -69,11 +75,15 @@ int reinitialisation_survie(){
 	posi_main_survie.x = 0;
 	posi_main_survie.y = 0;
 
+	if(tableau_deplacement){
+		free_tableau();
+	}
+
 	return 0;
 }
 
 int dessin_main_survie(){
-	SDL_Rect dest = { posi_main_survie.x,posi_main_survie.y, main_surface_survie->w, main_surface_survie->h};
+	SDL_Rect dest = { posi_main_survie.x,posi_main_survie.y, size_main, size_main};
 	SDL_RenderCopy(renduPrincipale_survie,main_texture_survie,NULL,&dest);
 	return 0;
 }
@@ -136,8 +146,7 @@ int dessin_pause_survie(){
 }
 
 int dessin_fond_survie(){
-	int taille_score = 6;
-	int size_main = 32;
+	int taille_score = 210/size_main;
 
 	SDL_SetRenderDrawColor(renduPrincipale_survie,22, 22, 22, 255);
 	SDL_RenderClear(renduPrincipale_survie);
@@ -164,18 +173,31 @@ int set_survie(){
 		dessin_background_score_survie();
 		dessin_score_survie();
 		SDL_RenderPresent(renduPrincipale_survie);
-	}else if(etat_survie == GAME_OVER){
-		dessin_fond_survie();
-		dessin_background_score_survie();
-		dessin_score_survie();
-		dessin_game_over_survie();
-		SDL_RenderPresent(renduPrincipale_survie);
 	}else if (etat_survie == PAUSE){
 		dessin_background_score_survie();
 		dessin_score_survie();
 		dessin_pause_survie();
 		SDL_RenderPresent(renduPrincipale_survie);
-	}else{
+	}
+}
+
+int set_game_over_survie(){
+	if(etat_survie == GAME_OVER){
+		dessin_fond_survie();
+		dessin_fond_survie();
+		dessin_background_score_survie();
+		dessin_score_survie();
+		dessin_game_over_survie();
+		SDL_RenderPresent(renduPrincipale_survie);
+	}
+	while(1){
+		input_survie();
+		delay_game_survie();
+	}
+}
+
+int set_start_surie(){
+	if(etat_survie == START){
 		dessin_fond_survie();
 		dessin_background_score_survie();
 		dessin_main_survie();
@@ -221,7 +243,6 @@ int input_survie(){
 	}
 
 int update_survie(){
-	int size_main = 32;
 
 	switch(etat_survie){
 		case UP:
@@ -259,19 +280,38 @@ int update_survie(){
 		default:
 			break;
 	}
-	if(etat_survie != PAUSE){
-		if(etat_survie != START){
-			if (etat_survie != GAME_OVER){
-				score_survie++;
-			}
-		}
+
+	if(etat_survie != PAUSE && etat_survie != START && etat_survie != GAME_OVER){
+		score_survie++;
 	}
 
 	return 0;
 }
 
+int allocation_tableau(){
+  
+    tableau_deplacement = (int **)malloc(width_windows_survie * sizeof(int *));
+    for (int i=0; i<width_windows_survie; i++)
+         tableau_deplacement[i] = (int *)malloc(height_windows_survie * sizeof(int));
+
+    for (int i = 0; i <  width_windows_survie; i++){
+      for (int j = 0; j < height_windows_survie; j++){
+         tableau_deplacement[i][j] = 0;
+      }
+    }
+  
+   return 0;
+}
+
+int free_tableau(){
+	for (int i = 0; i < width_windows_survie ; ++i){
+			free(tableau_deplacement[i]);
+		}
+	free(tableau_deplacement);
+	return 0;
+}
+
 int tab_deplacement_survie(int x, int y){
-	int tableau_deplacement[width_windows_survie][height_windows_survie];
 
 	if(tableau_deplacement[x][y] == 1){
 		etat_survie = GAME_OVER;
@@ -284,8 +324,9 @@ int tab_deplacement_survie(int x, int y){
 }
 
 int delay_game_survie(){
+	int maxFPS_survie = 60;
+	if(etat_survie != START) maxFPS_survie = 15; //Enleve le petit décalage de lancement
 	int lastTicks_survie = 0;
-	int maxFPS_survie = 15;
 	int delay_survie = 0;
 
 	lastTicks_survie = SDL_GetTicks();
@@ -374,6 +415,9 @@ int init_survie(){
     SDL_RenderPresent(renduPrincipale_survie);
 
     SDL_SetWindowTitle(fenetrePrincipale_survie, "Ultron");
+
+    SDL_Surface* icon_programme_survie = SDL_LoadBMP("./Sprites/icon.bmp");
+	SDL_SetWindowIcon(fenetrePrincipale_survie, icon_programme_survie);
 
 	main_surface_survie = SDL_LoadBMP("./Sprites/main.bmp");
 	main_texture_survie = SDL_CreateTextureFromSurface(renduPrincipale_survie,main_surface_survie);

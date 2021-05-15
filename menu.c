@@ -202,6 +202,9 @@ int init_menu(){
 
     SDL_SetWindowTitle(fenetrePrincipale_menu, "Ultron");
 
+    SDL_Surface* icon_programme_survie = SDL_LoadBMP("./Sprites/icon.bmp");
+	SDL_SetWindowIcon(fenetrePrincipale_menu, icon_programme_survie);
+
     font_general_menu = TTF_OpenFont("./Font/font.ttf", 16);
 }
 
