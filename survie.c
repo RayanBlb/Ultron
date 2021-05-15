@@ -72,8 +72,11 @@ int survie(){
 int reinitialisation_survie(){
 	etat_survie = START;
 	score_survie = 0;
-	posi_main_survie.x = 0;
-	posi_main_survie.y = 0;
+
+	int x = (rand() % (25))*32;
+	int y = (rand() % (25))*32;
+	posi_main_survie.x = x;
+	posi_main_survie.y = y;
 
 	if(tableau_deplacement){
 		free_tableau_survie();
