@@ -73,7 +73,7 @@ int reinitialisation_survie(){
 	etat_survie = START;
 	score_survie = 0;
 
-	int x = (rand() % (25))*32;
+	int x = (rand() % (45))*32;
 	int y = (rand() % (25))*32;
 	posi_main_survie.x = x;
 	posi_main_survie.y = y;
