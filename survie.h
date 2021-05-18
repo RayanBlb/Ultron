@@ -24,5 +24,9 @@ int set_start_survie(void);
 int set_game_over_survie(void);
 int allocation_tableau_survie(void);
 int free_tableau_survie(void);
+int input_high_score_survie(void);
+int compte_nom_high_score_survie(void);
+int dessin_high_score_survie(void);
+int set_high_score_survie(void);
 
 #endif
