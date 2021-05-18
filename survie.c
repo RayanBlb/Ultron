@@ -47,6 +47,9 @@ SDL_Texture* main_texture_survie = NULL;
 SDL_Surface* background_score_surface_survie = NULL;
 SDL_Texture* background_score_texture_survie = NULL;
 
+SDL_Surface* background_high_score_surface_survie = NULL;
+SDL_Texture* background_high_score_texture_survie = NULL;
+
 TTF_Font* font_general_survie = NULL;
 
 Mix_Music* music_de_fond_survie = NULL;
@@ -83,6 +86,8 @@ int reinitialisation_survie(){
 	if(tableau_deplacement){
 		free_tableau_survie();
 	}
+
+	strcpy(nom_high_score_survie,"");
 
 	return 0;
 }
@@ -418,6 +423,9 @@ int init_survie(){
 	background_score_surface_survie = SDL_LoadBMP("./Sprites/background_score.bmp");
 	background_score_texture_survie = SDL_CreateTextureFromSurface(renduPrincipale_survie,background_score_surface_survie);
 
+	background_high_score_surface_survie = SDL_LoadBMP("./Sprites/background_high_score.bmp");
+	background_high_score_texture_survie = SDL_CreateTextureFromSurface(renduPrincipale_survie,background_high_score_surface_survie);
+
 	font_general_survie = TTF_OpenFont("./Font/font.ttf", 16);
 }
 
@@ -441,11 +449,10 @@ int input_high_score_survie(){
 					compteur--;
 					strcpy(&nom_high_score_survie[compteur],"");
 				}else if(touche.key.keysym.sym == SDLK_RETURN){
-				}else if(touche.key.keysym.sym == SDLK_LSHIFT || touche.key.keysym.sym == SDLK_RSHIFT){
+				}else if(touche.key.keysym.sym == SDLK_LSHIFT || touche.key.keysym.sym == SDLK_RSHIFT || touche.key.keysym.sym == SDLK_RALT || touche.key.keysym.sym == SDLK_LALT || touche.key.keysym.sym == SDLK_RCTRL || touche.key.keysym.sym == SDLK_LCTRL){
 				}else if(touche.key.keysym.sym == SDLK_ESCAPE){
-					fermeture_sdl_menu();
+					switch_screen_survie();
 				}
-				set_game_over_survie();
 				break;
 			}
 		}
@@ -469,7 +476,7 @@ int dessin_high_score_survie(){
 	SDL_Texture* score_texture = SDL_CreateTextureFromSurface(renduPrincipale_survie, score_surface);
 
 	int size_game_over_x = 100*compte_nom_high_score_survie();
-	int size_game_over_y = 200;
+	int size_game_over_y = 175;
 
 	int position_x = (terrain_x_survie - size_game_over_x)/2;
 	int position_y = (terrain_y_survie - size_game_over_y)/2;
@@ -493,8 +500,21 @@ int set_game_over_survie(){
 		SDL_RenderPresent(renduPrincipale_survie);
 	}
 	while(1){
+		dessin_background_high_score_survie();
 		input_high_score_survie();
 		dessin_high_score_survie();
 		delay_game_survie();
 	}
+}
+
+int dessin_background_high_score_survie(){
+	int size_game_over_x = 1100;
+	int size_game_over_y = 175;
+
+	int position_x = (terrain_x_survie - size_game_over_x)/2;
+	int position_y = (terrain_y_survie - size_game_over_y)/2;
+
+	SDL_Rect dest = {position_x, position_y, size_game_over_x, size_game_over_y};
+	SDL_RenderCopy(renduPrincipale_survie,background_high_score_texture_survie,NULL,&dest);
+	return 0;
 }
