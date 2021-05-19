@@ -39,7 +39,7 @@ int menu(){
 	while(1){
 		input_menu();
 		delay_game_menu();
-		SDL_Log("etat : %d ",etat_menu);
+		//SDL_Log("etat : %d ",etat_menu);
 	}
 	return 0;
 }

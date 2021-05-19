@@ -134,7 +134,7 @@ int dessin_game_over_survie(){
 	int size_game_over_y = 50*4;
 
 	int position_x = (terrain_x_survie - size_game_over_x)/2;
-	int position_y = (terrain_y_survie - size_game_over_y*3)/2;
+	int position_y = (terrain_y_survie - size_game_over_y*2)/2;
 	
 	SDL_Rect dest = {position_x,position_y,size_game_over_x,size_game_over_y};
 
@@ -310,7 +310,6 @@ int free_tableau_survie(){
 }
 
 int tab_deplacement_survie(int x, int y){
-
 	if(tableau_deplacement[x][y] == 1){
 		etat_survie = GAME_OVER;
 		Mix_FreeMusic(music_de_fond_survie);
@@ -324,6 +323,7 @@ int tab_deplacement_survie(int x, int y){
 int delay_game_survie(){
 	int maxFPS_survie = 60;
 	if(etat_survie != START) maxFPS_survie = 15; //Enleve le petit décalage de lancement
+	if(etat_survie == GAME_OVER) maxFPS_survie = 60;
 	int lastTicks_survie = 0;
 	int delay_survie = 0;
 
@@ -442,14 +442,16 @@ int input_high_score_survie(){
 				break;
 
 			case SDL_KEYDOWN:
-				if(touche.key.keysym.sym != SDLK_ESCAPE && touche.key.keysym.sym != SDLK_RETURN && touche.key.keysym.sym != SDLK_BACKSPACE && touche.key.keysym.sym != SDLK_LSHIFT && touche.key.keysym.sym != SDLK_RSHIFT && touche.key.keysym.sym != SDLK_SPACE  && compte_nom_high_score_survie() < 10){
+				if(touche.key.keysym.sym != SDLK_LGUI && touche.key.keysym.sym != SDLK_CAPSLOCK && touche.key.keysym.sym != SDLK_HOME && touche.key.keysym.sym != SDLK_PAGEDOWN && touche.key.keysym.sym != SDLK_PAGEUP && touche.key.keysym.sym != SDLK_END && touche.key.keysym.sym != SDLK_BACKSPACE && touche.key.keysym.sym != SDLK_DELETE && touche.key.keysym.sym != SDLK_INSERT && touche.key.keysym.sym != SDLK_TAB && touche.key.keysym.sym != SDLK_RIGHT && touche.key.keysym.sym != SDLK_RIGHT && touche.key.keysym.sym != SDLK_LEFT && touche.key.keysym.sym != SDLK_DOWN && touche.key.keysym.sym != SDLK_UP && touche.key.keysym.sym != SDLK_LCTRL && touche.key.keysym.sym != SDLK_RCTRL && touche.key.keysym.sym != SDLK_LALT && touche.key.keysym.sym != SDLK_RALT && touche.key.keysym.sym != SDLK_RSHIFT && touche.key.keysym.sym != SDLK_LSHIFT && touche.key.keysym.sym != SDLK_ESCAPE && touche.key.keysym.sym != SDLK_RETURN && touche.key.keysym.sym != SDLK_BACKSPACE && touche.key.keysym.sym != SDLK_LSHIFT && touche.key.keysym.sym != SDLK_RSHIFT && touche.key.keysym.sym != SDLK_SPACE  && compte_nom_high_score_survie() < 10){
 					strcat(nom_high_score_survie,SDL_GetKeyName(touche.key.keysym.sym));
-				}else if(touche.key.keysym.sym == SDLK_BACKSPACE){
+				}else if(touche.key.keysym.sym == SDLK_BACKSPACE && compte_nom_high_score_survie() > 0){
 					int compteur = compte_nom_high_score_survie();
 					compteur--;
 					strcpy(&nom_high_score_survie[compteur],"");
 				}else if(touche.key.keysym.sym == SDLK_RETURN){
-				}else if(touche.key.keysym.sym == SDLK_LSHIFT || touche.key.keysym.sym == SDLK_RSHIFT || touche.key.keysym.sym == SDLK_RALT || touche.key.keysym.sym == SDLK_LALT || touche.key.keysym.sym == SDLK_RCTRL || touche.key.keysym.sym == SDLK_LCTRL){
+					write_high_score_survie();
+				}else if(touche.key.keysym.sym == SDLK_LSHIFT){
+				}else if(touche.key.keysym.sym == SDLK_RSHIFT){
 				}else if(touche.key.keysym.sym == SDLK_ESCAPE){
 					switch_screen_survie();
 				}
@@ -479,7 +481,7 @@ int dessin_high_score_survie(){
 	int size_game_over_y = 175;
 
 	int position_x = (terrain_x_survie - size_game_over_x)/2;
-	int position_y = (terrain_y_survie - size_game_over_y)/2;
+	int position_y = (terrain_y_survie + size_game_over_y*0.5)/2;	
 	
 	SDL_Rect dest = {position_x,position_y,size_game_over_x,size_game_over_y};
 
@@ -512,9 +514,21 @@ int dessin_background_high_score_survie(){
 	int size_game_over_y = 175;
 
 	int position_x = (terrain_x_survie - size_game_over_x)/2;
-	int position_y = (terrain_y_survie - size_game_over_y)/2;
+	int position_y = (terrain_y_survie + size_game_over_y*0.5)/2;
 
 	SDL_Rect dest = {position_x, position_y, size_game_over_x, size_game_over_y};
 	SDL_RenderCopy(renduPrincipale_survie,background_high_score_texture_survie,NULL,&dest);
 	return 0;
+}
+
+int write_high_score_survie(){
+	FILE *fichier;
+	fichier = fopen ("./score.txt","a");
+	if(strcmp(&nom_high_score_survie[0],"") != 0){
+		fprintf (fichier,"%s:%d \n",nom_high_score_survie,score_survie);
+	}else if(strcmp(&nom_high_score_survie[0],"") == 0){
+		fprintf (fichier,"Joueur inconnu:%d \n",score_survie);
+	}
+	fclose(fichier);
+	switch_screen_survie();
 }

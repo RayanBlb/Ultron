@@ -29,5 +29,6 @@ int compte_nom_high_score_survie(void);
 int dessin_high_score_survie(void);
 int set_high_score_survie(void);
 int dessin_background_high_score_survie(void);
+int write_high_score_survie(void);
 
 #endif
