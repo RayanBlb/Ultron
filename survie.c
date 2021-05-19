@@ -61,6 +61,7 @@ int survie(){
 	get_screensize_survie();
 	reinitialisation_survie();
 	allocation_tableau_survie();
+	initialisation_position_main_survie();
 	play_musique_survie();
 	set_start_survie();
 	while(etat_survie != GAME_OVER){
@@ -78,11 +79,6 @@ int reinitialisation_survie(){
 	etat_survie = START;
 	score_survie = 0;
 
-	int x = (rand() % (45))*size_main;
-	int y = (rand() % (25))*size_main;
-	posi_main_survie.x = x;
-	posi_main_survie.y = y;
-
 	if(tableau_deplacement){
 		free_tableau_survie();
 	}
@@ -90,6 +86,15 @@ int reinitialisation_survie(){
 	strcpy(nom_high_score_survie,"");
 
 	return 0;
+}
+
+int initialisation_position_main_survie(){
+	int x = (rand() % (45))*size_main;
+	int y = (rand() % (25))*size_main;
+	posi_main_survie.x = x;
+	posi_main_survie.y = y;
+
+	tab_deplacement_survie(posi_main_survie.x,posi_main_survie.y);
 }
 
 int dessin_main_survie(){
