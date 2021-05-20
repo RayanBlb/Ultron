@@ -4,8 +4,10 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
 #include <SDL2/SDL_mixer.h>
+
 #include "survie.h"
 #include "menu.h"
+#include "high_score.h"
 
 #define START_SURVIE 1
 #define START_VERSUS 2
@@ -178,10 +180,11 @@ int input_menu(){
 
 				}else if(touche.key.keysym.sym == SDLK_RETURN){
 					if (etat_menu == START_SURVIE){
-						switch_screen_menu();
+						switch_screen_menu("survie");
 					}else if(etat_menu == OPTION){
 
 					}else if(etat_menu == HIGH_SCORE){
+						switch_screen_menu("high_score");
 						
 					}else if(etat_menu == QUITTER){
 						fermeture_sdl_menu();
@@ -257,9 +260,13 @@ int fermeture_sdl_menu(){
 	return 0;
 }
 
-int switch_screen_menu(){
+int switch_screen_menu(char *mode){
 	SDL_DestroyRenderer(renduPrincipale_menu);
 	SDL_DestroyWindow(fenetrePrincipale_menu);
-	survie();
+	if(strcmp(mode,"survie") == 0){
+		survie();
+	}else if(strcmp(mode,"high_score") == 0){
+		high_score();
+	}
 	return 0;
 }

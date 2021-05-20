@@ -4,8 +4,10 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
 #include <SDL2/SDL_mixer.h>
+
 #include "survie.h"
 #include "menu.h"
+#include "high_score.h"
 
 #define START 0
 #define UP 1
@@ -528,7 +530,7 @@ int dessin_background_high_score_survie(){
 
 int write_high_score_survie(){
 	FILE *fichier;
-	fichier = fopen ("./score.txt","a");
+	fichier = fopen ("./score_survie.txt","a");
 	if(strcmp(&nom_high_score_survie[0],"") != 0){
 		fprintf (fichier,"%s:%d \n",nom_high_score_survie,score_survie);
 	}else if(strcmp(&nom_high_score_survie[0],"") == 0){

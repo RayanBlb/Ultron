@@ -11,9 +11,8 @@ int fermeture_sdl_menu(void);
 int get_screensize_menu(void);
 int init_menu(void);
 int menu(void);
-int switch_screen_menu(void);
+int switch_screen_menu(char *mode);
 int reinitialisation_menu(void);
-int dessin_menu_menu_jeu(void);
 int set_fond_menu_menu(void);
 
 #endif
