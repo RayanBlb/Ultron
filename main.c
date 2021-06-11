@@ -8,6 +8,7 @@
 #include "survie.h"
 #include "menu.h"
 #include "high_score.h"
+#include "outils.h"
 
 int main(int argc, char const *argv[])
 {

@@ -1,6 +1,11 @@
 #ifndef MENU_H_
 #define MENU_H_
 
+typedef struct position_struct_menu{
+	int x;
+	int y;
+}position_menu;
+
 int dessin_menu_menu(void);
 int dessin_texte_menu(char *texte, SDL_Color couleur,int coef_position,int size_font_x,int size_font_y);
 int dessin_fond_menu();

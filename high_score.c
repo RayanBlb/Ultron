@@ -8,16 +8,13 @@
 #include "survie.h"
 #include "menu.h"
 #include "high_score.h"
+#include "outils.h"
 
 #define TABLEAU_SURVIE 1
 #define TABLEAU_VERSUS 2
 #define TABLEAU_IA 3
 #define QUITTER 4
 
-typedef struct position_struct{
-	int x;
-	int y;
-}position;
 
 int etat_high_score = TABLEAU_SURVIE;
 
@@ -66,7 +63,7 @@ int dessin_texte_high_score(char *texte, SDL_Color couleur,int coef_position,int
 	int x_centre = (width_windows_high_score - size_font_x)/2;
 	int y_centre = (height_windows_high_score - size_font_y)/2;
 
-	position posi_texte_high_score = {x_centre,y_centre+size_font_y*coef_position};
+	position_high_score posi_texte_high_score = {x_centre,y_centre+size_font_y*coef_position};
 	
 	SDL_Rect texte_high_score = {posi_texte_high_score.x, posi_texte_high_score.y, size_font_x, size_font_y};
 
@@ -138,6 +135,21 @@ int read_high_score(char *file_name){
 	return 0;
 }
 
+int supprimer_classement_high_score(){
+	if(etat_high_score == TABLEAU_SURVIE){
+		write_high_score("./score_survie.txt");
+	}else if(etat_high_score == TABLEAU_VERSUS){
+		write_high_score("./score_versus.txt");
+	}else if(etat_high_score == TABLEAU_IA){
+		write_high_score("./score_IA.txt");
+	}
+}
+
+int write_high_score(char *file_name){
+	FILE *fichier;
+	fichier = fopen(file_name, "w");
+	fclose(fichier);
+}
 
 int input_high_score(){
 	SDL_Event touche;
@@ -166,6 +178,9 @@ int input_high_score(){
 					}
 					set_high_score();
 
+					}else if(touche.key.keysym.sym == SDLK_s){
+						supprimer_classement_high_score();
+						set_high_score();
 					}else if(touche.key.keysym.sym == SDLK_ESCAPE){
 						switch_screen_high_score();
 					}

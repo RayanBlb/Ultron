@@ -8,6 +8,7 @@
 #include "survie.h"
 #include "menu.h"
 #include "high_score.h"
+#include "outils.h"
 
 #define START_SURVIE 1
 #define START_VERSUS 2
@@ -15,11 +16,6 @@
 #define OPTION 4
 #define HIGH_SCORE 5
 #define QUITTER 6
-
-typedef struct position_struct{
-	int x;
-	int y;
-}position;
 
 int etat_menu = START_SURVIE;
 
@@ -72,7 +68,7 @@ int dessin_texte_menu(char *texte, SDL_Color couleur,int coef_position,int size_
 	int x_centre = (width_windows_menu - size_font_x)/2;
 	int y_centre = (height_windows_menu - size_font_y)/2;
 
-	position posi_texte_menu = {x_centre,y_centre+size_font_y*coef_position};
+	position_menu posi_texte_menu = {x_centre,y_centre+size_font_y*coef_position};
 	
 	SDL_Rect texte_menu = {posi_texte_menu.x, posi_texte_menu.y, size_font_x, size_font_y};
 

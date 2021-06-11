@@ -1,6 +1,4 @@
-JEANPIERRE:8 
-SANIIIIC:144 
-JEANMESSA:26 
-TRIANGLE:15 
-$$$$$$$$$$:232 
-Joueur inconnu:20 
+Joueur inconnu:24 
+ZQDDZQZD:22 
+DQDSQDQ:20 
+SDQZDQD:1 
