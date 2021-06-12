@@ -38,37 +38,37 @@ char nom_high_score_survie[30];
 
 position_survie posi_main_survie = {0,0};
 
-SDL_Window* fenetrePrincipale_survie = NULL;
-SDL_Renderer* renduPrincipale_survie = NULL;
+SDL_Window *fenetrePrincipale_survie = NULL;
+SDL_Renderer *renduPrincipale_survie = NULL;
 
-SDL_Surface* main_surface_survie = NULL;
-SDL_Texture* main_texture_survie = NULL;
+SDL_Surface *main_surface_survie = NULL;
+SDL_Texture *main_texture_survie = NULL;
 
-SDL_Surface* background_score_surface_survie = NULL;
-SDL_Texture* background_score_texture_survie = NULL;
+SDL_Surface *background_score_surface_survie = NULL;
+SDL_Texture *background_score_texture_survie = NULL;
 
-SDL_Surface* background_high_score_surface_survie = NULL;
-SDL_Texture* background_high_score_texture_survie = NULL;
+SDL_Surface *background_high_score_surface_survie = NULL;
+SDL_Texture *background_high_score_texture_survie = NULL;
 
-TTF_Font* font_general_survie = NULL;
+TTF_Font *font_general_survie = NULL;
 
-Mix_Music* music_de_fond_survie = NULL;
-Mix_Chunk* explosion_survie = NULL;
+Mix_Music *music_de_fond_survie = NULL;
+Mix_Chunk *explosion_survie = NULL;
 
 //Boucle principale
 int survie(){
 	init_survie();
-	get_screensize_survie();
+	SDL_GetWindowSize(fenetrePrincipale_survie, &width_windows_survie, &height_windows_survie);
 	reinitialisation_survie();
-	allocation_tableau_survie();
+	allocation_tableau_outils(&tableau_deplacement,width_windows_survie,height_windows_survie);
 	initialisation_position_main_survie();
-	play_musique_survie();
+	play_musique_outils(&music_de_fond_survie);
 	set_start_survie();
 	while(etat_survie != GAME_OVER){
 		input_survie();
 		update_survie();
 		set_survie();
-		delay_game_survie();
+		delay_game_outils(etat_survie);
 		//SDL_Log("1 - debug : etat_survie = %d , Position x = %d , position y = %d \n 2 - debug : width_windows_survie : %d height_windows_survie : %d \n 3 - debug : terrain_x_survie : %d terrain_y_survie : %d",etat_survie, posi_main_survie.x, posi_main_survie.y,width_windows_survie,height_windows_survie,terrain_x_survie,terrain_y_survie);
 	}
 	set_game_over_survie();
@@ -114,7 +114,7 @@ int set_game_over_survie(){
 		dessin_background_high_score_survie();
 		input_high_score_survie();
 		dessin_high_score_survie();
-		delay_game_survie();
+		delay_game_outils(etat_survie);
 	}
 }
 /*------------------------------------------*/
@@ -125,7 +125,7 @@ int reinitialisation_survie(){
 	score_survie = 0;
 
 	if(tableau_deplacement){
-		free_tableau_survie();
+		free_tableau_outils(&tableau_deplacement,width_windows_survie);
 	}
 
 	strcpy(nom_high_score_survie,"");
@@ -241,7 +241,7 @@ int dessin_high_score_survie(){
 	SDL_Surface* score_surface = TTF_RenderText_Solid(font_general_survie,game_over_texte, couleur_font);
 	SDL_Texture* score_texture = SDL_CreateTextureFromSurface(renduPrincipale_survie, score_surface);
 
-	int size_game_over_x = 100*compte_nom_high_score_survie();
+	int size_game_over_x = 100*compte_nom_high_score_outils(nom_high_score_survie);
 	int size_game_over_y = 175;
 
 	int position_x = (terrain_x_survie - size_game_over_x)/2;
@@ -279,7 +279,7 @@ int input_survie(){
 				input_survie();
 				break;
 			case SDL_QUIT:
-				fermeture_sdl_survie();
+				fermeture_sdl_outils(fenetrePrincipale_survie,renduPrincipale_survie,explosion_survie,main_surface_survie,main_texture_survie);
 				break;
 
 			case SDL_KEYDOWN:
@@ -299,7 +299,7 @@ int input_survie(){
 					etat_survie = PAUSE;
 
 				}else if(touche.key.keysym.sym == SDLK_ESCAPE){
-					switch_screen_survie();
+					switch_screen_outils(fenetrePrincipale_survie,renduPrincipale_survie,music_de_fond_survie,main_surface_survie,main_texture_survie, etat_survie);
 				}
 				break;
 			}
@@ -315,22 +315,23 @@ int input_high_score_survie(){
 				input_menu();
 				break;
 			case SDL_QUIT:
-				fermeture_sdl_menu();
+				fermeture_sdl_outils(fenetrePrincipale_survie,renduPrincipale_survie,explosion_survie,main_surface_survie,main_texture_survie);
 				break;
 
 			case SDL_KEYDOWN:
-				if(touche.key.keysym.sym != SDLK_RGUI && touche.key.keysym.sym != SDLK_LGUI && touche.key.keysym.sym != SDLK_CAPSLOCK && touche.key.keysym.sym != SDLK_HOME && touche.key.keysym.sym != SDLK_PAGEDOWN && touche.key.keysym.sym != SDLK_PAGEUP && touche.key.keysym.sym != SDLK_END && touche.key.keysym.sym != SDLK_BACKSPACE && touche.key.keysym.sym != SDLK_DELETE && touche.key.keysym.sym != SDLK_INSERT && touche.key.keysym.sym != SDLK_TAB && touche.key.keysym.sym != SDLK_RIGHT && touche.key.keysym.sym != SDLK_RIGHT && touche.key.keysym.sym != SDLK_LEFT && touche.key.keysym.sym != SDLK_DOWN && touche.key.keysym.sym != SDLK_UP && touche.key.keysym.sym != SDLK_LCTRL && touche.key.keysym.sym != SDLK_RCTRL && touche.key.keysym.sym != SDLK_LALT && touche.key.keysym.sym != SDLK_RALT && touche.key.keysym.sym != SDLK_RSHIFT && touche.key.keysym.sym != SDLK_LSHIFT && touche.key.keysym.sym != SDLK_ESCAPE && touche.key.keysym.sym != SDLK_RETURN && touche.key.keysym.sym != SDLK_BACKSPACE && touche.key.keysym.sym != SDLK_LSHIFT && touche.key.keysym.sym != SDLK_RSHIFT && touche.key.keysym.sym != SDLK_SPACE  && compte_nom_high_score_survie() < 10){
+				if(touche.key.keysym.sym != SDLK_RGUI && touche.key.keysym.sym != SDLK_LGUI && touche.key.keysym.sym != SDLK_CAPSLOCK && touche.key.keysym.sym != SDLK_HOME && touche.key.keysym.sym != SDLK_PAGEDOWN && touche.key.keysym.sym != SDLK_PAGEUP && touche.key.keysym.sym != SDLK_END && touche.key.keysym.sym != SDLK_BACKSPACE && touche.key.keysym.sym != SDLK_DELETE && touche.key.keysym.sym != SDLK_INSERT && touche.key.keysym.sym != SDLK_TAB && touche.key.keysym.sym != SDLK_RIGHT && touche.key.keysym.sym != SDLK_RIGHT && touche.key.keysym.sym != SDLK_LEFT && touche.key.keysym.sym != SDLK_DOWN && touche.key.keysym.sym != SDLK_UP && touche.key.keysym.sym != SDLK_LCTRL && touche.key.keysym.sym != SDLK_RCTRL && touche.key.keysym.sym != SDLK_LALT && touche.key.keysym.sym != SDLK_RALT && touche.key.keysym.sym != SDLK_RSHIFT && touche.key.keysym.sym != SDLK_LSHIFT && touche.key.keysym.sym != SDLK_ESCAPE && touche.key.keysym.sym != SDLK_RETURN && touche.key.keysym.sym != SDLK_BACKSPACE && touche.key.keysym.sym != SDLK_LSHIFT && touche.key.keysym.sym != SDLK_RSHIFT && touche.key.keysym.sym != SDLK_SPACE  && compte_nom_high_score_outils(nom_high_score_survie) < 10){
 					strcat(nom_high_score_survie,SDL_GetKeyName(touche.key.keysym.sym));
-				}else if(touche.key.keysym.sym == SDLK_BACKSPACE && compte_nom_high_score_survie() > 0){
-					int compteur = compte_nom_high_score_survie();
+				}else if(touche.key.keysym.sym == SDLK_BACKSPACE && compte_nom_high_score_outils(nom_high_score_survie) > 0){
+					int compteur = compte_nom_high_score_outils(nom_high_score_survie);
 					compteur--;
 					strcpy(&nom_high_score_survie[compteur],"");
 				}else if(touche.key.keysym.sym == SDLK_RETURN){
 					read_file_high_score_outils("./score_survie.txt",nom_high_score_survie,score_survie,pFirst);
+					switch_screen_outils(fenetrePrincipale_survie,renduPrincipale_survie,music_de_fond_survie,main_surface_survie,main_texture_survie, etat_survie);
 				}else if(touche.key.keysym.sym == SDLK_LSHIFT){
 				}else if(touche.key.keysym.sym == SDLK_RSHIFT){
 				}else if(touche.key.keysym.sym == SDLK_ESCAPE){
-					switch_screen_survie();
+					switch_screen_outils(fenetrePrincipale_survie,renduPrincipale_survie,music_de_fond_survie,main_surface_survie,main_texture_survie, etat_survie);
 				}
 				break;
 			}
@@ -385,39 +386,17 @@ int update_survie(){
 	return 0;
 }
 
-int allocation_tableau_survie(){
-  
-    tableau_deplacement = (int **)malloc(width_windows_survie * sizeof(int *));
-    for (int i=0; i<width_windows_survie; i++)
-         tableau_deplacement[i] = (int *)malloc(height_windows_survie * sizeof(int));
-
-    for (int i = 0; i <  width_windows_survie; i++){
-      for (int j = 0; j < height_windows_survie; j++){
-         tableau_deplacement[i][j] = 0;
-      }
-    }
-  
-   return 0;
-}
-
-int free_tableau_survie(){
-	for (int i = 0; i < width_windows_survie ; ++i){
-			free(tableau_deplacement[i]);
-		}
-	free(tableau_deplacement);
-	return 0;
-}
-
 int tab_deplacement_survie(int x, int y){
 	if(tableau_deplacement[x][y] == 1){
 		etat_survie = GAME_OVER;
 		Mix_FreeMusic(music_de_fond_survie);
-		play_explosion_survie();
+		play_explosion_outils(&explosion_survie);
 	}else if(tableau_deplacement[x][y] == 0){
 		tableau_deplacement[x][y] = 1;
 	}
 	return 0;
 }
+
 /*------------------------------------------*/
 
 //Fonction initialisation
@@ -470,71 +449,3 @@ int init_survie(){
 	font_general_survie = TTF_OpenFont("./Font/font.ttf", 16);
 }
 /*------------------------------------------*/
-
-int delay_game_survie(){
-	int maxFPS_survie = 60;
-	if(etat_survie != START) maxFPS_survie = 15; //Enleve le petit décalage de lancement
-	if(etat_survie == GAME_OVER) maxFPS_survie = 60;
-	int lastTicks_survie = 0;
-	int delay_survie = 0;
-
-	lastTicks_survie = SDL_GetTicks();
-	delay_survie = 1000/maxFPS_survie-SDL_GetTicks()+lastTicks_survie;
-	if(delay_survie>0){
-		SDL_Delay(delay_survie);
-	}
-}
-
-int fermeture_sdl_survie(){
-	SDL_DestroyRenderer(renduPrincipale_survie);
-	SDL_DestroyWindow(fenetrePrincipale_survie);
-
-	Mix_FreeChunk(explosion_survie);
-
-	SDL_DestroyTexture(main_texture_survie);
-	SDL_FreeSurface(main_surface_survie);
-
-	SDL_Quit();
-
-	exit(EXIT_SUCCESS);
-	return 0;
-}
-
-int switch_screen_survie(){
-	SDL_DestroyRenderer(renduPrincipale_survie);
-	SDL_DestroyWindow(fenetrePrincipale_survie);
-
-	if(etat_survie != GAME_OVER){
-		Mix_FreeMusic(music_de_fond_survie);
-	}
-
-	SDL_DestroyTexture(main_texture_survie);
-	SDL_FreeSurface(main_surface_survie);
-
-	menu();
-
-	return 0;
-}
-
-int get_screensize_survie(){
-	SDL_GetWindowSize(fenetrePrincipale_survie, &width_windows_survie, &height_windows_survie);
-	return 0;
-}
-
-int play_musique_survie(){
-	music_de_fond_survie = Mix_LoadMUS("../../Documents/music.mp3");
-	Mix_PlayMusic(music_de_fond_survie, -1);
-}
-
-int play_explosion_survie(){
-	explosion_survie = Mix_LoadWAV("../../Documents/explosion.wav");
-	Mix_PlayChannel(-1, explosion_survie, 0);
-}
-
-int compte_nom_high_score_survie(){
-	int i = 0;
-	while(strcmp(&nom_high_score_survie[i],"") != 0){
-		i++;
-	}
-	return i;
-}
