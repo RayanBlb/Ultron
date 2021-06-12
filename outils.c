@@ -11,7 +11,6 @@
 #include "outils.h"
 
 //Fonction de tri de liste high score
-
 int read_file_high_score_outils(char *chemin,char *nom_high_score_survie,int score_survie,liste *pFirst){
 	FILE *fichier;
 	char ligne[128];
@@ -123,8 +122,9 @@ int free_liste_high_score_outils(liste **pFirst){
 	return 0;
 }
 
-/*--------------------------------------------------------------------*/
+/*------------------------------------------*/
 
+//Gestion des FPS
 int delay_game_outils(int etat_survie){
 	int maxFPS_survie = 60;
 	if(etat_survie != 0) maxFPS_survie = 15; //Enleve le petit décalage de lancement
@@ -138,7 +138,59 @@ int delay_game_outils(int etat_survie){
 		SDL_Delay(delay_survie);
 	}
 }
+/*------------------------------------------*/
 
+//Gestion de la musique
+int play_musique_outils(Mix_Music **music_de_fond_survie){
+	*music_de_fond_survie = Mix_LoadMUS("../../Documents/music.mp3");
+	Mix_PlayMusic(*music_de_fond_survie, -1);
+}
+
+int play_explosion_outils(Mix_Chunk **explosion_survie){
+	*explosion_survie = Mix_LoadWAV("../../Documents/explosion.wav");
+	Mix_PlayChannel(-1, *explosion_survie, 0);
+}
+/*------------------------------------------*/
+
+//Gestion du tableau allocation memoire
+int allocation_tableau_outils(int ***tableau_deplacement, int width_windows_survie, int height_windows_survie){
+  
+    (*tableau_deplacement) = (int **)malloc(width_windows_survie * sizeof(int *));
+
+    for (int i=0; i<width_windows_survie; i++){
+    	(*tableau_deplacement)[i] = (int *)malloc(height_windows_survie * sizeof(int));
+    }
+
+    for (int i = 0; i <  width_windows_survie; i++){
+      for (int j = 0; j < height_windows_survie; j++){
+         (*tableau_deplacement)[i][j] = 0;
+      }
+    }
+  
+   return 0;
+}
+
+int free_tableau_outils(int ***tableau_deplacement, int width_windows_survie){
+	for (int i = 0; i < width_windows_survie ; ++i){
+			free((*tableau_deplacement)[i]);
+		}
+	free((*tableau_deplacement));
+	return 0;
+}
+/*------------------------------------------*/
+
+//Fonction utilise
+int compte_nom_high_score_outils(char *nom_high_score_survie){
+	int i = 0;
+	while(strcmp(&nom_high_score_survie[i],"") != 0){
+		i++;
+	}
+	return i;
+}
+
+/*------------------------------------------*/
+
+//Fonction de transition
 int fermeture_sdl_outils(SDL_Window *fenetrePrincipale_survie, SDL_Renderer *renduPrincipale_survie, Mix_Chunk *explosion_survie, SDL_Surface *main_surface_survie, SDL_Texture *main_texture_survie){
 	SDL_DestroyRenderer(renduPrincipale_survie);
 	SDL_DestroyWindow(fenetrePrincipale_survie);
@@ -169,48 +221,4 @@ int switch_screen_outils(SDL_Window *fenetrePrincipale_survie, SDL_Renderer *ren
 
 	return 0;
 }
-
-int play_musique_outils(Mix_Music **music_de_fond_survie){
-	*music_de_fond_survie = Mix_LoadMUS("../../Documents/music.mp3");
-	Mix_PlayMusic(*music_de_fond_survie, -1);
-}
-
-int play_explosion_outils(Mix_Chunk **explosion_survie){
-	*explosion_survie = Mix_LoadWAV("../../Documents/explosion.wav");
-	Mix_PlayChannel(-1, *explosion_survie, 0);
-}
-
-int compte_nom_high_score_outils(char *nom_high_score_survie){
-	int i = 0;
-	while(strcmp(&nom_high_score_survie[i],"") != 0){
-		i++;
-	}
-	return i;
-}
-
-//Gestion du tableau allocation memoire
-
-int allocation_tableau_outils(int ***tableau_deplacement, int width_windows_survie, int height_windows_survie){
-  
-    (*tableau_deplacement) = (int **)malloc(width_windows_survie * sizeof(int *));
-
-    for (int i=0; i<width_windows_survie; i++){
-    	(*tableau_deplacement)[i] = (int *)malloc(height_windows_survie * sizeof(int));
-    }
-
-    for (int i = 0; i <  width_windows_survie; i++){
-      for (int j = 0; j < height_windows_survie; j++){
-         (*tableau_deplacement)[i][j] = 0;
-      }
-    }
-  
-   return 0;
-}
-
-int free_tableau_outils(int ***tableau_deplacement, int width_windows_survie){
-	for (int i = 0; i < width_windows_survie ; ++i){
-			free((*tableau_deplacement)[i]);
-		}
-	free((*tableau_deplacement));
-	return 0;
-}
+/*------------------------------------------*/
