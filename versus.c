@@ -126,13 +126,13 @@ int set_game_over_versus(){
 		dessin_fond_versus();
 		dessin_fond_versus();
 		dessin_background_score_versus();
-		dessin_score_versus();
-		dessin_game_over_versus();
 	}
 	while(1){
 		dessin_background_high_score_versus();
 		input_high_score_versus();
 		dessin_high_score_versus();
+		dessin_score_versus();
+		dessin_game_over_versus();
 		delay_game_outils(etat_versus,1);
 	}
 }

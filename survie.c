@@ -107,13 +107,13 @@ int set_game_over_survie(){
 		dessin_fond_survie();
 		dessin_fond_survie();
 		dessin_background_score_survie();
-		dessin_score_survie();
-		dessin_game_over_survie();
 	}
 	while(1){
 		dessin_background_high_score_survie();
 		input_high_score_survie();
 		dessin_high_score_survie();
+		dessin_score_survie();
+		dessin_game_over_survie();
 		delay_game_outils(etat_survie,0);
 	}
 }
