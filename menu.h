@@ -15,9 +15,9 @@ int delay_game_menu(void);
 int fermeture_sdl_menu(void);
 int get_screensize_menu(void);
 int init_menu(void);
-int menu(void);
+int menu(int mode_difficulte);
 int switch_screen_menu(char *mode);
-int reinitialisation_menu(void);
+int reinitialisation_menu(int mode_difficulte);
 int set_fond_menu_menu(void);
 
 #endif

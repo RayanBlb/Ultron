@@ -10,6 +10,7 @@
 #include "high_score.h"
 #include "outils.h"
 #include "versus.h"
+#include "difficulte.h"
 
 #define TABLEAU_SURVIE 1
 #define TABLEAU_VERSUS 2
@@ -259,6 +260,6 @@ int fermeture_sdl_high_score(){
 int switch_screen_high_score(){
 	SDL_DestroyRenderer(renduPrincipale_high_score);
 	SDL_DestroyWindow(fenetrePrincipale_high_score);
-	menu();
+	menu(0);
 	return 0;
 }

@@ -10,6 +10,7 @@
 #include "high_score.h"
 #include "outils.h"
 #include "versus.h"
+#include "difficulte.h"
 
 #define START 0
 #define UP 1
@@ -57,10 +58,10 @@ Mix_Music *music_de_fond_survie = NULL;
 Mix_Chunk *explosion_survie = NULL;
 
 //Boucle principale
-int survie(){
+int survie(int mode_difficulte){
 	init_survie();
 	SDL_GetWindowSize(fenetrePrincipale_survie, &width_windows_survie, &height_windows_survie);
-	reinitialisation_survie();
+	reinitialisation_survie(mode_difficulte);
 	allocation_tableau_outils(&tableau_deplacement_survie,width_windows_survie,height_windows_survie);
 	initialisation_position_main_survie();
 	play_musique_outils(&music_de_fond_survie);
@@ -120,9 +121,17 @@ int set_game_over_survie(){
 /*------------------------------------------*/
 
 //Fonction de réinitialisation des variable global
-int reinitialisation_survie(){
+int reinitialisation_survie(int mode_difficulte){
 	etat_survie = START;
 	score_survie = 0;
+
+	if(mode_difficulte == 1){
+		size_main_survie = 8;
+	}else if(mode_difficulte == 2){
+		size_main_survie = 16;
+	}else if(mode_difficulte == 3){
+		size_main_survie = 32;
+	}
 
 	if(tableau_deplacement_survie){
 		free_tableau_outils(&tableau_deplacement_survie,width_windows_survie);

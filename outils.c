@@ -10,6 +10,7 @@
 #include "high_score.h"
 #include "outils.h"
 #include "versus.h"
+#include "difficulte.h"
 
 //Fonction de tri de liste high score
 int read_file_high_score_outils(char *chemin,char *nom_high_score_survie,int score_survie,liste *pFirst){
@@ -237,7 +238,7 @@ int switch_screen_outils(SDL_Window *fenetrePrincipale_survie, SDL_Renderer *ren
 		SDL_FreeSurface(deuxieme_surface_versus);
 	}
 
-	menu();
+	menu(0);
 
 	return 0;
 }

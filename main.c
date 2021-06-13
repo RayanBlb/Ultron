@@ -10,9 +10,10 @@
 #include "high_score.h"
 #include "outils.h"
 #include "versus.h"
+#include "difficulte.h"
 
 int main(int argc, char const *argv[])
 {
-	menu();
+	menu(2);
 	return 0;
 }

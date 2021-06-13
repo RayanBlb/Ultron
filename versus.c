@@ -10,6 +10,7 @@
 #include "high_score.h"
 #include "outils.h"
 #include "versus.h"
+#include "difficulte.h"
 
 #define START 1
 #define PAUSE 2
@@ -74,10 +75,10 @@ Mix_Music *music_de_fond_versus = NULL;
 Mix_Chunk *explosion_versus = NULL;
 
 //Boucle principale
-int versus(){
+int versus(int mode_difficulte){
 	init_versus();
 	SDL_GetWindowSize(fenetrePrincipale_versus, &width_windows_versus, &height_windows_versus);
-	reinitialisation_versus();
+	reinitialisation_versus(mode_difficulte);
 	allocation_tableau_outils(&tableau_deplacement_versus,width_windows_versus,height_windows_versus);
 	initialisation_position_main_versus();
 	play_musique_outils(&music_de_fond_versus);
@@ -139,7 +140,15 @@ int set_game_over_versus(){
 /*------------------------------------------*/
 
 //Fonction de réinitialisation des variable global
-int reinitialisation_versus(){
+int reinitialisation_versus(int mode_difficulte){
+	if(mode_difficulte == 1){
+		size_main_versus = 8;
+	}else if(mode_difficulte == 2){
+		size_main_versus = 16;
+	}else if(mode_difficulte == 3){
+		size_main_versus = 32;
+	}
+
 	etat_versus = START;
 	etat_main_versus = START;
 	etat_deuxieme_versus = START;

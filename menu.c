@@ -10,6 +10,7 @@
 #include "high_score.h"
 #include "outils.h"
 #include "versus.h"
+#include "difficulte.h"
 
 #define START_SURVIE 1
 #define START_VERSUS 2
@@ -19,6 +20,7 @@
 #define QUITTER 6
 
 int etat_menu = START_SURVIE;
+int mode_difficulte_menu = 2;
 
 int width_windows_menu = 0;
 int height_windows_menu = 0;
@@ -30,8 +32,8 @@ SDL_Renderer* renduPrincipale_menu = NULL;
 
 TTF_Font* font_general_menu = NULL;
 
-int menu(){
-	reinitialisation_menu();
+int menu(int mode_difficulte){
+	reinitialisation_menu(mode_difficulte);
 	init_menu();
 	get_screensize_menu();
 	set_fond_menu_menu();
@@ -43,7 +45,14 @@ int menu(){
 	return 0;
 }
 
-int reinitialisation_menu(){
+int reinitialisation_menu(int mode_difficulte){
+	if(mode_difficulte == 1){
+		mode_difficulte_menu = 1;
+	}else if(mode_difficulte == 2){
+		mode_difficulte_menu = 2;
+	}else if(mode_difficulte == 3){
+		mode_difficulte_menu = 3;
+	}
 	etat_menu = START_SURVIE;
 	return 0;
 }
@@ -181,10 +190,9 @@ int input_menu(){
 					}else if(etat_menu == START_VERSUS){
 						switch_screen_menu("versus");
 					}else if(etat_menu == OPTION){
-
+						switch_screen_menu("difficulte");
 					}else if(etat_menu == HIGH_SCORE){
 						switch_screen_menu("high_score");
-						
 					}else if(etat_menu == QUITTER){
 						fermeture_sdl_menu();
 					}
@@ -263,11 +271,13 @@ int switch_screen_menu(char *mode){
 	SDL_DestroyRenderer(renduPrincipale_menu);
 	SDL_DestroyWindow(fenetrePrincipale_menu);
 	if(strcmp(mode,"survie") == 0){
-		survie();
+		survie(mode_difficulte_menu);
 	}else if(strcmp(mode,"high_score") == 0){
 		high_score();
 	}else if(strcmp(mode,"versus") == 0){
-		versus();
+		versus(mode_difficulte_menu);
+	}else if(strcmp(mode,"difficulte") == 0){
+		difficulte(mode_difficulte_menu);
 	}
 	return 0;
 }
