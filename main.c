@@ -9,6 +9,7 @@
 #include "menu.h"
 #include "high_score.h"
 #include "outils.h"
+#include "versus.h"
 
 int main(int argc, char const *argv[])
 {

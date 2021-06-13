@@ -9,6 +9,7 @@
 #include "menu.h"
 #include "high_score.h"
 #include "outils.h"
+#include "versus.h"
 
 //Fonction de tri de liste high score
 int read_file_high_score_outils(char *chemin,char *nom_high_score_survie,int score_survie,liste *pFirst){
@@ -125,12 +126,18 @@ int free_liste_high_score_outils(liste **pFirst){
 /*------------------------------------------*/
 
 //Gestion des FPS
-int delay_game_outils(int etat_survie){
-	int maxFPS_survie = 60;
-	if(etat_survie != 0) maxFPS_survie = 15; //Enleve le petit décalage de lancement
-	if(etat_survie == 6) maxFPS_survie = 60;
+int delay_game_outils(int etat_survie, int mode_de_jeu){
 	int lastTicks_survie = 0;
 	int delay_survie = 0;
+	int maxFPS_survie = 60;
+
+	if(mode_de_jeu == 0){
+		if(etat_survie != 0) maxFPS_survie = 15; //Enleve le petit décalage de lancement
+		if(etat_survie == 6) maxFPS_survie = 60;
+	}else if(mode_de_jeu == 1){
+		if(etat_survie != 1) maxFPS_survie = 15; //Enleve le petit décalage de lancement
+		if(etat_survie >= 12) maxFPS_survie = 60;
+	}
 
 	lastTicks_survie = SDL_GetTicks();
 	delay_survie = 1000/maxFPS_survie-SDL_GetTicks()+lastTicks_survie;
@@ -191,7 +198,7 @@ int compte_nom_high_score_outils(char *nom_high_score_survie){
 /*------------------------------------------*/
 
 //Fonction de transition
-int fermeture_sdl_outils(SDL_Window *fenetrePrincipale_survie, SDL_Renderer *renduPrincipale_survie, Mix_Chunk *explosion_survie, SDL_Surface *main_surface_survie, SDL_Texture *main_texture_survie){
+int fermeture_sdl_outils(SDL_Window *fenetrePrincipale_survie, SDL_Renderer *renduPrincipale_survie, Mix_Chunk *explosion_survie, SDL_Surface *main_surface_survie, SDL_Texture *main_texture_survie,SDL_Surface *deuxieme_surface_versus,SDL_Texture *deuxieme_texture_versus){
 	SDL_DestroyRenderer(renduPrincipale_survie);
 	SDL_DestroyWindow(fenetrePrincipale_survie);
 
@@ -200,22 +207,35 @@ int fermeture_sdl_outils(SDL_Window *fenetrePrincipale_survie, SDL_Renderer *ren
 	SDL_DestroyTexture(main_texture_survie);
 	SDL_FreeSurface(main_surface_survie);
 
+	if(deuxieme_surface_versus != NULL && deuxieme_texture_versus != NULL){
+		SDL_DestroyTexture(deuxieme_texture_versus);
+		SDL_FreeSurface(deuxieme_surface_versus);
+	}
+
 	SDL_Quit();
 
 	exit(EXIT_SUCCESS);
 	return 0;
 }
 
-int switch_screen_outils(SDL_Window *fenetrePrincipale_survie, SDL_Renderer *renduPrincipale_survie, Mix_Music *music_de_fond_survie, SDL_Surface *main_surface_survie, SDL_Texture *main_texture_survie, int etat_survie){
+int switch_screen_outils(SDL_Window *fenetrePrincipale_survie, SDL_Renderer *renduPrincipale_survie, Mix_Music *music_de_fond_survie, SDL_Surface *main_surface_survie, SDL_Texture *main_texture_survie, int etat_survie,SDL_Surface *deuxieme_surface_versus,SDL_Texture *deuxieme_texture_versus){
 	SDL_DestroyRenderer(renduPrincipale_survie);
 	SDL_DestroyWindow(fenetrePrincipale_survie);
 
-	if(etat_survie != 6){
+	if(etat_survie != 6 && deuxieme_surface_versus == NULL && deuxieme_texture_versus == NULL){
 		Mix_FreeMusic(music_de_fond_survie);
 	}
 
 	SDL_DestroyTexture(main_texture_survie);
 	SDL_FreeSurface(main_surface_survie);
+
+	if(deuxieme_surface_versus != NULL && deuxieme_texture_versus != NULL){
+		if(etat_survie < 12){
+			Mix_FreeMusic(music_de_fond_survie);
+		}
+		SDL_DestroyTexture(deuxieme_texture_versus);
+		SDL_FreeSurface(deuxieme_surface_versus);
+	}
 
 	menu();
 

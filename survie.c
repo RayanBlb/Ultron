@@ -9,6 +9,7 @@
 #include "menu.h"
 #include "high_score.h"
 #include "outils.h"
+#include "versus.h"
 
 #define START 0
 #define UP 1
@@ -18,7 +19,7 @@
 #define PAUSE 5
 #define GAME_OVER 6
 
-liste *pFirst = NULL;
+liste *pFirst_survie = NULL;
 
 int etat_survie = START;
 
@@ -30,9 +31,9 @@ int score_survie = 0;
 int terrain_x_survie = 0;
 int terrain_y_survie = 0;
 
-int size_main = 32;//8/16/32
+int size_main_survie = 32;//8/16/32
 
-int **tableau_deplacement;
+int **tableau_deplacement_survie;
 
 char nom_high_score_survie[30];
 
@@ -60,7 +61,7 @@ int survie(){
 	init_survie();
 	SDL_GetWindowSize(fenetrePrincipale_survie, &width_windows_survie, &height_windows_survie);
 	reinitialisation_survie();
-	allocation_tableau_outils(&tableau_deplacement,width_windows_survie,height_windows_survie);
+	allocation_tableau_outils(&tableau_deplacement_survie,width_windows_survie,height_windows_survie);
 	initialisation_position_main_survie();
 	play_musique_outils(&music_de_fond_survie);
 	set_start_survie();
@@ -68,7 +69,7 @@ int survie(){
 		input_survie();
 		update_survie();
 		set_survie();
-		delay_game_outils(etat_survie);
+		delay_game_outils(etat_survie,0);
 		//SDL_Log("1 - debug : etat_survie = %d , Position x = %d , position y = %d \n 2 - debug : width_windows_survie : %d height_windows_survie : %d \n 3 - debug : terrain_x_survie : %d terrain_y_survie : %d",etat_survie, posi_main_survie.x, posi_main_survie.y,width_windows_survie,height_windows_survie,terrain_x_survie,terrain_y_survie);
 	}
 	set_game_over_survie();
@@ -108,13 +109,12 @@ int set_game_over_survie(){
 		dessin_background_score_survie();
 		dessin_score_survie();
 		dessin_game_over_survie();
-		SDL_RenderPresent(renduPrincipale_survie);
 	}
 	while(1){
 		dessin_background_high_score_survie();
 		input_high_score_survie();
 		dessin_high_score_survie();
-		delay_game_outils(etat_survie);
+		delay_game_outils(etat_survie,0);
 	}
 }
 /*------------------------------------------*/
@@ -124,8 +124,8 @@ int reinitialisation_survie(){
 	etat_survie = START;
 	score_survie = 0;
 
-	if(tableau_deplacement){
-		free_tableau_outils(&tableau_deplacement,width_windows_survie);
+	if(tableau_deplacement_survie){
+		free_tableau_outils(&tableau_deplacement_survie,width_windows_survie);
 	}
 
 	strcpy(nom_high_score_survie,"");
@@ -134,8 +134,8 @@ int reinitialisation_survie(){
 }
 
 int initialisation_position_main_survie(){
-	int x = (rand() % (45))*size_main;
-	int y = (rand() % (25))*size_main;
+	int x = (rand() % (45))*size_main_survie;
+	int y = (rand() % (25))*size_main_survie;
 	posi_main_survie.x = x;
 	posi_main_survie.y = y;
 
@@ -145,7 +145,7 @@ int initialisation_position_main_survie(){
 
 //Fonction de dessin
 int dessin_main_survie(){
-	SDL_Rect dest = { posi_main_survie.x,posi_main_survie.y, size_main, size_main};
+	SDL_Rect dest = { posi_main_survie.x,posi_main_survie.y, size_main_survie, size_main_survie};
 	SDL_RenderCopy(renduPrincipale_survie,main_texture_survie,NULL,&dest);
 	return 0;
 }
@@ -191,6 +191,7 @@ int dessin_game_over_survie(){
 	SDL_Rect dest = {position_x,position_y,size_game_over_x,size_game_over_y};
 
 	SDL_RenderCopy(renduPrincipale_survie, score_texture, NULL, &dest);
+	SDL_RenderPresent(renduPrincipale_survie);
 
 	SDL_DestroyTexture(score_texture);
 	SDL_FreeSurface(score_surface);
@@ -211,20 +212,20 @@ int dessin_pause_survie(){
 }
 
 int dessin_fond_survie(){
-	int taille_score = 210/size_main;
+	int taille_score = 210/size_main_survie;
 
 	SDL_SetRenderDrawColor(renduPrincipale_survie,22, 22, 22, 255);
 	SDL_RenderClear(renduPrincipale_survie);
 	SDL_SetRenderDrawColor(renduPrincipale_survie,77, 77, 77, 255);
 
-	terrain_x_survie = width_windows_survie - taille_score*size_main;
+	terrain_x_survie = width_windows_survie - taille_score*size_main_survie;
 	terrain_y_survie = height_windows_survie;
 
-	for(int x = 0; x <= terrain_x_survie; x += size_main){
+	for(int x = 0; x <= terrain_x_survie; x += size_main_survie){
 		SDL_RenderDrawLine(renduPrincipale_survie, x, 0, x, height_windows_survie);
 	}
 
-	for(int y = 0; y < terrain_y_survie; y += size_main){
+	for(int y = 0; y < terrain_y_survie; y += size_main_survie){
 		SDL_RenderDrawLine(renduPrincipale_survie, 0, y, terrain_x_survie, y);
 	}
 
@@ -279,7 +280,7 @@ int input_survie(){
 				input_survie();
 				break;
 			case SDL_QUIT:
-				fermeture_sdl_outils(fenetrePrincipale_survie,renduPrincipale_survie,explosion_survie,main_surface_survie,main_texture_survie);
+				fermeture_sdl_outils(fenetrePrincipale_survie,renduPrincipale_survie,explosion_survie,main_surface_survie,main_texture_survie,NULL,NULL);
 				break;
 
 			case SDL_KEYDOWN:
@@ -299,7 +300,7 @@ int input_survie(){
 					etat_survie = PAUSE;
 
 				}else if(touche.key.keysym.sym == SDLK_ESCAPE){
-					switch_screen_outils(fenetrePrincipale_survie,renduPrincipale_survie,music_de_fond_survie,main_surface_survie,main_texture_survie, etat_survie);
+					switch_screen_outils(fenetrePrincipale_survie,renduPrincipale_survie,music_de_fond_survie,main_surface_survie,main_texture_survie, etat_survie,NULL,NULL);
 				}
 				break;
 			}
@@ -315,7 +316,7 @@ int input_high_score_survie(){
 				input_menu();
 				break;
 			case SDL_QUIT:
-				fermeture_sdl_outils(fenetrePrincipale_survie,renduPrincipale_survie,explosion_survie,main_surface_survie,main_texture_survie);
+				fermeture_sdl_outils(fenetrePrincipale_survie,renduPrincipale_survie,explosion_survie,main_surface_survie,main_texture_survie,NULL,NULL);
 				break;
 
 			case SDL_KEYDOWN:
@@ -326,12 +327,12 @@ int input_high_score_survie(){
 					compteur--;
 					strcpy(&nom_high_score_survie[compteur],"");
 				}else if(touche.key.keysym.sym == SDLK_RETURN){
-					read_file_high_score_outils("./score_survie.txt",nom_high_score_survie,score_survie,pFirst);
-					switch_screen_outils(fenetrePrincipale_survie,renduPrincipale_survie,music_de_fond_survie,main_surface_survie,main_texture_survie, etat_survie);
+					read_file_high_score_outils("./score_survie.txt",nom_high_score_survie,score_survie,pFirst_survie);
+					switch_screen_outils(fenetrePrincipale_survie,renduPrincipale_survie,music_de_fond_survie,main_surface_survie,main_texture_survie, etat_survie,NULL,NULL);
 				}else if(touche.key.keysym.sym == SDLK_LSHIFT){
 				}else if(touche.key.keysym.sym == SDLK_RSHIFT){
 				}else if(touche.key.keysym.sym == SDLK_ESCAPE){
-					switch_screen_outils(fenetrePrincipale_survie,renduPrincipale_survie,music_de_fond_survie,main_surface_survie,main_texture_survie, etat_survie);
+					switch_screen_outils(fenetrePrincipale_survie,renduPrincipale_survie,music_de_fond_survie,main_surface_survie,main_texture_survie, etat_survie,NULL,NULL);
 				}
 				break;
 			}
@@ -347,23 +348,23 @@ int update_survie(){
 			if(posi_main_survie.y<0){
 				posi_main_survie.y = 0;
 			}else if(posi_main_survie.y>0){
-				posi_main_survie.y-=size_main;
+				posi_main_survie.y-=size_main_survie;
 			}
 			tab_deplacement_survie(posi_main_survie.x,posi_main_survie.y);
 			break;
 		case DOWN:
-			if(posi_main_survie.y>terrain_y_survie-size_main){
-				posi_main_survie.y = terrain_y_survie-size_main;
-			}else if(posi_main_survie.y<terrain_y_survie-size_main){
-				posi_main_survie.y+=size_main;
+			if(posi_main_survie.y>terrain_y_survie-size_main_survie){
+				posi_main_survie.y = terrain_y_survie-size_main_survie;
+			}else if(posi_main_survie.y<terrain_y_survie-size_main_survie){
+				posi_main_survie.y+=size_main_survie;
 			}
 			tab_deplacement_survie(posi_main_survie.x,posi_main_survie.y);
 			break;
 		case RIGHT:
-			if(posi_main_survie.x>terrain_x_survie-size_main){
-				posi_main_survie.x = terrain_x_survie-size_main;
-			}else if(posi_main_survie.x<terrain_x_survie-size_main){
-				posi_main_survie.x+=size_main;
+			if(posi_main_survie.x>terrain_x_survie-size_main_survie){
+				posi_main_survie.x = terrain_x_survie-size_main_survie;
+			}else if(posi_main_survie.x<terrain_x_survie-size_main_survie){
+				posi_main_survie.x+=size_main_survie;
 			}
 			tab_deplacement_survie(posi_main_survie.x,posi_main_survie.y);
 			break;
@@ -371,7 +372,7 @@ int update_survie(){
 			if(posi_main_survie.x<0){
 				posi_main_survie.x = 0;
 			}else if(posi_main_survie.x>0){
-				posi_main_survie.x-=size_main;
+				posi_main_survie.x-=size_main_survie;
 			}
 			tab_deplacement_survie(posi_main_survie.x,posi_main_survie.y);
 			break;
@@ -387,12 +388,12 @@ int update_survie(){
 }
 
 int tab_deplacement_survie(int x, int y){
-	if(tableau_deplacement[x][y] == 1){
+	if(tableau_deplacement_survie[x][y] == 1){
 		etat_survie = GAME_OVER;
 		Mix_FreeMusic(music_de_fond_survie);
 		play_explosion_outils(&explosion_survie);
-	}else if(tableau_deplacement[x][y] == 0){
-		tableau_deplacement[x][y] = 1;
+	}else if(tableau_deplacement_survie[x][y] == 0){
+		tableau_deplacement_survie[x][y] = 1;
 	}
 	return 0;
 }

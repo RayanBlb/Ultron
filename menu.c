@@ -9,6 +9,7 @@
 #include "menu.h"
 #include "high_score.h"
 #include "outils.h"
+#include "versus.h"
 
 #define START_SURVIE 1
 #define START_VERSUS 2
@@ -177,6 +178,8 @@ int input_menu(){
 				}else if(touche.key.keysym.sym == SDLK_RETURN){
 					if (etat_menu == START_SURVIE){
 						switch_screen_menu("survie");
+					}else if(etat_menu == START_VERSUS){
+						switch_screen_menu("versus");
 					}else if(etat_menu == OPTION){
 
 					}else if(etat_menu == HIGH_SCORE){
@@ -263,6 +266,8 @@ int switch_screen_menu(char *mode){
 		survie();
 	}else if(strcmp(mode,"high_score") == 0){
 		high_score();
+	}else if(strcmp(mode,"versus") == 0){
+		versus();
 	}
 	return 0;
 }

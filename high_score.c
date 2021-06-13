@@ -9,6 +9,7 @@
 #include "menu.h"
 #include "high_score.h"
 #include "outils.h"
+#include "versus.h"
 
 #define TABLEAU_SURVIE 1
 #define TABLEAU_VERSUS 2
