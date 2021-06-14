@@ -17,7 +17,6 @@
 #define DIFFICILE 3
 
 int etat_difficulte = NORMAL;
-int mode_difficulte_difficulte = 2;
 
 int width_windows_difficulte = 0;
 int height_windows_difficulte = 0;
@@ -100,7 +99,6 @@ int dessin_fond_difficulte(){
 		SDL_RenderDrawLine(renduPrincipale_difficulte, 0, y, width_windows_difficulte, y);
 	}
 
-	SDL_RenderPresent(renduPrincipale_difficulte);
 	return 0;
 }
 

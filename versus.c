@@ -37,6 +37,9 @@ int etat_versus = START;
 int etat_main_versus = START;
 int etat_deuxieme_versus = START;
 
+int prev_etat_main_versus = START;
+int prev_etat_deuxieme_versus = START;
+
 int width_windows_versus = 0;
 int height_windows_versus = 0;
 
@@ -88,7 +91,7 @@ int versus(int mode_difficulte){
 		update_versus();
 		set_versus();
 		delay_game_outils(etat_versus,1);
-		SDL_Log("1 - debug : etat_versus = %d , etat_main_versus = %d , etat_deuxieme_versus = %d\n 2 - debug : terrain_x_versus : %d , terrain_y_versus : %d \n",etat_versus,etat_main_versus,etat_deuxieme_versus,terrain_x_versus,terrain_y_versus);
+		//SDL_Log("1 - debug : etat_versus = %d , etat_main_versus = %d , etat_deuxieme_versus = %d\n 2 - debug : terrain_x_versus : %d , terrain_y_versus : %d \n",etat_versus,etat_main_versus,etat_deuxieme_versus,terrain_x_versus,terrain_y_versus);
 	}
 	set_game_over_versus();
 	return 0;
@@ -125,7 +128,6 @@ int set_start_versus(){
 int set_game_over_versus(){
 	if(etat_versus >= GAME_OVER_1_win){
 		dessin_fond_versus();
-		dessin_fond_versus();
 		dessin_background_score_versus();
 	}
 	while(1){
@@ -134,6 +136,7 @@ int set_game_over_versus(){
 		dessin_high_score_versus();
 		dessin_score_versus();
 		dessin_game_over_versus();
+		SDL_RenderPresent(renduPrincipale_versus);
 		delay_game_outils(etat_versus,1);
 	}
 }
@@ -243,7 +246,6 @@ int dessin_game_over_versus(){
 	SDL_Rect dest = {position_x,position_y,size_game_over_x,size_game_over_y};
 
 	SDL_RenderCopy(renduPrincipale_versus, score_texture, NULL, &dest);
-	SDL_RenderPresent(renduPrincipale_versus);
 
 	SDL_DestroyTexture(score_texture);
 	SDL_FreeSurface(score_surface);
@@ -281,7 +283,6 @@ int dessin_fond_versus(){
 		SDL_RenderDrawLine(renduPrincipale_versus, 0, y, terrain_x_versus, y);
 	}
 
-	SDL_RenderPresent(renduPrincipale_versus);
 	return 0;
 }
 
@@ -303,7 +304,6 @@ int dessin_high_score_versus(){
 	SDL_Rect dest = {position_x,position_y,size_game_over_x,size_game_over_y};
 
 	SDL_RenderCopy(renduPrincipale_versus, score_texture, NULL, &dest);
-	SDL_RenderPresent(renduPrincipale_versus);
 
 	SDL_DestroyTexture(score_texture);
 	SDL_FreeSurface(score_surface);
@@ -325,6 +325,8 @@ int dessin_background_high_score_versus(){
 //Fonction relative au input du joueur
 int input_versus(){
 	SDL_Event touche;
+
+	SDL_Log("main : %d deuxieme : %d", prev_etat_main_versus,prev_etat_deuxieme_versus);
 
 	if(SDL_PollEvent(&touche)){
 		switch(touche.type){
@@ -361,6 +363,8 @@ int input_versus(){
 					etat_deuxieme_versus = LEFT_2;
 					
 				}else if(touche.key.keysym.sym == SDLK_SPACE && etat_versus < GAME_OVER_1_win){
+					prev_etat_main_versus = etat_main_versus;
+					prev_etat_deuxieme_versus = etat_deuxieme_versus;
 					etat_main_versus = PAUSE;
 					etat_deuxieme_versus = PAUSE;
 
@@ -374,6 +378,12 @@ int input_versus(){
 					if(etat_main_versus == START)etat_main_versus = RIGHT_1;
 				}
 
+				if(etat_main_versus == PAUSE && etat_deuxieme_versus != PAUSE){
+					etat_main_versus = prev_etat_main_versus;
+				}else if(etat_main_versus != PAUSE && etat_deuxieme_versus == PAUSE){
+					etat_deuxieme_versus = prev_etat_deuxieme_versus;
+				}
+				
 				break;
 			}
 		}
@@ -491,7 +501,7 @@ int update_versus(){
 			}
 		}
 
-	if(etat_versus != PAUSE && (etat_deuxieme_versus != START || etat_main_versus != START) && etat_versus < GAME_OVER_1_win){
+	if((etat_deuxieme_versus != PAUSE || etat_main_versus != PAUSE) && (etat_deuxieme_versus != START || etat_main_versus != START) && etat_versus < GAME_OVER_1_win){
 		score_versus++;
 	}
 

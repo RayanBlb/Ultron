@@ -51,7 +51,6 @@ int reinitialisation_high_score(){
 
 int set_high_score(){
 	dessin_fond_high_score();
-	dessin_fond_high_score();
 	dessin_high_score_high_score();
 	SDL_RenderPresent(renduPrincipale_high_score);
 }
@@ -91,7 +90,6 @@ int dessin_fond_high_score(){
 		SDL_RenderDrawLine(renduPrincipale_high_score, 0, y, width_windows_high_score, y);
 	}
 
-	SDL_RenderPresent(renduPrincipale_high_score);
 	return 0;
 }
 

@@ -104,7 +104,6 @@ int dessin_fond_menu(){
 		SDL_RenderDrawLine(renduPrincipale_menu, 0, y, width_windows_menu, y);
 	}
 
-	SDL_RenderPresent(renduPrincipale_menu);
 	return 0;
 }
 

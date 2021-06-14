@@ -106,7 +106,6 @@ int set_start_survie(){
 int set_game_over_survie(){
 	if(etat_survie == GAME_OVER){
 		dessin_fond_survie();
-		dessin_fond_survie();
 		dessin_background_score_survie();
 	}
 	while(1){
@@ -115,6 +114,7 @@ int set_game_over_survie(){
 		dessin_high_score_survie();
 		dessin_score_survie();
 		dessin_game_over_survie();
+		SDL_RenderPresent(renduPrincipale_survie);
 		delay_game_outils(etat_survie,0);
 	}
 }
@@ -200,7 +200,6 @@ int dessin_game_over_survie(){
 	SDL_Rect dest = {position_x,position_y,size_game_over_x,size_game_over_y};
 
 	SDL_RenderCopy(renduPrincipale_survie, score_texture, NULL, &dest);
-	SDL_RenderPresent(renduPrincipale_survie);
 
 	SDL_DestroyTexture(score_texture);
 	SDL_FreeSurface(score_surface);
@@ -238,7 +237,6 @@ int dessin_fond_survie(){
 		SDL_RenderDrawLine(renduPrincipale_survie, 0, y, terrain_x_survie, y);
 	}
 
-	SDL_RenderPresent(renduPrincipale_survie);
 	return 0;
 }
 
@@ -263,7 +261,6 @@ int dessin_high_score_survie(){
 
 	SDL_DestroyTexture(score_texture);
 	SDL_FreeSurface(score_surface);
-	SDL_RenderPresent(renduPrincipale_survie);
 }
 
 int dessin_background_high_score_survie(){
