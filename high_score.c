@@ -11,6 +11,7 @@
 #include "outils.h"
 #include "versus.h"
 #include "difficulte.h"
+#include "ia.h"
 
 #define TABLEAU_SURVIE 1
 #define TABLEAU_VERSUS 2
@@ -105,7 +106,7 @@ int dessin_high_score_high_score(){
 	}else if(etat_high_score == TABLEAU_IA){
 		dessin_texte_high_score("HIGH SCORE",couleur_font_high_score,-2,600,175);
 		dessin_texte_high_score("Mode : IA",couleur_font_high_score,-2,400,110);
-		read_high_score("./score_IA.txt");
+		read_high_score("./score_ia.txt");
 	}
 }
 
@@ -141,7 +142,7 @@ int supprimer_classement_high_score(){
 	}else if(etat_high_score == TABLEAU_VERSUS){
 		write_high_score("./score_versus.txt");
 	}else if(etat_high_score == TABLEAU_IA){
-		write_high_score("./score_IA.txt");
+		write_high_score("./score_ia.txt");
 	}
 }
 

@@ -11,6 +11,7 @@
 #include "outils.h"
 #include "versus.h"
 #include "difficulte.h"
+#include "ia.h"
 
 #define START 0
 #define UP 1

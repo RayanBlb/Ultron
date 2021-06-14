@@ -11,6 +11,7 @@
 #include "outils.h"
 #include "versus.h"
 #include "difficulte.h"
+#include "ia.h"
 
 #define START_SURVIE 1
 #define START_VERSUS 2
@@ -192,6 +193,8 @@ int input_menu(){
 						switch_screen_menu("difficulte");
 					}else if(etat_menu == HIGH_SCORE){
 						switch_screen_menu("high_score");
+					}else if(etat_menu == START_IA){
+						switch_screen_menu("ia");
 					}else if(etat_menu == QUITTER){
 						fermeture_sdl_menu();
 					}
@@ -277,6 +280,9 @@ int switch_screen_menu(char *mode){
 		versus(mode_difficulte_menu);
 	}else if(strcmp(mode,"difficulte") == 0){
 		difficulte(mode_difficulte_menu);
+	}else if(strcmp(mode,"ia") == 0){
+		ia(mode_difficulte_menu);
 	}
+
 	return 0;
 }

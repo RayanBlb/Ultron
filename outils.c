@@ -11,6 +11,7 @@
 #include "outils.h"
 #include "versus.h"
 #include "difficulte.h"
+#include "ia.h"
 
 //Fonction de tri de liste high score
 int read_file_high_score_outils(char *chemin,char *nom_high_score_survie,int score_survie,liste *pFirst){
