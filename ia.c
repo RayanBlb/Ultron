@@ -86,7 +86,7 @@ Mix_Music *music_de_fond_ia = NULL;
 Mix_Chunk *explosion_ia = NULL;
 
 //Boucle principale
-int ia(int mode_difficulte,int mode_ia){
+void ia(int mode_difficulte,int mode_ia){
 	init_ia();
 	SDL_GetWindowSize(fenetrePrincipale_ia, &width_windows_ia, &height_windows_ia);
 	reinitialisation_ia(mode_difficulte);
@@ -103,12 +103,11 @@ int ia(int mode_difficulte,int mode_ia){
 		//SDL_Log("1 - debug : etat_ia = %d , etat_main_ia = %d , etat_deuxieme_ia = %d\n 2 - debug : terrain_x_ia : %d , terrain_y_ia : %d \n",etat_ia,etat_main_ia,etat_deuxieme_ia,terrain_x_ia,terrain_y_ia);
 	}
 	set_game_over_ia();
-	return 0;
 }
 /*------------------------------------------*/
 
 //Fonction d'affichage en fonction de l'état des joueurs
-int set_ia(){
+void set_ia(){
 	if(etat_ia && etat_ia < GAME_OVER_1_win && etat_ia != PAUSE){
 		dessin_main_ia();
 		dessin_deuxieme_ia();
@@ -123,7 +122,7 @@ int set_ia(){
 	}
 }
 
-int set_start_ia(){
+void set_start_ia(){
 	if(etat_ia == START){
 		dessin_fond_ia();
 		dessin_background_score_ia();
@@ -134,7 +133,7 @@ int set_start_ia(){
 	}
 }
 
-int set_game_over_ia(){
+void set_game_over_ia(){
 	if(etat_ia >= GAME_OVER_1_win){
 		dessin_fond_ia();
 		dessin_background_score_ia();
@@ -152,7 +151,7 @@ int set_game_over_ia(){
 /*------------------------------------------*/
 
 //Fonction de réinitialisation ou initialisation des variable global
-int reinitialisation_ia(int mode_difficulte){
+void reinitialisation_ia(int mode_difficulte){
 	if(mode_difficulte == 1){
 		size_main_ia = 8;
 	}else if(mode_difficulte == 2){
@@ -179,11 +178,9 @@ int reinitialisation_ia(int mode_difficulte){
 
 	terrain_x_ia = width_windows_ia - taille_score*size_main_ia;
 	terrain_y_ia = height_windows_ia;
-
-	return 0;
 }
 
-int initialisation_position_main_ia(int mode_ia){
+void initialisation_position_main_ia(int mode_ia){
 	srand(time(0));
 	
 	if(mode_ia == 3){
@@ -211,25 +208,22 @@ int initialisation_position_main_ia(int mode_ia){
 /*------------------------------------------*/
 
 //Fonction qui vont permettre de dessiner les différents éléments à afficher
-int dessin_main_ia(){
+void dessin_main_ia(){
 	SDL_Rect dest = { posi_main_ia.x,posi_main_ia.y, size_main_ia, size_main_ia};
 	SDL_RenderCopy(renduPrincipale_ia,main_texture_ia,NULL,&dest);
-	return 0;
 }
 
-int dessin_deuxieme_ia(){
+void dessin_deuxieme_ia(){
 	SDL_Rect dest = { posi_deuxieme_ia.x,posi_deuxieme_ia.y, size_main_ia, size_main_ia};
 	SDL_RenderCopy(renduPrincipale_ia,deuxieme_texture_ia,NULL,&dest);
-	return 0;
 }
 
-int dessin_background_score_ia(){
+void dessin_background_score_ia(){
 	SDL_Rect dest = { terrain_x_ia+1, 0, width_windows_ia - terrain_x_ia , height_windows_ia};
 	SDL_RenderCopy(renduPrincipale_ia,background_score_texture_ia,NULL,&dest);
-	return 0;
 }
 
-int dessin_score_ia(){
+void dessin_score_ia(){
 	char score_texte[20];
 	SDL_Color couleur_font = {255, 255, 255};
 
@@ -246,7 +240,7 @@ int dessin_score_ia(){
 	SDL_FreeSurface(score_surface);
 }
 
-int dessin_game_over_ia(){
+void dessin_game_over_ia(){
 	char game_over_texte[43];
 	SDL_Color couleur_font = {255, 255, 255};
 
@@ -277,7 +271,7 @@ int dessin_game_over_ia(){
 	SDL_FreeSurface(score_surface);
 }
 
-int dessin_pause_ia(){
+void dessin_pause_ia(){
 	SDL_Color couleur_font = {255, 255, 255};
 
 	SDL_Surface* score_surface = TTF_RenderText_Solid(font_general_ia,"PAUSE", couleur_font);
@@ -291,7 +285,7 @@ int dessin_pause_ia(){
 	SDL_FreeSurface(score_surface);
 }
 
-int dessin_fond_ia(){
+void dessin_fond_ia(){
 
 	SDL_SetRenderDrawColor(renduPrincipale_ia,22, 22, 22, 255);
 	SDL_RenderClear(renduPrincipale_ia);
@@ -304,11 +298,9 @@ int dessin_fond_ia(){
 	for(int y = 0; y < terrain_y_ia; y += size_main_ia){
 		SDL_RenderDrawLine(renduPrincipale_ia, 0, y, terrain_x_ia, y);
 	}
-
-	return 0;
 }
 
-int dessin_high_score_ia(){
+void dessin_high_score_ia(){
 	char game_over_texte[43];
 	SDL_Color couleur_font = {255, 255, 255};
 
@@ -331,7 +323,7 @@ int dessin_high_score_ia(){
 	SDL_FreeSurface(score_surface);
 }
 
-int dessin_background_high_score_ia(){
+void dessin_background_high_score_ia(){
 	int size_game_over_x = 1100;
 	int size_game_over_y = 175;
 
@@ -340,12 +332,12 @@ int dessin_background_high_score_ia(){
 
 	SDL_Rect dest = {position_x, position_y, size_game_over_x, size_game_over_y};
 	SDL_RenderCopy(renduPrincipale_ia,background_high_score_texture_ia,NULL,&dest);
-	return 0;
+
 }
 /*------------------------------------------*/
 
 //Fonction relative au input du joueur
-int input_ia(){
+void input_ia(){
 	SDL_Event touche;
 
 	if(SDL_PollEvent(&touche)){
@@ -395,7 +387,7 @@ int input_ia(){
 		}
 	}
 
-int input_high_score_ia(){
+void input_high_score_ia(){
 	SDL_Event touche;
 
 	if(SDL_PollEvent(&touche)){
@@ -429,7 +421,7 @@ int input_high_score_ia(){
 /*------------------------------------------*/
 
 //Fonction gestion enregistrement de déplacement
-int update_ia(){
+void update_ia(){
 
 	switch(etat_main_ia){
 		case UP_1:
@@ -510,8 +502,6 @@ int update_ia(){
 	if((etat_deuxieme_ia != PAUSE || etat_main_ia != PAUSE) && (etat_deuxieme_ia != START || etat_main_ia != START) && etat_ia < GAME_OVER_1_win){
 		score_ia++;
 	}
-
-	return 0;
 }
 
 int tab_deplacement_ia(int x, int y,int joueur){
@@ -609,30 +599,28 @@ int chance_ia(int choix1,int choix2){
 	}
 }
 
-int choix_depart_ia(){
+void choix_depart_ia(){
 	srand(time(0));
 
 	int coordonne_x = terrain_x_ia-posi_deuxieme_ia.x;
 	int coordonne_y = terrain_y_ia-posi_deuxieme_ia.y;
-
 	if((rand() % (2 - 1 + 1)) + 1 == 1){
 		if(coordonne_x > posi_deuxieme_ia.x){
-		etat_deuxieme_ia = RIGHT_2;
-	}else if(coordonne_x < posi_deuxieme_ia.x){
-		etat_deuxieme_ia = LEFT_2;
-	}
+			etat_deuxieme_ia = RIGHT_2;
+		}else if(coordonne_x < posi_deuxieme_ia.x){
+			etat_deuxieme_ia = LEFT_2;
+		}
 	}else{
 		if(coordonne_y > posi_deuxieme_ia.y){
-		etat_deuxieme_ia = DOWN_2;
-	}else if(coordonne_y < posi_deuxieme_ia.y){
-		etat_deuxieme_ia = UP_2;
-	}
+			etat_deuxieme_ia = DOWN_2;
+		}else if(coordonne_y < posi_deuxieme_ia.y){
+			etat_deuxieme_ia = UP_2;
+		}
 	}
 }
-int brain_miroir_ia(){
 
+void brain_miroir_ia(){
 	int decalage = 3;
-
 	if(etat_main_ia == UP_1 && compteur_miroire_ia == 0){
 		etat_deuxieme_ia = UP_2;
 		compteur_miroire_ia = decalage;
@@ -650,7 +638,7 @@ int brain_miroir_ia(){
 	}
 }
 
-int brain_classique_ia(){
+void brain_classique_ia(){
 	int UP = 0;
 	int DOWN = 0;
 	int LEFT = 0;
@@ -665,13 +653,13 @@ int brain_classique_ia(){
 		UP = 1;
 	}else{
 		if(etat_deuxieme_ia == UP_2){
-		for (int i = 1; i < 2; ++i){
-			if(tableau_deplacement_ia[posi_deuxieme_ia.x][posi_deuxieme_ia.y-size_main_ia*i] != 0){
-				UP = 1;
+			for (int i = 1; i < 2; ++i){
+				if(tableau_deplacement_ia[posi_deuxieme_ia.x][posi_deuxieme_ia.y-size_main_ia*i] != 0){
+					UP = 1;
+				}
 			}
 		}
 	}
-}
 
 	if(posi_deuxieme_ia.y > terrain_y_ia-vision){
 		DOWN = 1;
@@ -690,7 +678,7 @@ int brain_classique_ia(){
 	}else{
 		if(etat_deuxieme_ia == RIGHT_2){
 			for (int i = 1; i < 2; ++i){
-				if(tableau_deplacement_ia[posi_deuxieme_ia.x+size_main_ia*i][posi_deuxieme_ia.y]  != 0){
+				if(tableau_deplacement_ia[posi_deuxieme_ia.x+size_main_ia*i][posi_deuxieme_ia.y] != 0){
 					RIGHT = 1;
 				}
 			}
@@ -701,13 +689,14 @@ int brain_classique_ia(){
 		LEFT = 1;
 	}else{
 		if(etat_deuxieme_ia == LEFT_2){
-		for (int i = 1; i < 2; ++i){
-			if(tableau_deplacement_ia[posi_deuxieme_ia.x-size_main_ia*i][posi_deuxieme_ia.y]  != 0){
-				LEFT = 1;
+			for (int i = 1; i < 2; ++i){
+				if(tableau_deplacement_ia[posi_deuxieme_ia.x-size_main_ia*i][posi_deuxieme_ia.y] != 0){
+					LEFT = 1;
+				}
 			}
 		}
 	}
-}
+
 	if(etat_ia == IN_GAME && etat_main_ia != PAUSE){
 		if(etat_deuxieme_ia == UP_2){
 			if(UP == 1 && coordonne_x < posi_deuxieme_ia.x){
@@ -758,7 +747,7 @@ int brain_classique_ia(){
 	}
 }
 
-int brain_ia(){
+void brain_ia(){
 
 	srand(time(0));
 
@@ -773,13 +762,13 @@ int brain_ia(){
 		UP = 1;
 	}else{
 		if(etat_deuxieme_ia == UP_2){
-		for (int i = 1; i < 2; ++i){
-			if(tableau_deplacement_ia[posi_deuxieme_ia.x][posi_deuxieme_ia.y-size_main_ia*i] != 0){
-				UP = 1;
+			for (int i = 1; i < 2; ++i){
+				if(tableau_deplacement_ia[posi_deuxieme_ia.x][posi_deuxieme_ia.y-size_main_ia*i] != 0){
+					UP = 1;
+				}
 			}
 		}
 	}
-}
 
 	if(posi_deuxieme_ia.y > terrain_y_ia-vision){
 		DOWN = 1;
@@ -798,7 +787,7 @@ int brain_ia(){
 	}else{
 		if(etat_deuxieme_ia == RIGHT_2){
 			for (int i = 1; i < 2; ++i){
-				if(tableau_deplacement_ia[posi_deuxieme_ia.x+size_main_ia*i][posi_deuxieme_ia.y]  != 0){
+				if(tableau_deplacement_ia[posi_deuxieme_ia.x+size_main_ia*i][posi_deuxieme_ia.y] != 0){
 					RIGHT = 1;
 				}
 			}
@@ -809,13 +798,13 @@ int brain_ia(){
 		LEFT = 1;
 	}else{
 		if(etat_deuxieme_ia == LEFT_2){
-		for (int i = 1; i < 2; ++i){
-			if(tableau_deplacement_ia[posi_deuxieme_ia.x-size_main_ia*i][posi_deuxieme_ia.y]  != 0){
-				LEFT = 1;
+			for (int i = 1; i < 2; ++i){
+				if(tableau_deplacement_ia[posi_deuxieme_ia.x-size_main_ia*i][posi_deuxieme_ia.y] != 0){
+					LEFT = 1;
+				}
 			}
 		}
 	}
-}
 	
 	if(etat_ia == IN_GAME && etat_main_ia != PAUSE){
 		if(UP == 1 && timer_deplacement_ia == 0 && changement_direction_ia == 0){

@@ -6,21 +6,21 @@ typedef struct position_struct_high_score{
 	int y;
 }position_high_score;
 
-int dessin_menu_high_score(void);
-int dessin_texte_high_score(char *texte, SDL_Color couleur,int coef_position,int size_font_x,int size_font_y);
-int dessin_fond_high_score();
-int dessin_high_score_high_score(void);
-int input_high_score(void);
-int delay_game_high_score(void);
-int fermeture_sdl_high_score(void);
-int get_screensize_high_score(void);
+void dessin_menu_high_score(void);
+void dessin_texte_high_score(char *texte, SDL_Color couleur,int coef_position,int size_font_x,int size_font_y);
+void dessin_fond_high_score(void);
+void dessin_high_score_high_score(void);
+void input_high_score(void);
+void delay_game_high_score(void);
+void fermeture_sdl_high_score(void);
+void get_screensize_high_score(void);
+void high_score(void);
+void switch_screen_high_score(void);
+void reinitialisation_high_score(void);
+void set_fond_high_score(void);
+void read_high_score(char *file_name);
+void set_high_score(void);
+void write_high_score(char *chemin);
 int init_high_score(void);
-int high_score(void);
-int switch_screen_high_score(void);
-int reinitialisation_high_score(void);
-int set_fond_high_score(void);
-int read_high_score(char *file_name);
-int set_high_score();
-int write_high_score(char *chemin);
 
 #endif

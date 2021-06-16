@@ -31,7 +31,7 @@ SDL_Renderer* renduPrincipale_mode_ia = NULL;
 TTF_Font* font_general_mode_ia = NULL;
 
 //Boucle principale
-int mode_ia(int mode_difficulte){
+void mode_ia(int mode_difficulte){
 	reinitialisation_mode_ia(mode_difficulte);
 	init_mode_ia();
 	get_screensize_mode_ia();
@@ -41,25 +41,22 @@ int mode_ia(int mode_difficulte){
 		delay_game_mode_ia();
 		//SDL_Log("etat : %d ",etat_mode_ia);
 	}
-	return 0;
 }
 /*------------------------------------------*/
 
 //Fonction de réinitialisation des variable global
-int reinitialisation_mode_ia(int mode_difficulte){
+void reinitialisation_mode_ia(int mode_difficulte){
 	etat_mode_ia = CLASSIQUE;
-
-	return 0;
 }
 /*------------------------------------------*/
 
 //Fonction d'affichage du menu du choix de l'ia
-int set_mode_ia(){
+void set_mode_ia(){
 	dessin_menu_mode_ia();
 	SDL_RenderPresent(renduPrincipale_mode_ia);
 }
 
-int set_fond_menu_mode_ia(){
+void set_fond_menu_mode_ia(){
 	dessin_fond_mode_ia();
 	dessin_texte_mode_ia("ULTRON",couleur_font_mode_ia,-2,600,175);
 	dessin_menu_mode_ia();
@@ -68,7 +65,7 @@ int set_fond_menu_mode_ia(){
 /*------------------------------------------*/
 
 //Fonction qui vont permettre de dessiner les différents éléments à afficher
-int dessin_texte_mode_ia(char *texte, SDL_Color couleur,int coef_position,int size_font_x,int size_font_y){
+void dessin_texte_mode_ia(char *texte, SDL_Color couleur,int coef_position,int size_font_x,int size_font_y){
 
 	SDL_Surface* texte_mode_ia_surface = TTF_RenderText_Solid(font_general_mode_ia, texte , couleur);
 	SDL_Texture* texte_mode_ia_texture = SDL_CreateTextureFromSurface(renduPrincipale_mode_ia, texte_mode_ia_surface);
@@ -86,7 +83,7 @@ int dessin_texte_mode_ia(char *texte, SDL_Color couleur,int coef_position,int si
 	SDL_FreeSurface(texte_mode_ia_surface);
 }
 
-int dessin_fond_mode_ia(){
+void dessin_fond_mode_ia(){
 	int size_mode_ia = 32;
 
 	SDL_SetRenderDrawColor(renduPrincipale_mode_ia,22, 22, 22, 255);
@@ -101,11 +98,9 @@ int dessin_fond_mode_ia(){
 	for(int y = 0; y < height_windows_mode_ia; y += size_mode_ia){
 		SDL_RenderDrawLine(renduPrincipale_mode_ia, 0, y, width_windows_mode_ia, y);
 	}
-
-	return 0;
 }
 
-int dessin_menu_mode_ia(){
+void dessin_menu_mode_ia(){
 	SDL_Color couleur_font_selection = {255, 0, 0};
 
 	if(etat_mode_ia == CLASSIQUE){
@@ -125,7 +120,7 @@ int dessin_menu_mode_ia(){
 /*------------------------------------------*/
 
 //Fonction relative au input du joueur
-int input_mode_ia(int mode_difficulte){
+void input_mode_ia(int mode_difficulte){
 	SDL_Event touche;
 
 	if(SDL_PollEvent(&touche)){
@@ -165,7 +160,6 @@ int input_mode_ia(int mode_difficulte){
 				break;
 			}
 		}
-		return 0;
 	}
 /*------------------------------------------*/
 
@@ -212,7 +206,7 @@ int init_mode_ia(){
 /*------------------------------------------*/
 
 //Fonction qui vont permettre de gérer le delay, la fermetture et changement de fenetre ou encore de récuperer la taille de la fenetre afficher
-int delay_game_mode_ia(){
+void delay_game_mode_ia(){
 	int lastTicks = 0;
 	int maxFPS = 60;
 	int delay = 0;
@@ -224,29 +218,26 @@ int delay_game_mode_ia(){
 	}
 }
 
-int get_screensize_mode_ia(){
+void get_screensize_mode_ia(){
 	SDL_GetWindowSize(fenetrePrincipale_mode_ia, &width_windows_mode_ia, &height_windows_mode_ia);
-	return 0;
 }
 
-int fermeture_sdl_mode_ia(){
+void fermeture_sdl_mode_ia(){
 	SDL_DestroyRenderer(renduPrincipale_mode_ia);
 	SDL_DestroyWindow(fenetrePrincipale_mode_ia);
 	SDL_Quit();
 	exit(EXIT_SUCCESS);
-	return 0;
 }
 
-int switch_screen_type_ia(int mode_difficulte,int type_ia){
+void switch_screen_type_ia(int mode_difficulte,int type_ia){
 	SDL_DestroyRenderer(renduPrincipale_mode_ia);
 	SDL_DestroyWindow(fenetrePrincipale_mode_ia);
 	ia(mode_difficulte,type_ia);
 }
 
-int switch_screen_mode_ia(int mode_difficulte){
+void switch_screen_mode_ia(int mode_difficulte){
 	SDL_DestroyRenderer(renduPrincipale_mode_ia);
 	SDL_DestroyWindow(fenetrePrincipale_mode_ia);
 	menu(mode_difficulte);
-	return 0;
 }
 /*------------------------------------------*/

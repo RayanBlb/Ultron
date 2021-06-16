@@ -31,7 +31,7 @@ SDL_Renderer* renduPrincipale_difficulte = NULL;
 TTF_Font* font_general_difficulte = NULL;
 
 //Boucle principale
-int difficulte(int mode_difficulte){
+void difficulte(int mode_difficulte){
 	reinitialisation_difficulte(mode_difficulte);
 	init_difficulte();
 	get_screensize_difficulte();
@@ -41,12 +41,11 @@ int difficulte(int mode_difficulte){
 		delay_game_difficulte();
 		//SDL_Log("etat : %d ",etat_difficulte);
 	}
-	return 0;
 }
 /*------------------------------------------*/
 
 //Fonction de réinitialisation des variable global
-int reinitialisation_difficulte(int mode_difficulte){
+void reinitialisation_difficulte(int mode_difficulte){
 	if(mode_difficulte == 1){
 		etat_difficulte = FACILE;
 	}else if(mode_difficulte == 2){
@@ -54,17 +53,16 @@ int reinitialisation_difficulte(int mode_difficulte){
 	}else if(mode_difficulte == 3){
 		etat_difficulte = DIFFICILE;
 	}
-	return 0;
 }
 /*------------------------------------------*/
 
 //Fonction d'affichage du menu
-int set_difficulte(){
+void set_difficulte(){
 	dessin_menu_difficulte();
 	SDL_RenderPresent(renduPrincipale_difficulte);
 }
 
-int set_fond_menu_difficulte(){
+void set_fond_menu_difficulte(){
 	dessin_fond_difficulte();
 	dessin_texte_difficulte("ULTRON",couleur_font_difficulte,-2,600,175);
 	dessin_menu_difficulte();
@@ -73,7 +71,7 @@ int set_fond_menu_difficulte(){
 /*------------------------------------------*/
 
 //Fonction qui vont permettre de dessiner les différents éléments à afficher
-int dessin_texte_difficulte(char *texte, SDL_Color couleur,int coef_position,int size_font_x,int size_font_y){
+void dessin_texte_difficulte(char *texte, SDL_Color couleur,int coef_position,int size_font_x,int size_font_y){
 
 	SDL_Surface* texte_difficulte_surface = TTF_RenderText_Solid(font_general_difficulte, texte , couleur);
 	SDL_Texture* texte_difficulte_texture = SDL_CreateTextureFromSurface(renduPrincipale_difficulte, texte_difficulte_surface);
@@ -91,7 +89,7 @@ int dessin_texte_difficulte(char *texte, SDL_Color couleur,int coef_position,int
 	SDL_FreeSurface(texte_difficulte_surface);
 }
 
-int dessin_fond_difficulte(){
+void dessin_fond_difficulte(){
 	int size_difficulte = 32;
 
 	SDL_SetRenderDrawColor(renduPrincipale_difficulte,22, 22, 22, 255);
@@ -106,11 +104,9 @@ int dessin_fond_difficulte(){
 	for(int y = 0; y < height_windows_difficulte; y += size_difficulte){
 		SDL_RenderDrawLine(renduPrincipale_difficulte, 0, y, width_windows_difficulte, y);
 	}
-
-	return 0;
 }
 
-int dessin_menu_difficulte(){
+void dessin_menu_difficulte(){
 	SDL_Color couleur_font_selection = {255, 0, 0};
 
 	if(etat_difficulte == FACILE){
@@ -130,7 +126,7 @@ int dessin_menu_difficulte(){
 /*------------------------------------------*/
 
 //Fonction relative au input du joueur
-int input_difficulte(){
+void input_difficulte(){
 	SDL_Event touche;
 
 	if(SDL_PollEvent(&touche)){
@@ -216,7 +212,7 @@ int init_difficulte(){
 /*------------------------------------------*/
 
 //Fonction qui vont permettre de gérer le delay, la fermetture et changement de fenetre ou encore de récuperer la taille de la fenetre afficher
-int delay_game_difficulte(){
+void delay_game_difficulte(){
 	int lastTicks = 0;
 	int maxFPS = 60;
 	int delay = 0;
@@ -228,23 +224,20 @@ int delay_game_difficulte(){
 	}
 }
 
-int get_screensize_difficulte(){
+void get_screensize_difficulte(){
 	SDL_GetWindowSize(fenetrePrincipale_difficulte, &width_windows_difficulte, &height_windows_difficulte);
-	return 0;
 }
 
-int fermeture_sdl_difficulte(){
+void fermeture_sdl_difficulte(){
 	SDL_DestroyRenderer(renduPrincipale_difficulte);
 	SDL_DestroyWindow(fenetrePrincipale_difficulte);
 	SDL_Quit();
 	exit(EXIT_SUCCESS);
-	return 0;
 }
 
-int switch_screen_difficulte(int mode_difficulte){
+void switch_screen_difficulte(int mode_difficulte){
 	SDL_DestroyRenderer(renduPrincipale_difficulte);
 	SDL_DestroyWindow(fenetrePrincipale_difficulte);
 	menu(mode_difficulte);
-	return 0;
 }
 /*------------------------------------------*/

@@ -60,7 +60,7 @@ Mix_Music *music_de_fond_survie = NULL;
 Mix_Chunk *explosion_survie = NULL;
 
 //Boucle principale
-int survie(int mode_difficulte){
+void survie(int mode_difficulte){
 	init_survie();
 	SDL_GetWindowSize(fenetrePrincipale_survie, &width_windows_survie, &height_windows_survie);
 	reinitialisation_survie(mode_difficulte);
@@ -76,12 +76,11 @@ int survie(int mode_difficulte){
 		//SDL_Log("1 - debug : etat_survie = %d , Position x = %d , position y = %d \n 2 - debug : width_windows_survie : %d height_windows_survie : %d \n 3 - debug : terrain_x_survie : %d terrain_y_survie : %d",etat_survie, posi_main_survie.x, posi_main_survie.y,width_windows_survie,height_windows_survie,terrain_x_survie,terrain_y_survie);
 	}
 	set_game_over_survie();
-	return 0;
 }
 /*------------------------------------------*/
 
 //Fonction d'affichage en fonction de l'état de survie
-int set_survie(){
+void set_survie(){
 	if(etat_survie && etat_survie != GAME_OVER && etat_survie != PAUSE){
 		dessin_main_survie();
 		dessin_background_score_survie();
@@ -95,7 +94,7 @@ int set_survie(){
 	}
 }
 
-int set_start_survie(){
+void set_start_survie(){
 	if(etat_survie == START){
 		dessin_fond_survie();
 		dessin_background_score_survie();
@@ -105,7 +104,7 @@ int set_start_survie(){
 	}
 }
 
-int set_game_over_survie(){
+void set_game_over_survie(){
 	if(etat_survie == GAME_OVER){
 		dessin_fond_survie();
 		dessin_background_score_survie();
@@ -123,7 +122,7 @@ int set_game_over_survie(){
 /*------------------------------------------*/
 
 //Fonction de réinitialisation des variable global
-int reinitialisation_survie(int mode_difficulte){
+void reinitialisation_survie(int mode_difficulte){
 	etat_survie = START;
 	score_survie = 0;
 
@@ -145,11 +144,9 @@ int reinitialisation_survie(int mode_difficulte){
 	
 	terrain_x_survie = width_windows_survie - taille_score*size_main_survie;
 	terrain_y_survie = height_windows_survie;
-
-	return 0;
 }
 
-int initialisation_position_main_survie(){
+void initialisation_position_main_survie(){
 	int x = (rand() % (45))*size_main_survie;
 	int y = (rand() % (25))*size_main_survie;
 	posi_main_survie.x = x;
@@ -160,19 +157,17 @@ int initialisation_position_main_survie(){
 /*------------------------------------------*/
 
 //Fonction qui vont permettre de dessiner les différents éléments à afficher
-int dessin_main_survie(){
+void dessin_main_survie(){
 	SDL_Rect dest = { posi_main_survie.x,posi_main_survie.y, size_main_survie, size_main_survie};
 	SDL_RenderCopy(renduPrincipale_survie,main_texture_survie,NULL,&dest);
-	return 0;
 }
 
-int dessin_background_score_survie(){
+void dessin_background_score_survie(){
 	SDL_Rect dest = { terrain_x_survie+1, 0, width_windows_survie - terrain_x_survie , height_windows_survie};
 	SDL_RenderCopy(renduPrincipale_survie,background_score_texture_survie,NULL,&dest);
-	return 0;
 }
 
-int dessin_score_survie(){
+void dessin_score_survie(){
 	char score_texte[20];
 	SDL_Color couleur_font = {255, 255, 255};
 
@@ -189,7 +184,7 @@ int dessin_score_survie(){
 	SDL_FreeSurface(score_surface);
 }
 
-int dessin_game_over_survie(){
+void dessin_game_over_survie(){
 	char game_over_texte[43];
 	SDL_Color couleur_font = {255, 255, 255};
 
@@ -212,7 +207,7 @@ int dessin_game_over_survie(){
 	SDL_FreeSurface(score_surface);
 }
 
-int dessin_pause_survie(){
+void dessin_pause_survie(){
 	SDL_Color couleur_font = {255, 255, 255};
 
 	SDL_Surface* score_surface = TTF_RenderText_Solid(font_general_survie,"PAUSE", couleur_font);
@@ -226,7 +221,7 @@ int dessin_pause_survie(){
 	SDL_FreeSurface(score_surface);
 }
 
-int dessin_fond_survie(){
+void dessin_fond_survie(){
 
 	SDL_SetRenderDrawColor(renduPrincipale_survie,22, 22, 22, 255);
 	SDL_RenderClear(renduPrincipale_survie);
@@ -239,11 +234,9 @@ int dessin_fond_survie(){
 	for(int y = 0; y < terrain_y_survie; y += size_main_survie){
 		SDL_RenderDrawLine(renduPrincipale_survie, 0, y, terrain_x_survie, y);
 	}
-
-	return 0;
 }
 
-int dessin_high_score_survie(){
+void dessin_high_score_survie(){
 	char game_over_texte[43];
 	SDL_Color couleur_font = {255, 255, 255};
 
@@ -266,7 +259,7 @@ int dessin_high_score_survie(){
 	SDL_FreeSurface(score_surface);
 }
 
-int dessin_background_high_score_survie(){
+void dessin_background_high_score_survie(){
 	int size_game_over_x = 1100;
 	int size_game_over_y = 175;
 
@@ -275,12 +268,11 @@ int dessin_background_high_score_survie(){
 
 	SDL_Rect dest = {position_x, position_y, size_game_over_x, size_game_over_y};
 	SDL_RenderCopy(renduPrincipale_survie,background_high_score_texture_survie,NULL,&dest);
-	return 0;
 }
 /*------------------------------------------*/
 
 //Fonction relative au input du joueur
-int input_survie(){
+void input_survie(){
 	SDL_Event touche;
 
 	if(SDL_PollEvent(&touche)){
@@ -316,7 +308,7 @@ int input_survie(){
 		}
 	}
 
-int input_high_score_survie(){
+void input_high_score_survie(){
 	SDL_Event touche;
 
 	if(SDL_PollEvent(&touche)){
@@ -350,7 +342,7 @@ int input_high_score_survie(){
 /*------------------------------------------*/
 
 //Fonction gestion enregistrement de déplacement
-int update_survie(){
+void update_survie(){
 
 	switch(etat_survie){
 		case UP:
@@ -392,11 +384,9 @@ int update_survie(){
 	if(etat_survie != PAUSE && etat_survie != START && etat_survie != GAME_OVER){
 		score_survie++;
 	}
-
-	return 0;
 }
 
-int tab_deplacement_survie(int x, int y){
+void tab_deplacement_survie(int x, int y){
 	if(tableau_deplacement_survie[x][y] == 1){
 		etat_survie = GAME_OVER;
 		Mix_FreeMusic(music_de_fond_survie);
@@ -404,7 +394,6 @@ int tab_deplacement_survie(int x, int y){
 	}else if(tableau_deplacement_survie[x][y] == 0){
 		tableau_deplacement_survie[x][y] = 1;
 	}
-	return 0;
 }
 /*------------------------------------------*/
 

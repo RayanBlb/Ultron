@@ -6,18 +6,18 @@ typedef struct position_struct_menu{
 	int y;
 }position_menu;
 
-int dessin_menu_menu(void);
-int dessin_texte_menu(char *texte, SDL_Color couleur,int coef_position,int size_font_x,int size_font_y);
-int dessin_fond_menu();
-int set_menu(void);
-int input_menu(void);
-int delay_game_menu(void);
-int fermeture_sdl_menu(void);
-int get_screensize_menu(void);
+void dessin_menu_menu(void);
+void dessin_texte_menu(char *texte, SDL_Color couleur,int coef_position,int size_font_x,int size_font_y);
+void dessin_fond_menu();
+void set_menu(void);
+void input_menu(void);
+void delay_game_menu(void);
+void fermeture_sdl_menu(void);
+void get_screensize_menu(void);
+void menu(int mode_difficulte);
+void switch_screen_menu(char *mode);
+void reinitialisation_menu(int mode_difficulte);
+void set_fond_menu_menu(void);
 int init_menu(void);
-int menu(int mode_difficulte);
-int switch_screen_menu(char *mode);
-int reinitialisation_menu(int mode_difficulte);
-int set_fond_menu_menu(void);
 
 #endif

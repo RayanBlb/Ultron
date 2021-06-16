@@ -15,7 +15,7 @@
 #include "mode_ia.h"
 
 //Fonction de tri de liste high score
-int read_file_high_score_outils(char *chemin,char *nom_high_score_survie,int score_survie,liste *pFirst){
+void read_file_high_score_outils(char *chemin,char *nom_high_score_survie,int score_survie,liste *pFirst){
 	FILE *fichier;
 	char ligne[128];
 
@@ -85,7 +85,7 @@ int tri_high_score_outils(liste **pFirst,char *nom,int score){
 	}
 }
 
-int write_liste_high_score_outils(liste *pFirst,char *chemin){
+void write_liste_high_score_outils(liste *pFirst,char *chemin){
 	liste *pTemp = pFirst;
 	int compteur = 0;
 
@@ -94,24 +94,22 @@ int write_liste_high_score_outils(liste *pFirst,char *chemin){
 		compteur++;
 		pTemp=pTemp->pNext;
 	}
-
-	return 0;
 }
 
-int sup_liste_high_score_outils(char *chemin){
+void sup_liste_high_score_outils(char *chemin){
 	FILE *fichier;
 	fichier = fopen (chemin,"w");
 	fclose(fichier);
 }
 
-int write_file_outils(char *nom, int score,char *chemin){
+void write_file_outils(char *nom, int score,char *chemin){
 	FILE *fichier;
 	fichier = fopen (chemin,"a");
 	fprintf (fichier,"%s:%d \n",nom,score);
 	fclose(fichier);
 }
 
-int free_liste_high_score_outils(liste **pFirst){
+void free_liste_high_score_outils(liste **pFirst){
 	liste *temp_un = *pFirst;
 	liste *temp_deux = NULL;
 
@@ -122,14 +120,12 @@ int free_liste_high_score_outils(liste **pFirst){
 	}
 
 	*pFirst = NULL;
-
-	return 0;
 }
 
 /*------------------------------------------*/
 
 //Gestion des FPS pour les modes survie, versus et ia
-int delay_game_outils(int etat_survie, int mode_de_jeu){
+void delay_game_outils(int etat_survie, int mode_de_jeu){
 	int lastTicks_survie = 0;
 	int delay_survie = 0;
 	int maxFPS_survie = 60;
@@ -151,19 +147,19 @@ int delay_game_outils(int etat_survie, int mode_de_jeu){
 /*------------------------------------------*/
 
 //Gestion de la musique
-int play_musique_outils(Mix_Music **music_de_fond_survie){
+void play_musique_outils(Mix_Music **music_de_fond_survie){
 	*music_de_fond_survie = Mix_LoadMUS("./Musique/music.mp3");
 	Mix_PlayMusic(*music_de_fond_survie, -1);
 }
 
-int play_explosion_outils(Mix_Chunk **explosion_survie){
+void play_explosion_outils(Mix_Chunk **explosion_survie){
 	*explosion_survie = Mix_LoadWAV("./Musique/explosion.wav");
 	Mix_PlayChannel(-1, *explosion_survie, 0);
 }
 /*------------------------------------------*/
 
 //Gestion du tableau allocation memoire
-int allocation_tableau_outils(int ***tableau_deplacement, int width_windows_survie, int height_windows_survie){
+void allocation_tableau_outils(int ***tableau_deplacement, int width_windows_survie, int height_windows_survie){
   
     (*tableau_deplacement) = (int **)malloc(width_windows_survie * sizeof(int *));
 
@@ -176,16 +172,13 @@ int allocation_tableau_outils(int ***tableau_deplacement, int width_windows_surv
          (*tableau_deplacement)[i][j] = 0;
       }
     }
-  
-   return 0;
 }
 
-int free_tableau_outils(int ***tableau_deplacement, int width_windows_survie){
+void free_tableau_outils(int ***tableau_deplacement, int width_windows_survie){
 	for (int i = 0; i < width_windows_survie ; ++i){
 			free((*tableau_deplacement)[i]);
 		}
 	free((*tableau_deplacement));
-	return 0;
 }
 /*------------------------------------------*/
 
@@ -201,7 +194,7 @@ int compte_nom_high_score_outils(char *nom_high_score_survie){
 /*------------------------------------------*/
 
 //Fonction de transition pour fermer une fenetre ou changer de fenetre
-int fermeture_sdl_outils(SDL_Window *fenetrePrincipale_survie, SDL_Renderer *renduPrincipale_survie, Mix_Chunk *explosion_survie, SDL_Surface *main_surface_survie, SDL_Texture *main_texture_survie,SDL_Surface *deuxieme_surface_versus,SDL_Texture *deuxieme_texture_versus){
+void fermeture_sdl_outils(SDL_Window *fenetrePrincipale_survie, SDL_Renderer *renduPrincipale_survie, Mix_Chunk *explosion_survie, SDL_Surface *main_surface_survie, SDL_Texture *main_texture_survie,SDL_Surface *deuxieme_surface_versus,SDL_Texture *deuxieme_texture_versus){
 	SDL_DestroyRenderer(renduPrincipale_survie);
 	SDL_DestroyWindow(fenetrePrincipale_survie);
 
@@ -218,10 +211,9 @@ int fermeture_sdl_outils(SDL_Window *fenetrePrincipale_survie, SDL_Renderer *ren
 	SDL_Quit();
 
 	exit(EXIT_SUCCESS);
-	return 0;
 }
 
-int switch_screen_outils(SDL_Window *fenetrePrincipale_survie, SDL_Renderer *renduPrincipale_survie, Mix_Music *music_de_fond_survie, SDL_Surface *main_surface_survie, SDL_Texture *main_texture_survie, int etat_survie,SDL_Surface *deuxieme_surface_versus,SDL_Texture *deuxieme_texture_versus){
+void switch_screen_outils(SDL_Window *fenetrePrincipale_survie, SDL_Renderer *renduPrincipale_survie, Mix_Music *music_de_fond_survie, SDL_Surface *main_surface_survie, SDL_Texture *main_texture_survie, int etat_survie,SDL_Surface *deuxieme_surface_versus,SDL_Texture *deuxieme_texture_versus){
 	SDL_DestroyRenderer(renduPrincipale_survie);
 	SDL_DestroyWindow(fenetrePrincipale_survie);
 
@@ -241,7 +233,5 @@ int switch_screen_outils(SDL_Window *fenetrePrincipale_survie, SDL_Renderer *ren
 	}
 
 	menu(0);
-
-	return 0;
 }
 /*------------------------------------------*/

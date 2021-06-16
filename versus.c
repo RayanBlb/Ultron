@@ -80,7 +80,7 @@ Mix_Music *music_de_fond_versus = NULL;
 Mix_Chunk *explosion_versus = NULL;
 
 //Boucle principale
-int versus(int mode_difficulte){
+void versus(int mode_difficulte){
 	init_versus();
 	SDL_GetWindowSize(fenetrePrincipale_versus, &width_windows_versus, &height_windows_versus);
 	reinitialisation_versus(mode_difficulte);
@@ -96,12 +96,11 @@ int versus(int mode_difficulte){
 		//SDL_Log("1 - debug : etat_versus = %d , etat_main_versus = %d , etat_deuxieme_versus = %d\n 2 - debug : terrain_x_versus : %d , terrain_y_versus : %d \n",etat_versus,etat_main_versus,etat_deuxieme_versus,terrain_x_versus,terrain_y_versus);
 	}
 	set_game_over_versus();
-	return 0;
 }
 /*------------------------------------------*/
 
 //Fonction d'affichage en fonction de l'état de versus
-int set_versus(){
+void set_versus(){
 	if(etat_versus && etat_versus < GAME_OVER_1_win && etat_versus != PAUSE){
 		dessin_main_versus();
 		dessin_deuxieme_versus();
@@ -116,7 +115,7 @@ int set_versus(){
 	}
 }
 
-int set_start_versus(){
+void set_start_versus(){
 	if(etat_versus == START){
 		dessin_fond_versus();
 		dessin_background_score_versus();
@@ -127,7 +126,7 @@ int set_start_versus(){
 	}
 }
 
-int set_game_over_versus(){
+void set_game_over_versus(){
 	if(etat_versus >= GAME_OVER_1_win){
 		dessin_fond_versus();
 		dessin_background_score_versus();
@@ -145,7 +144,7 @@ int set_game_over_versus(){
 /*------------------------------------------*/
 
 //Fonction de réinitialisation des variable global
-int reinitialisation_versus(int mode_difficulte){
+void reinitialisation_versus(int mode_difficulte){
 	if(mode_difficulte == 1){
 		size_main_versus = 8;
 	}else if(mode_difficulte == 2){
@@ -170,11 +169,9 @@ int reinitialisation_versus(int mode_difficulte){
 
 	terrain_x_versus = width_windows_versus - taille_score*size_main_versus;
 	terrain_y_versus = height_windows_versus;
-
-	return 0;
 }
 
-int initialisation_position_main_versus(){
+void initialisation_position_main_versus(){
 	int x = (rand() % (45 + 1 - 23) + 23)*size_main_versus;
 	int y = (rand() % (25 + 1 - 13) + 13)*size_main_versus;
 	int i = (rand() % (22 + 1 - 10) + 10)*size_main_versus;
@@ -192,25 +189,22 @@ int initialisation_position_main_versus(){
 /*------------------------------------------*/
 
 //Fonction qui vont permettre de dessiner les différents éléments à afficher
-int dessin_main_versus(){
+void dessin_main_versus(){
 	SDL_Rect dest = { posi_main_versus.x,posi_main_versus.y, size_main_versus, size_main_versus};
 	SDL_RenderCopy(renduPrincipale_versus,main_texture_versus,NULL,&dest);
-	return 0;
 }
 
-int dessin_deuxieme_versus(){
+void dessin_deuxieme_versus(){
 	SDL_Rect dest = { posi_deuxieme_versus.x,posi_deuxieme_versus.y, size_main_versus, size_main_versus};
 	SDL_RenderCopy(renduPrincipale_versus,deuxieme_texture_versus,NULL,&dest);
-	return 0;
 }
 
-int dessin_background_score_versus(){
+void dessin_background_score_versus(){
 	SDL_Rect dest = { terrain_x_versus+1, 0, width_windows_versus - terrain_x_versus , height_windows_versus};
 	SDL_RenderCopy(renduPrincipale_versus,background_score_texture_versus,NULL,&dest);
-	return 0;
 }
 
-int dessin_score_versus(){
+void dessin_score_versus(){
 	char score_texte[20];
 	SDL_Color couleur_font = {255, 255, 255};
 
@@ -227,7 +221,7 @@ int dessin_score_versus(){
 	SDL_FreeSurface(score_surface);
 }
 
-int dessin_game_over_versus(){
+void dessin_game_over_versus(){
 	char game_over_texte[43];
 	SDL_Color couleur_font = {255, 255, 255};
 
@@ -258,7 +252,7 @@ int dessin_game_over_versus(){
 	SDL_FreeSurface(score_surface);
 }
 
-int dessin_pause_versus(){
+void dessin_pause_versus(){
 	SDL_Color couleur_font = {255, 255, 255};
 
 	SDL_Surface* score_surface = TTF_RenderText_Solid(font_general_versus,"PAUSE", couleur_font);
@@ -272,7 +266,7 @@ int dessin_pause_versus(){
 	SDL_FreeSurface(score_surface);
 }
 
-int dessin_fond_versus(){
+void dessin_fond_versus(){
 
 	SDL_SetRenderDrawColor(renduPrincipale_versus,22, 22, 22, 255);
 	SDL_RenderClear(renduPrincipale_versus);
@@ -285,11 +279,9 @@ int dessin_fond_versus(){
 	for(int y = 0; y < terrain_y_versus; y += size_main_versus){
 		SDL_RenderDrawLine(renduPrincipale_versus, 0, y, terrain_x_versus, y);
 	}
-
-	return 0;
 }
 
-int dessin_high_score_versus(){
+void dessin_high_score_versus(){
 	char game_over_texte[43];
 	SDL_Color couleur_font = {255, 255, 255};
 
@@ -312,7 +304,7 @@ int dessin_high_score_versus(){
 	SDL_FreeSurface(score_surface);
 }
 
-int dessin_background_high_score_versus(){
+void dessin_background_high_score_versus(){
 	int size_game_over_x = 1100;
 	int size_game_over_y = 175;
 
@@ -321,12 +313,11 @@ int dessin_background_high_score_versus(){
 
 	SDL_Rect dest = {position_x, position_y, size_game_over_x, size_game_over_y};
 	SDL_RenderCopy(renduPrincipale_versus,background_high_score_texture_versus,NULL,&dest);
-	return 0;
 }
 /*------------------------------------------*/
 
 //Fonction relative au input du joueur
-int input_versus(){
+void input_versus(){
 	SDL_Event touche;
 
 	SDL_Log("main : %d deuxieme : %d", prev_etat_main_versus,prev_etat_deuxieme_versus);
@@ -392,7 +383,7 @@ int input_versus(){
 		}
 	}
 
-int input_high_score_versus(){
+void input_high_score_versus(){
 	SDL_Event touche;
 
 	if(SDL_PollEvent(&touche)){
@@ -426,7 +417,7 @@ int input_high_score_versus(){
 /*------------------------------------------*/
 
 //Fonction gestion enregistrement de déplacement
-int update_versus(){
+void update_versus(){
 
 	switch(etat_main_versus){
 		case UP_1:
@@ -507,8 +498,6 @@ int update_versus(){
 	if((etat_deuxieme_versus != PAUSE || etat_main_versus != PAUSE) && (etat_deuxieme_versus != START || etat_main_versus != START) && etat_versus < GAME_OVER_1_win){
 		score_versus++;
 	}
-
-	return 0;
 }
 
 int tab_deplacement_versus(int x, int y,int joueur){
