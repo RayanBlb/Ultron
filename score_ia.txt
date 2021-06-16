@@ -1,0 +1,5 @@
+SZDQ:99 
+DZQ:92 
+DZQD:42 
+DZQDZ:40 
+ZDQ:2 

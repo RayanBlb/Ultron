@@ -600,6 +600,7 @@ int init_ia(){
 }
 /*------------------------------------------*/
 
+//gestion de l'ia
 int chance_ia(int choix1,int choix2){
 	if((rand() % (2 - 1 + 1)) + 1 == 1){
 		return choix1;
@@ -622,9 +623,9 @@ int choix_depart_ia(){
 	}
 	}else{
 		if(coordonne_y > posi_deuxieme_ia.y){
-		etat_deuxieme_ia = UP_2;
-	}else if(coordonne_y < posi_deuxieme_ia.y){
 		etat_deuxieme_ia = DOWN_2;
+	}else if(coordonne_y < posi_deuxieme_ia.y){
+		etat_deuxieme_ia = UP_2;
 	}
 	}
 }
@@ -654,6 +655,9 @@ int brain_classique_ia(){
 	int DOWN = 0;
 	int LEFT = 0;
 	int RIGHT = 0;
+
+	int coordonne_x = terrain_x_ia-posi_deuxieme_ia.x;
+	int coordonne_y = terrain_y_ia-posi_deuxieme_ia.y;
 
 	int vision = size_main_ia*5;
 
@@ -706,34 +710,42 @@ int brain_classique_ia(){
 }
 	if(etat_ia == IN_GAME && etat_main_ia != PAUSE){
 		if(etat_deuxieme_ia == UP_2){
-			if(UP == 1){
+			if(UP == 1 && coordonne_x < posi_deuxieme_ia.x){
 				etat_deuxieme_ia = LEFT_2;
+			}else if(UP == 1 && coordonne_x > posi_deuxieme_ia.x){
+				etat_deuxieme_ia = RIGHT_2;
 			}else if(UP == 1 && LEFT == 1){
 				etat_deuxieme_ia = DOWN_2;
 			}else if(UP == 1 && RIGHT == 1){
 				etat_deuxieme_ia = DOWN_2;
 			}
 		}else if(etat_deuxieme_ia == DOWN_2){
-			if(DOWN == 1){
+			if(DOWN == 1 && coordonne_x > posi_deuxieme_ia.x){
 				etat_deuxieme_ia = RIGHT_2;
+			}else if(DOWN == 1 && coordonne_x < posi_deuxieme_ia.x){
+				etat_deuxieme_ia = LEFT_2;
 			}else if(DOWN == 1 && LEFT == 1){
 				etat_deuxieme_ia = RIGHT_2;
 			}else if(DOWN == 1 && RIGHT == 1){
 				etat_deuxieme_ia = LEFT_2;
 			}
 		}else if(etat_deuxieme_ia == LEFT_2){
-			if(LEFT == 1){
+			if(LEFT == 1 && coordonne_y > posi_deuxieme_ia.y){
 				etat_deuxieme_ia = DOWN_2;
+			}else if(LEFT == 1 && coordonne_y < posi_deuxieme_ia.y){
+				etat_deuxieme_ia = UP_2;
 			}else if(LEFT == 1 && UP == 1){
 				etat_deuxieme_ia = DOWN_2;
 			}else if(LEFT == 1 && DOWN == 1){
 				etat_deuxieme_ia = RIGHT_2;
 			}
 		}else if(etat_deuxieme_ia == RIGHT_2){
-			if(RIGHT == 1){
+			if(RIGHT == 1 && coordonne_y > posi_deuxieme_ia.y){
+				etat_deuxieme_ia = DOWN_2;
+			}else if(RIGHT == 1 && coordonne_y < posi_deuxieme_ia.y){
 				etat_deuxieme_ia = UP_2;
 			}else if(RIGHT == 1 && UP == 1){
-				etat_deuxieme_ia = UP_2;
+				etat_deuxieme_ia = DOWN_2;
 			}else if(RIGHT == 1 && DOWN == 1){
 				etat_deuxieme_ia = UP_2;
 			}
@@ -960,3 +972,5 @@ void choix_mode_ia(int mode_ia){
 		brain_miroir_ia();
 	}
 }
+
+/*------------------------------------------*/
