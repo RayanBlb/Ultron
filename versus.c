@@ -320,8 +320,6 @@ void dessin_background_high_score_versus(){
 void input_versus(){
 	SDL_Event touche;
 
-	SDL_Log("main : %d deuxieme : %d", prev_etat_main_versus,prev_etat_deuxieme_versus);
-
 	if(SDL_PollEvent(&touche)){
 		switch(touche.type){
 			case SDL_MOUSEMOTION:
@@ -528,6 +526,8 @@ int tab_deplacement_versus(int x, int y,int joueur){
 		tableau_deplacement_versus[x][y] = 2;
 		return 0;
 	}
+
+	return 0;
 }
 
 /*------------------------------------------*/
@@ -583,5 +583,7 @@ int init_versus(){
 	background_high_score_texture_versus = SDL_CreateTextureFromSurface(renduPrincipale_versus,background_high_score_surface_versus);
 
 	font_general_versus = TTF_OpenFont("./Font/font.ttf", 16);
+
+	return 0;
 }
 /*------------------------------------------*/

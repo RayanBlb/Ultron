@@ -445,5 +445,7 @@ int init_survie(){
 	background_high_score_texture_survie = SDL_CreateTextureFromSurface(renduPrincipale_survie,background_high_score_surface_survie);
 
 	font_general_survie = TTF_OpenFont("./Font/font.ttf", 16);
+
+	return 0;
 }
 /*------------------------------------------*/

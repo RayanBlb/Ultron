@@ -532,6 +532,8 @@ int tab_deplacement_ia(int x, int y,int joueur){
 		tableau_deplacement_ia[x][y] = 2;
 		return 0;
 	}
+
+	return 0;
 }
 
 /*------------------------------------------*/
@@ -587,6 +589,8 @@ int init_ia(){
 	background_high_score_texture_ia = SDL_CreateTextureFromSurface(renduPrincipale_ia,background_high_score_surface_ia);
 
 	font_general_ia = TTF_OpenFont("./Font/font.ttf", 16);
+
+	return 0;
 }
 /*------------------------------------------*/
 

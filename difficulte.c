@@ -208,6 +208,8 @@ int init_difficulte(){
 	SDL_SetWindowIcon(fenetrePrincipale_difficulte, icon_programme_survie);
 
     font_general_difficulte = TTF_OpenFont("./Font/font.ttf", 16);
+
+    return 0;
 }
 /*------------------------------------------*/
 

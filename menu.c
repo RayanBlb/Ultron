@@ -249,6 +249,8 @@ int init_menu(){
 	SDL_SetWindowIcon(fenetrePrincipale_menu, icon_programme_survie);
 
     font_general_menu = TTF_OpenFont("./Font/font.ttf", 16);
+
+    return 0;
 }
 /*------------------------------------------*/
 

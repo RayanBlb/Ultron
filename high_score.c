@@ -235,6 +235,8 @@ int init_high_score(){
 	SDL_SetWindowIcon(fenetrePrincipale_high_score, icon_programme_survie);
 
     font_general_high_score = TTF_OpenFont("./Font/font.ttf", 16);
+
+    return 0;
 }
 /*------------------------------------------*/
 

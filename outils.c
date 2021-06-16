@@ -31,7 +31,6 @@ void read_file_high_score_outils(char *chemin,char *nom_high_score_survie,int sc
 	}
 
 	while(fgets(ligne, sizeof(ligne), fichier) != NULL){
-		int len = strlen(ligne);
 
 		char *nom = strtok(ligne,":");
 		int score = strtol(strtok(NULL,":"),NULL,10);
@@ -83,6 +82,8 @@ int tri_high_score_outils(liste **pFirst,char *nom,int score){
 		temp->pNext = a_ajouter;
 		return 0;
 	}
+
+	return 0;
 }
 
 void write_liste_high_score_outils(liste *pFirst,char *chemin){

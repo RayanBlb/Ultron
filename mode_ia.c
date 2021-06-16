@@ -202,6 +202,8 @@ int init_mode_ia(){
 	SDL_SetWindowIcon(fenetrePrincipale_mode_ia, icon_programme_survie);
 
     font_general_mode_ia = TTF_OpenFont("./Font/font.ttf", 16);
+    
+    return 0;
 }
 /*------------------------------------------*/
 
