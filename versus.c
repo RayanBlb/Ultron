@@ -101,13 +101,13 @@ void versus(int mode_difficulte){
 
 //Fonction d'affichage en fonction de l'état de versus
 void set_versus(){
-	if(etat_versus && etat_versus < GAME_OVER_1_win && etat_versus != PAUSE){
+	if(etat_versus && etat_versus < GAME_OVER_1_win && (etat_main_versus != PAUSE || etat_deuxieme_versus != PAUSE)){
 		dessin_main_versus();
 		dessin_deuxieme_versus();
 		dessin_background_score_versus();
 		dessin_score_versus();
 		SDL_RenderPresent(renduPrincipale_versus);
-	}else if (etat_versus == PAUSE){
+	}else if (etat_main_versus == PAUSE || etat_deuxieme_versus == PAUSE){
 		dessin_background_score_versus();
 		dessin_score_versus();
 		dessin_pause_versus();

@@ -108,13 +108,13 @@ void ia(int mode_difficulte,int mode_ia){
 
 //Fonction d'affichage en fonction de l'état des joueurs
 void set_ia(){
-	if(etat_ia && etat_ia < GAME_OVER_1_win && etat_ia != PAUSE){
+	if(etat_ia && etat_ia < GAME_OVER_1_win && (etat_main_ia != PAUSE || etat_deuxieme_ia != PAUSE)){
 		dessin_main_ia();
 		dessin_deuxieme_ia();
 		dessin_background_score_ia();
 		dessin_score_ia();
 		SDL_RenderPresent(renduPrincipale_ia);
-	}else if (etat_main_ia == PAUSE){
+	}else if (etat_main_ia == PAUSE || etat_deuxieme_ia == PAUSE){
 		dessin_background_score_ia();
 		dessin_score_ia();
 		dessin_pause_ia();
