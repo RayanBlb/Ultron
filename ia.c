@@ -185,10 +185,11 @@ int reinitialisation_ia(int mode_difficulte){
 
 int initialisation_position_main_ia(int mode_ia){
 	srand(time(0));
+	
 	if(mode_ia == 3){
 		posi_main_ia.x = 0;
 		posi_main_ia.y = 0;
-		//SDL_Log("test : %d, terrain_x_ia : %d \n",width_windows_ia-size_main_ia*4,terrain_x_ia);
+
 		posi_deuxieme_ia.x = terrain_x_ia-size_main_ia;
 		posi_deuxieme_ia.y = 0;
 	}else{
@@ -646,8 +647,6 @@ int brain_miroir_ia(){
 	}else if(compteur_miroire_ia != 0){
 		compteur_miroire_ia--;
 	}
-
-	//SDL_Log("etat : %d",etat_deuxieme_ia);
 }
 
 int brain_classique_ia(){
@@ -745,7 +744,6 @@ int brain_classique_ia(){
 			start_ia = 1;
 		}
 	}
-	//SDL_Log("UP : %d DOWN : %d LEFT : %d RIGHT : %d \n posi_deuxieme_ia.x : %d posi_deuxieme_ia.y : %d etat_deuxieme_ia : %d\n",UP,DOWN,LEFT,RIGHT,posi_deuxieme_ia.x,posi_deuxieme_ia.y,etat_deuxieme_ia);
 }
 
 int brain_ia(){
@@ -951,7 +949,6 @@ int brain_ia(){
 	if(timer_deplacement_ia != 0){
 		timer_deplacement_ia--;
 	}
-	//SDL_Log("UP : %d DOWN : %d LEFT : %d RIGHT : %d \n posi_deuxieme_ia.x : %d posi_deuxieme_ia.y : %d etat_deuxieme_ia : %d\n",UP,DOWN,LEFT,RIGHT,posi_deuxieme_ia.x,posi_deuxieme_ia.y,etat_deuxieme_ia);
 }
 
 void choix_mode_ia(int mode_ia){
