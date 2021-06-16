@@ -12,6 +12,7 @@
 #include "versus.h"
 #include "difficulte.h"
 #include "ia.h"
+#include "mode_ia.h"
 
 #define TABLEAU_SURVIE 1
 #define TABLEAU_VERSUS 2

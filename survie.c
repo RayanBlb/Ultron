@@ -12,6 +12,7 @@
 #include "versus.h"
 #include "difficulte.h"
 #include "ia.h"
+#include "mode_ia.h"
 
 #define START 0
 #define UP 1
@@ -140,6 +141,11 @@ int reinitialisation_survie(int mode_difficulte){
 
 	strcpy(nom_high_score_survie,"");
 
+	int taille_score = 210/size_main_survie;
+	
+	terrain_x_survie = width_windows_survie - taille_score*size_main_survie;
+	terrain_y_survie = height_windows_survie;
+
 	return 0;
 }
 
@@ -221,14 +227,10 @@ int dessin_pause_survie(){
 }
 
 int dessin_fond_survie(){
-	int taille_score = 210/size_main_survie;
 
 	SDL_SetRenderDrawColor(renduPrincipale_survie,22, 22, 22, 255);
 	SDL_RenderClear(renduPrincipale_survie);
 	SDL_SetRenderDrawColor(renduPrincipale_survie,77, 77, 77, 255);
-
-	terrain_x_survie = width_windows_survie - taille_score*size_main_survie;
-	terrain_y_survie = height_windows_survie;
 
 	for(int x = 0; x <= terrain_x_survie; x += size_main_survie){
 		SDL_RenderDrawLine(renduPrincipale_survie, x, 0, x, height_windows_survie);

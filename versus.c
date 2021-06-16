@@ -12,6 +12,7 @@
 #include "versus.h"
 #include "difficulte.h"
 #include "ia.h"
+#include "mode_ia.h"
 
 #define START 1
 #define PAUSE 2
@@ -165,6 +166,11 @@ int reinitialisation_versus(int mode_difficulte){
 
 	strcpy(nom_high_score_versus,"");
 
+	int taille_score = 210/size_main_versus;
+
+	terrain_x_versus = width_windows_versus - taille_score*size_main_versus;
+	terrain_y_versus = height_windows_versus;
+
 	return 0;
 }
 
@@ -267,14 +273,10 @@ int dessin_pause_versus(){
 }
 
 int dessin_fond_versus(){
-	int taille_score = 210/size_main_versus;
 
 	SDL_SetRenderDrawColor(renduPrincipale_versus,22, 22, 22, 255);
 	SDL_RenderClear(renduPrincipale_versus);
 	SDL_SetRenderDrawColor(renduPrincipale_versus,77, 77, 77, 255);
-
-	terrain_x_versus = width_windows_versus - taille_score*size_main_versus;
-	terrain_y_versus = height_windows_versus;
 
 	for(int x = 0; x <= terrain_x_versus; x += size_main_versus){
 		SDL_RenderDrawLine(renduPrincipale_versus, x, 0, x, height_windows_versus);

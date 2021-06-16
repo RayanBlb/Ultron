@@ -12,6 +12,7 @@
 #include "versus.h"
 #include "difficulte.h"
 #include "ia.h"
+#include "mode_ia.h"
 
 int main(int argc, char const *argv[])
 {

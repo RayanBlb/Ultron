@@ -18,7 +18,7 @@ int tab_deplacement_ia(int x, int y,int joueur);
 int dessin_background_score_ia(void);
 int dessin_score_ia(void);
 int dessin_game_over_ia(void);
-int ia(int mode);
+int ia(int mode_difficulte,int mode_ia);
 int reinitialisation_ia(int mode);
 int dessin_pause_ia(void);
 int set_start_ia(void);
@@ -28,6 +28,13 @@ int dessin_high_score_ia(void);
 int set_high_score_ia(void);
 int dessin_background_high_score_ia(void);
 int write_high_score_ia(void);
-int initialisation_position_main_ia(void);
+int initialisation_position_main_ia(int mode_ia);
+int brain_ia(void);
+int choix_depart_ia();
+int changement_aleatoire_ia();
+int brain_miroir_ia();
+int brain_classique_ia();
+int chance_ia(int choix1,int choix2);
+void choix_mode_ia(int mode_ia);
 
 #endif

@@ -12,6 +12,7 @@
 #include "versus.h"
 #include "difficulte.h"
 #include "ia.h"
+#include "mode_ia.h"
 
 #define START_SURVIE 1
 #define START_VERSUS 2
@@ -281,8 +282,7 @@ int switch_screen_menu(char *mode){
 	}else if(strcmp(mode,"difficulte") == 0){
 		difficulte(mode_difficulte_menu);
 	}else if(strcmp(mode,"ia") == 0){
-		ia(mode_difficulte_menu);
+		mode_ia(mode_difficulte_menu);
 	}
-
 	return 0;
 }

@@ -12,6 +12,7 @@
 #include "versus.h"
 #include "difficulte.h"
 #include "ia.h"
+#include "mode_ia.h"
 
 #define START 1
 #define PAUSE 2
@@ -37,6 +38,12 @@ liste *pFirst_ia = NULL;
 int etat_ia = START;
 int etat_main_ia = START;
 int etat_deuxieme_ia = START;
+
+int compteur_miroire_ia = 0;
+
+int timer_deplacement_ia = 0;
+int changement_direction_ia = 0;
+int start_ia = 0;
 
 int prev_etat_main_ia = START;
 int prev_etat_deuxieme_ia = START;
@@ -79,15 +86,16 @@ Mix_Music *music_de_fond_ia = NULL;
 Mix_Chunk *explosion_ia = NULL;
 
 //Boucle principale
-int ia(int mode_difficulte){
+int ia(int mode_difficulte,int mode_ia){
 	init_ia();
 	SDL_GetWindowSize(fenetrePrincipale_ia, &width_windows_ia, &height_windows_ia);
 	reinitialisation_ia(mode_difficulte);
 	allocation_tableau_outils(&tableau_deplacement_ia,width_windows_ia,height_windows_ia);
-	initialisation_position_main_ia();
+	initialisation_position_main_ia(mode_ia);
 	play_musique_outils(&music_de_fond_ia);
 	set_start_ia();
 	while(etat_ia < GAME_OVER_1_win){
+		choix_mode_ia(mode_ia);
 		input_ia();
 		update_ia();
 		set_ia();
@@ -107,7 +115,7 @@ int set_ia(){
 		dessin_background_score_ia();
 		dessin_score_ia();
 		SDL_RenderPresent(renduPrincipale_ia);
-	}else if (etat_ia == PAUSE){
+	}else if (etat_main_ia == PAUSE){
 		dessin_background_score_ia();
 		dessin_score_ia();
 		dessin_pause_ia();
@@ -153,6 +161,8 @@ int reinitialisation_ia(int mode_difficulte){
 		size_main_ia = 32;
 	}
 
+	start_ia = 0;
+
 	etat_ia = START;
 	etat_main_ia = START;
 	etat_deuxieme_ia = START;
@@ -165,20 +175,34 @@ int reinitialisation_ia(int mode_difficulte){
 
 	strcpy(nom_high_score_ia,"");
 
+	int taille_score = 210/size_main_ia;
+
+	terrain_x_ia = width_windows_ia - taille_score*size_main_ia;
+	terrain_y_ia = height_windows_ia;
+
 	return 0;
 }
 
-int initialisation_position_main_ia(){
-	int x = (rand() % (45 + 1 - 23) + 23)*size_main_ia;
-	int y = (rand() % (25 + 1 - 13) + 13)*size_main_ia;
-	int i = (rand() % (22 + 1 - 10) + 10)*size_main_ia;
-	int j = (rand() % (12 + 1 - 5) + 5)*size_main_ia;
+int initialisation_position_main_ia(int mode_ia){
+	srand(time(0));
+	if(mode_ia == 3){
+		posi_main_ia.x = 0;
+		posi_main_ia.y = 0;
+		//SDL_Log("test : %d, terrain_x_ia : %d \n",width_windows_ia-size_main_ia*4,terrain_x_ia);
+		posi_deuxieme_ia.x = terrain_x_ia-size_main_ia;
+		posi_deuxieme_ia.y = 0;
+	}else{
+		int x = (rand() % (45 + 1 - 23) + 23)*size_main_ia;
+		int y = (rand() % (25 + 1 - 13) + 13)*size_main_ia;
+		int i = (rand() % (22 + 1 - 10) + 10)*size_main_ia;
+		int j = (rand() % (12 + 1 - 5) + 5)*size_main_ia;
 
-	posi_main_ia.x = i;
-	posi_main_ia.y = j;
+		posi_main_ia.x = i;
+		posi_main_ia.y = j;
 
-	posi_deuxieme_ia.x = x;
-	posi_deuxieme_ia.y = y;
+		posi_deuxieme_ia.x = x;
+		posi_deuxieme_ia.y = y;
+	}
 
 	tab_deplacement_ia(posi_main_ia.x,posi_main_ia.y,1);
 	tab_deplacement_ia(posi_deuxieme_ia.x,posi_deuxieme_ia.y,2);
@@ -267,14 +291,10 @@ int dessin_pause_ia(){
 }
 
 int dessin_fond_ia(){
-	int taille_score = 210/size_main_ia;
 
 	SDL_SetRenderDrawColor(renduPrincipale_ia,22, 22, 22, 255);
 	SDL_RenderClear(renduPrincipale_ia);
 	SDL_SetRenderDrawColor(renduPrincipale_ia,77, 77, 77, 255);
-
-	terrain_x_ia = width_windows_ia - taille_score*size_main_ia;
-	terrain_y_ia = height_windows_ia;
 
 	for(int x = 0; x <= terrain_x_ia; x += size_main_ia){
 		SDL_RenderDrawLine(renduPrincipale_ia, x, 0, x, height_windows_ia);
@@ -327,8 +347,6 @@ int dessin_background_high_score_ia(){
 int input_ia(){
 	SDL_Event touche;
 
-	SDL_Log("main : %d deuxieme : %d", prev_etat_main_ia,prev_etat_deuxieme_ia);
-
 	if(SDL_PollEvent(&touche)){
 		switch(touche.type){
 			case SDL_MOUSEMOTION:
@@ -351,18 +369,6 @@ int input_ia(){
 				}else if(touche.key.keysym.sym == SDLK_q && etat_ia < GAME_OVER_1_win){
 					etat_main_ia = LEFT_1;
 					
-				}else if(touche.key.keysym.sym == SDLK_UP && etat_ia < GAME_OVER_1_win){
-					etat_deuxieme_ia = UP_2;
-
-				}else if(touche.key.keysym.sym == SDLK_DOWN && etat_ia < GAME_OVER_1_win){
-					etat_deuxieme_ia = DOWN_2;
-
-				}else if(touche.key.keysym.sym == SDLK_RIGHT && etat_ia < GAME_OVER_1_win){
-					etat_deuxieme_ia = RIGHT_2;
-					
-				}else if(touche.key.keysym.sym == SDLK_LEFT && etat_ia < GAME_OVER_1_win){
-					etat_deuxieme_ia = LEFT_2;
-					
 				}else if(touche.key.keysym.sym == SDLK_SPACE && etat_ia < GAME_OVER_1_win){
 					prev_etat_main_ia = etat_main_ia;
 					prev_etat_deuxieme_ia = etat_deuxieme_ia;
@@ -373,10 +379,8 @@ int input_ia(){
 					switch_screen_outils(fenetrePrincipale_ia,renduPrincipale_ia,music_de_fond_ia,main_surface_ia,main_texture_ia, etat_ia,deuxieme_surface_ia,deuxieme_texture_ia);
 				}
 
-				if(etat_ia == START){
+				if(etat_ia == START && etat_main_ia != START){
 					etat_ia = IN_GAME;
-					if(etat_deuxieme_ia == START)etat_deuxieme_ia = RIGHT_2;
-					if(etat_main_ia == START)etat_main_ia = RIGHT_1;
 				}
 
 				if(etat_main_ia == PAUSE && etat_deuxieme_ia != PAUSE){
@@ -594,3 +598,368 @@ int init_ia(){
 	font_general_ia = TTF_OpenFont("./Font/font.ttf", 16);
 }
 /*------------------------------------------*/
+
+int chance_ia(int choix1,int choix2){
+	if((rand() % (2 - 1 + 1)) + 1 == 1){
+		return choix1;
+	}else{
+		return choix2;
+	}
+}
+
+int choix_depart_ia(){
+	srand(time(0));
+
+	int coordonne_x = terrain_x_ia-posi_deuxieme_ia.x;
+	int coordonne_y = terrain_y_ia-posi_deuxieme_ia.y;
+
+	if((rand() % (2 - 1 + 1)) + 1 == 1){
+		if(coordonne_x > posi_deuxieme_ia.x){
+		etat_deuxieme_ia = RIGHT_2;
+	}else if(coordonne_x < posi_deuxieme_ia.x){
+		etat_deuxieme_ia = LEFT_2;
+	}
+	}else{
+		if(coordonne_y > posi_deuxieme_ia.y){
+		etat_deuxieme_ia = UP_2;
+	}else if(coordonne_y < posi_deuxieme_ia.y){
+		etat_deuxieme_ia = DOWN_2;
+	}
+	}
+}
+int brain_miroir_ia(){
+
+	int decalage = 3;
+
+	if(etat_main_ia == UP_1 && compteur_miroire_ia == 0){
+		etat_deuxieme_ia = UP_2;
+		compteur_miroire_ia = decalage;
+	}else if(etat_main_ia == DOWN_1 && compteur_miroire_ia == 0){
+		etat_deuxieme_ia = DOWN_2;
+		compteur_miroire_ia = decalage;
+	}else if(etat_main_ia == LEFT_1 && compteur_miroire_ia == 0){
+		etat_deuxieme_ia = RIGHT_2;
+		compteur_miroire_ia = decalage;
+	}else if(etat_main_ia == RIGHT_1 && compteur_miroire_ia == 0){
+		etat_deuxieme_ia = LEFT_2;
+		compteur_miroire_ia = decalage;
+	}else if(compteur_miroire_ia != 0){
+		compteur_miroire_ia--;
+	}
+
+	//SDL_Log("etat : %d",etat_deuxieme_ia);
+}
+
+int brain_classique_ia(){
+	int UP = 0;
+	int DOWN = 0;
+	int LEFT = 0;
+	int RIGHT = 0;
+
+	int vision = size_main_ia*5;
+
+	if(posi_deuxieme_ia.y < vision){
+		UP = 1;
+	}else{
+		if(etat_deuxieme_ia == UP_2){
+		for (int i = 1; i < 2; ++i){
+			if(tableau_deplacement_ia[posi_deuxieme_ia.x][posi_deuxieme_ia.y-size_main_ia*i] != 0){
+				UP = 1;
+			}
+		}
+	}
+}
+
+	if(posi_deuxieme_ia.y > terrain_y_ia-vision){
+		DOWN = 1;
+	}else{
+		if(etat_deuxieme_ia == DOWN_2){
+			for (int i = 1; i < 2; ++i){
+				if(tableau_deplacement_ia[posi_deuxieme_ia.x][posi_deuxieme_ia.y+size_main_ia*i] != 0){
+					DOWN = 1;
+				}
+			}
+		}
+	}
+
+	if(posi_deuxieme_ia.x > terrain_x_ia-vision){
+		RIGHT = 1;
+	}else{
+		if(etat_deuxieme_ia == RIGHT_2){
+			for (int i = 1; i < 2; ++i){
+				if(tableau_deplacement_ia[posi_deuxieme_ia.x+size_main_ia*i][posi_deuxieme_ia.y]  != 0){
+					RIGHT = 1;
+				}
+			}
+		}
+	}
+
+	if(posi_deuxieme_ia.x < vision){
+		LEFT = 1;
+	}else{
+		if(etat_deuxieme_ia == LEFT_2){
+		for (int i = 1; i < 2; ++i){
+			if(tableau_deplacement_ia[posi_deuxieme_ia.x-size_main_ia*i][posi_deuxieme_ia.y]  != 0){
+				LEFT = 1;
+			}
+		}
+	}
+}
+	if(etat_ia == IN_GAME && etat_main_ia != PAUSE){
+		if(etat_deuxieme_ia == UP_2){
+			if(UP == 1){
+				etat_deuxieme_ia = LEFT_2;
+			}else if(UP == 1 && LEFT == 1){
+				etat_deuxieme_ia = DOWN_2;
+			}else if(UP == 1 && RIGHT == 1){
+				etat_deuxieme_ia = DOWN_2;
+			}
+		}else if(etat_deuxieme_ia == DOWN_2){
+			if(DOWN == 1){
+				etat_deuxieme_ia = RIGHT_2;
+			}else if(DOWN == 1 && LEFT == 1){
+				etat_deuxieme_ia = RIGHT_2;
+			}else if(DOWN == 1 && RIGHT == 1){
+				etat_deuxieme_ia = LEFT_2;
+			}
+		}else if(etat_deuxieme_ia == LEFT_2){
+			if(LEFT == 1){
+				etat_deuxieme_ia = DOWN_2;
+			}else if(LEFT == 1 && UP == 1){
+				etat_deuxieme_ia = DOWN_2;
+			}else if(LEFT == 1 && DOWN == 1){
+				etat_deuxieme_ia = RIGHT_2;
+			}
+		}else if(etat_deuxieme_ia == RIGHT_2){
+			if(RIGHT == 1){
+				etat_deuxieme_ia = UP_2;
+			}else if(RIGHT == 1 && UP == 1){
+				etat_deuxieme_ia = UP_2;
+			}else if(RIGHT == 1 && DOWN == 1){
+				etat_deuxieme_ia = UP_2;
+			}
+		}else if(UP == 0 && DOWN == 0 && LEFT == 0 && RIGHT == 0 && start_ia != 0 && timer_deplacement_ia == 0){
+			etat_deuxieme_ia = etat_deuxieme_ia;
+		}else if(start_ia == 0){
+			choix_depart_ia();
+			start_ia = 1;
+		}
+	}
+	//SDL_Log("UP : %d DOWN : %d LEFT : %d RIGHT : %d \n posi_deuxieme_ia.x : %d posi_deuxieme_ia.y : %d etat_deuxieme_ia : %d\n",UP,DOWN,LEFT,RIGHT,posi_deuxieme_ia.x,posi_deuxieme_ia.y,etat_deuxieme_ia);
+}
+
+int brain_ia(){
+
+	srand(time(0));
+
+	int UP = 0;
+	int DOWN = 0;
+	int LEFT = 0;
+	int RIGHT = 0;
+
+	int vision = size_main_ia*2;
+
+	if(posi_deuxieme_ia.y < vision){
+		UP = 1;
+	}else{
+		if(etat_deuxieme_ia == UP_2){
+		for (int i = 1; i < 2; ++i){
+			if(tableau_deplacement_ia[posi_deuxieme_ia.x][posi_deuxieme_ia.y-size_main_ia*i] != 0){
+				UP = 1;
+			}
+		}
+	}
+}
+
+	if(posi_deuxieme_ia.y > terrain_y_ia-vision){
+		DOWN = 1;
+	}else{
+		if(etat_deuxieme_ia == DOWN_2){
+			for (int i = 1; i < 2; ++i){
+				if(tableau_deplacement_ia[posi_deuxieme_ia.x][posi_deuxieme_ia.y+size_main_ia*i] != 0){
+					DOWN = 1;
+				}
+			}
+		}
+	}
+
+	if(posi_deuxieme_ia.x > terrain_x_ia-vision){
+		RIGHT = 1;
+	}else{
+		if(etat_deuxieme_ia == RIGHT_2){
+			for (int i = 1; i < 2; ++i){
+				if(tableau_deplacement_ia[posi_deuxieme_ia.x+size_main_ia*i][posi_deuxieme_ia.y]  != 0){
+					RIGHT = 1;
+				}
+			}
+		}
+	}
+
+	if(posi_deuxieme_ia.x < vision){
+		LEFT = 1;
+	}else{
+		if(etat_deuxieme_ia == LEFT_2){
+		for (int i = 1; i < 2; ++i){
+			if(tableau_deplacement_ia[posi_deuxieme_ia.x-size_main_ia*i][posi_deuxieme_ia.y]  != 0){
+				LEFT = 1;
+			}
+		}
+	}
+}
+	
+	if(etat_ia == IN_GAME && etat_main_ia != PAUSE){
+		if(UP == 1 && timer_deplacement_ia == 0 && changement_direction_ia == 0){
+			if(etat_deuxieme_ia == UP_2){
+				etat_deuxieme_ia = RIGHT_2;
+				changement_direction_ia = 1;
+			}else if(etat_deuxieme_ia == DOWN_2){
+				etat_deuxieme_ia = DOWN_2;
+			}else if(etat_deuxieme_ia == LEFT_2){
+				etat_deuxieme_ia = DOWN_2;
+			}else if(etat_deuxieme_ia == RIGHT_2){
+				etat_deuxieme_ia = DOWN_2;
+			}
+
+			timer_deplacement_ia = (rand() % (3 - 1 + 1)) + 1;
+		}else if(DOWN == 1 && timer_deplacement_ia == 0 && changement_direction_ia == 0){
+			if(etat_deuxieme_ia == UP_2){
+				etat_deuxieme_ia = UP_2;
+			}else if(etat_deuxieme_ia == DOWN_2){
+				etat_deuxieme_ia = RIGHT_2;
+				changement_direction_ia = 2;
+			}else if(etat_deuxieme_ia == LEFT_2){
+				etat_deuxieme_ia = DOWN_2;
+			}else if(etat_deuxieme_ia == RIGHT_2){
+				etat_deuxieme_ia = DOWN_2;
+			}
+
+			timer_deplacement_ia = (rand() % (3 - 1 + 1)) + 1;
+		}else if(LEFT == 1 && timer_deplacement_ia == 0 && changement_direction_ia == 0){
+			if(etat_deuxieme_ia == UP_2){
+				etat_deuxieme_ia = RIGHT_2;
+			}else if(etat_deuxieme_ia == DOWN_2){
+				etat_deuxieme_ia = RIGHT_2;
+			}else if(etat_deuxieme_ia == LEFT_2){
+				etat_deuxieme_ia = UP_2;
+				changement_direction_ia = 4;
+			}else if(etat_deuxieme_ia == RIGHT_2){
+				etat_deuxieme_ia = RIGHT_2;
+			}
+
+			timer_deplacement_ia = (rand() % (3 - 1 + 1)) + 1;
+		}else if(RIGHT == 1 && timer_deplacement_ia == 0 && changement_direction_ia == 0){
+			if(etat_deuxieme_ia == UP_2){
+				etat_deuxieme_ia = LEFT_2;
+			}else if(etat_deuxieme_ia == DOWN_2){
+				etat_deuxieme_ia = LEFT_2;
+			}else if(etat_deuxieme_ia == LEFT_2){
+				etat_deuxieme_ia = LEFT_2;
+			}else if(etat_deuxieme_ia == RIGHT_2){
+				etat_deuxieme_ia = UP_2;
+				changement_direction_ia = 3;
+			}
+
+			timer_deplacement_ia = (rand() % (3 - 1 + 1)) + 1;
+		}else if(LEFT == 1 && UP == 1 && timer_deplacement_ia == 0 && changement_direction_ia == 0){
+			if(etat_deuxieme_ia == UP_2){
+				etat_deuxieme_ia = RIGHT_2;
+				changement_direction_ia = 1;
+			}else if(etat_deuxieme_ia == DOWN_2){
+				etat_deuxieme_ia = DOWN_2;
+				changement_direction_ia = 4;
+			}else if(etat_deuxieme_ia == LEFT_2){
+				etat_deuxieme_ia = DOWN_2;
+				changement_direction_ia = 4;
+			}else if(etat_deuxieme_ia == RIGHT_2){
+				etat_deuxieme_ia = RIGHT_2;
+				changement_direction_ia = 1;
+			}
+
+			timer_deplacement_ia = (rand() % (3 - 1 + 1)) + 1;
+		}else if(RIGHT == 1 && UP == 1 && timer_deplacement_ia == 0 && changement_direction_ia == 0){
+			if(etat_deuxieme_ia == UP_2){
+				etat_deuxieme_ia = LEFT_2;
+				changement_direction_ia = 1;
+			}else if(etat_deuxieme_ia == DOWN_2){
+				etat_deuxieme_ia = DOWN_2;
+				changement_direction_ia = 3;
+			}else if(etat_deuxieme_ia == LEFT_2){
+				etat_deuxieme_ia = LEFT_2;
+				changement_direction_ia = 1;
+			}else if(etat_deuxieme_ia == RIGHT_2){
+				etat_deuxieme_ia = DOWN_2;
+				changement_direction_ia = 3;
+			}
+
+			timer_deplacement_ia = (rand() % (3 - 1 + 1)) + 1;
+		}else if(LEFT == 1 && DOWN == 1 && timer_deplacement_ia == 0 && changement_direction_ia == 0){
+			if(etat_deuxieme_ia == UP_2){
+				etat_deuxieme_ia = UP_2;
+				changement_direction_ia = 4;
+			}else if(etat_deuxieme_ia == DOWN_2){
+				etat_deuxieme_ia = RIGHT_2;
+				changement_direction_ia = 2;
+			}else if(etat_deuxieme_ia == LEFT_2){
+				etat_deuxieme_ia = UP_2;
+				changement_direction_ia = 4;
+			}else if(etat_deuxieme_ia == RIGHT_2){
+				etat_deuxieme_ia = RIGHT_2;
+				changement_direction_ia = 2;
+			}
+
+			timer_deplacement_ia = (rand() % (3 - 1 + 1)) + 1;
+		}else if(RIGHT == 1 && DOWN == 1 && timer_deplacement_ia == 0 && changement_direction_ia == 0){
+			if(etat_deuxieme_ia == UP_2){
+				etat_deuxieme_ia = UP_2;
+				changement_direction_ia = 3;
+			}else if(etat_deuxieme_ia == DOWN_2){
+				etat_deuxieme_ia = LEFT_2;
+				changement_direction_ia = 2;
+			}else if(etat_deuxieme_ia == LEFT_2){
+				etat_deuxieme_ia = LEFT_2;
+				changement_direction_ia = 2;
+			}else if(etat_deuxieme_ia == RIGHT_2){
+				etat_deuxieme_ia = UP_2;
+				changement_direction_ia = 4;
+			}
+
+			timer_deplacement_ia = (rand() % (3 - 1 + 1)) + 1;
+		}else if(changement_direction_ia == 1 && timer_deplacement_ia == 0){
+			etat_deuxieme_ia = DOWN_2;
+
+			changement_direction_ia = 0;
+		}else if(changement_direction_ia == 2 && timer_deplacement_ia == 0){
+			etat_deuxieme_ia = UP_2;
+
+			changement_direction_ia = 0;
+		}else if(changement_direction_ia == 3 && timer_deplacement_ia == 0){
+			etat_deuxieme_ia = LEFT_2;
+
+			changement_direction_ia = 0;
+		}else if(changement_direction_ia == 4 && timer_deplacement_ia == 0){
+			etat_deuxieme_ia = RIGHT_2;
+
+			changement_direction_ia = 0;
+		}else if(UP == 0 && DOWN == 0 && LEFT == 0 && RIGHT == 0 && start_ia != 0 && timer_deplacement_ia == 0){
+			etat_deuxieme_ia = etat_deuxieme_ia;
+		}else if(start_ia == 0){
+			choix_depart_ia();
+			start_ia = 1;
+		}
+	}
+
+	if(timer_deplacement_ia != 0){
+		timer_deplacement_ia--;
+	}
+	//SDL_Log("UP : %d DOWN : %d LEFT : %d RIGHT : %d \n posi_deuxieme_ia.x : %d posi_deuxieme_ia.y : %d etat_deuxieme_ia : %d\n",UP,DOWN,LEFT,RIGHT,posi_deuxieme_ia.x,posi_deuxieme_ia.y,etat_deuxieme_ia);
+}
+
+void choix_mode_ia(int mode_ia){
+	if(mode_ia == 1){
+		brain_classique_ia();
+	}else if(mode_ia == 2){
+		brain_ia();
+	}else if(mode_ia == 3){
+		brain_miroir_ia();
+	}
+}
