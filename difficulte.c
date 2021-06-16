@@ -30,6 +30,7 @@ SDL_Renderer* renduPrincipale_difficulte = NULL;
 
 TTF_Font* font_general_difficulte = NULL;
 
+//Boucle principale
 int difficulte(int mode_difficulte){
 	reinitialisation_difficulte(mode_difficulte);
 	init_difficulte();
@@ -42,7 +43,9 @@ int difficulte(int mode_difficulte){
 	}
 	return 0;
 }
+/*------------------------------------------*/
 
+//Fonction de réinitialisation des variable global
 int reinitialisation_difficulte(int mode_difficulte){
 	if(mode_difficulte == 1){
 		etat_difficulte = FACILE;
@@ -53,7 +56,9 @@ int reinitialisation_difficulte(int mode_difficulte){
 	}
 	return 0;
 }
+/*------------------------------------------*/
 
+//Fonction d'affichage du menu
 int set_difficulte(){
 	dessin_menu_difficulte();
 	SDL_RenderPresent(renduPrincipale_difficulte);
@@ -65,8 +70,9 @@ int set_fond_menu_difficulte(){
 	dessin_menu_difficulte();
 	SDL_RenderPresent(renduPrincipale_difficulte);
 }
+/*------------------------------------------*/
 
-
+//Fonction qui vont permettre de dessiner les différents éléments à afficher
 int dessin_texte_difficulte(char *texte, SDL_Color couleur,int coef_position,int size_font_x,int size_font_y){
 
 	SDL_Surface* texte_difficulte_surface = TTF_RenderText_Solid(font_general_difficulte, texte , couleur);
@@ -121,7 +127,9 @@ int dessin_menu_difficulte(){
 		dessin_texte_difficulte("Difficile",couleur_font_selection,0,400,100);
 	}
 }
+/*------------------------------------------*/
 
+//Fonction relative au input du joueur
 int input_difficulte(){
 	SDL_Event touche;
 
@@ -163,7 +171,9 @@ int input_difficulte(){
 			}
 		}
 	}
+/*------------------------------------------*/
 
+//Fonction initialisation
 int init_difficulte(){
 
 	if(SDL_Init(SDL_INIT_VIDEO < 0)){
@@ -203,7 +213,9 @@ int init_difficulte(){
 
     font_general_difficulte = TTF_OpenFont("./Font/font.ttf", 16);
 }
+/*------------------------------------------*/
 
+//Fonction qui vont permettre de gérer le delay, la fermetture et changement de fenetre ou encore de récuperer la taille de la fenetre afficher
 int delay_game_difficulte(){
 	int lastTicks = 0;
 	int maxFPS = 60;
@@ -235,3 +247,4 @@ int switch_screen_difficulte(int mode_difficulte){
 	menu(mode_difficulte);
 	return 0;
 }
+/*------------------------------------------*/

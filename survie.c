@@ -159,7 +159,7 @@ int initialisation_position_main_survie(){
 }
 /*------------------------------------------*/
 
-//Fonction de dessin
+//Fonction qui vont permettre de dessiner les différents éléments à afficher
 int dessin_main_survie(){
 	SDL_Rect dest = { posi_main_survie.x,posi_main_survie.y, size_main_survie, size_main_survie};
 	SDL_RenderCopy(renduPrincipale_survie,main_texture_survie,NULL,&dest);
@@ -406,7 +406,6 @@ int tab_deplacement_survie(int x, int y){
 	}
 	return 0;
 }
-
 /*------------------------------------------*/
 
 //Fonction initialisation

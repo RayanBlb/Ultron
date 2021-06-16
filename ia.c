@@ -107,7 +107,7 @@ int ia(int mode_difficulte,int mode_ia){
 }
 /*------------------------------------------*/
 
-//Fonction d'affichage en fonction de l'état de ia
+//Fonction d'affichage en fonction de l'état des joueurs
 int set_ia(){
 	if(etat_ia && etat_ia < GAME_OVER_1_win && etat_ia != PAUSE){
 		dessin_main_ia();
@@ -151,7 +151,7 @@ int set_game_over_ia(){
 }
 /*------------------------------------------*/
 
-//Fonction de réinitialisation des variable global
+//Fonction de réinitialisation ou initialisation des variable global
 int reinitialisation_ia(int mode_difficulte){
 	if(mode_difficulte == 1){
 		size_main_ia = 8;
@@ -210,7 +210,7 @@ int initialisation_position_main_ia(int mode_ia){
 }
 /*------------------------------------------*/
 
-//Fonction de dessin
+//Fonction qui vont permettre de dessiner les différents éléments à afficher
 int dessin_main_ia(){
 	SDL_Rect dest = { posi_main_ia.x,posi_main_ia.y, size_main_ia, size_main_ia};
 	SDL_RenderCopy(renduPrincipale_ia,main_texture_ia,NULL,&dest);

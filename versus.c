@@ -191,7 +191,7 @@ int initialisation_position_main_versus(){
 }
 /*------------------------------------------*/
 
-//Fonction de dessin
+//Fonction qui vont permettre de dessiner les différents éléments à afficher
 int dessin_main_versus(){
 	SDL_Rect dest = { posi_main_versus.x,posi_main_versus.y, size_main_versus, size_main_versus};
 	SDL_RenderCopy(renduPrincipale_versus,main_texture_versus,NULL,&dest);

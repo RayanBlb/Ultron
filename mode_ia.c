@@ -30,6 +30,7 @@ SDL_Renderer* renduPrincipale_mode_ia = NULL;
 
 TTF_Font* font_general_mode_ia = NULL;
 
+//Boucle principale
 int mode_ia(int mode_difficulte){
 	reinitialisation_mode_ia(mode_difficulte);
 	init_mode_ia();
@@ -42,13 +43,17 @@ int mode_ia(int mode_difficulte){
 	}
 	return 0;
 }
+/*------------------------------------------*/
 
+//Fonction de réinitialisation des variable global
 int reinitialisation_mode_ia(int mode_difficulte){
 	etat_mode_ia = CLASSIQUE;
 
 	return 0;
 }
+/*------------------------------------------*/
 
+//Fonction d'affichage du menu du choix de l'ia
 int set_mode_ia(){
 	dessin_menu_mode_ia();
 	SDL_RenderPresent(renduPrincipale_mode_ia);
@@ -60,8 +65,9 @@ int set_fond_menu_mode_ia(){
 	dessin_menu_mode_ia();
 	SDL_RenderPresent(renduPrincipale_mode_ia);
 }
+/*------------------------------------------*/
 
-
+//Fonction qui vont permettre de dessiner les différents éléments à afficher
 int dessin_texte_mode_ia(char *texte, SDL_Color couleur,int coef_position,int size_font_x,int size_font_y){
 
 	SDL_Surface* texte_mode_ia_surface = TTF_RenderText_Solid(font_general_mode_ia, texte , couleur);
@@ -116,7 +122,9 @@ int dessin_menu_mode_ia(){
 		dessin_texte_mode_ia("MIROIR",couleur_font_selection,1,400,100);
 	}
 }
+/*------------------------------------------*/
 
+//Fonction relative au input du joueur
 int input_mode_ia(int mode_difficulte){
 	SDL_Event touche;
 
@@ -159,7 +167,9 @@ int input_mode_ia(int mode_difficulte){
 		}
 		return 0;
 	}
+/*------------------------------------------*/
 
+//Fonction initialisation
 int init_mode_ia(){
 
 	if(SDL_Init(SDL_INIT_VIDEO < 0)){
@@ -199,7 +209,9 @@ int init_mode_ia(){
 
     font_general_mode_ia = TTF_OpenFont("./Font/font.ttf", 16);
 }
+/*------------------------------------------*/
 
+//Fonction qui vont permettre de gérer le delay, la fermetture et changement de fenetre ou encore de récuperer la taille de la fenetre afficher
 int delay_game_mode_ia(){
 	int lastTicks = 0;
 	int maxFPS = 60;
@@ -237,3 +249,4 @@ int switch_screen_mode_ia(int mode_difficulte){
 	menu(mode_difficulte);
 	return 0;
 }
+/*------------------------------------------*/

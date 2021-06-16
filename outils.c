@@ -128,7 +128,7 @@ int free_liste_high_score_outils(liste **pFirst){
 
 /*------------------------------------------*/
 
-//Gestion des FPS
+//Gestion des FPS pour les modes survie, versus et ia
 int delay_game_outils(int etat_survie, int mode_de_jeu){
 	int lastTicks_survie = 0;
 	int delay_survie = 0;
@@ -152,12 +152,12 @@ int delay_game_outils(int etat_survie, int mode_de_jeu){
 
 //Gestion de la musique
 int play_musique_outils(Mix_Music **music_de_fond_survie){
-	*music_de_fond_survie = Mix_LoadMUS("../../Documents/music.mp3");
+	*music_de_fond_survie = Mix_LoadMUS("./Musique/music.mp3");
 	Mix_PlayMusic(*music_de_fond_survie, -1);
 }
 
 int play_explosion_outils(Mix_Chunk **explosion_survie){
-	*explosion_survie = Mix_LoadWAV("../../Documents/explosion.wav");
+	*explosion_survie = Mix_LoadWAV("./Musique/explosion.wav");
 	Mix_PlayChannel(-1, *explosion_survie, 0);
 }
 /*------------------------------------------*/
@@ -189,7 +189,7 @@ int free_tableau_outils(int ***tableau_deplacement, int width_windows_survie){
 }
 /*------------------------------------------*/
 
-//Fonction utilise
+//Fonction utilise afin de compter le nombre de caractères d'un string
 int compte_nom_high_score_outils(char *nom_high_score_survie){
 	int i = 0;
 	while(strcmp(&nom_high_score_survie[i],"") != 0){
@@ -200,7 +200,7 @@ int compte_nom_high_score_outils(char *nom_high_score_survie){
 
 /*------------------------------------------*/
 
-//Fonction de transition
+//Fonction de transition pour fermer une fenetre ou changer de fenetre
 int fermeture_sdl_outils(SDL_Window *fenetrePrincipale_survie, SDL_Renderer *renduPrincipale_survie, Mix_Chunk *explosion_survie, SDL_Surface *main_surface_survie, SDL_Texture *main_texture_survie,SDL_Surface *deuxieme_surface_versus,SDL_Texture *deuxieme_texture_versus){
 	SDL_DestroyRenderer(renduPrincipale_survie);
 	SDL_DestroyWindow(fenetrePrincipale_survie);

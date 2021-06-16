@@ -34,6 +34,7 @@ SDL_Renderer* renduPrincipale_menu = NULL;
 
 TTF_Font* font_general_menu = NULL;
 
+//Boucle principale
 int menu(int mode_difficulte){
 	reinitialisation_menu(mode_difficulte);
 	init_menu();
@@ -46,7 +47,9 @@ int menu(int mode_difficulte){
 	}
 	return 0;
 }
+/*------------------------------------------*/
 
+//Fonction de réinitialisation des variable global
 int reinitialisation_menu(int mode_difficulte){
 	if(mode_difficulte == 1){
 		mode_difficulte_menu = 1;
@@ -58,7 +61,9 @@ int reinitialisation_menu(int mode_difficulte){
 	etat_menu = START_SURVIE;
 	return 0;
 }
+/*------------------------------------------*/
 
+//Fonction d'affichage du menu
 int set_menu(){
 	dessin_menu_menu();
 	SDL_RenderPresent(renduPrincipale_menu);
@@ -70,8 +75,9 @@ int set_fond_menu_menu(){
 	dessin_menu_menu();
 	SDL_RenderPresent(renduPrincipale_menu);
 }
+/*------------------------------------------*/
 
-
+//Fonction qui vont permettre de dessiner les différents éléments à afficher
 int dessin_texte_menu(char *texte, SDL_Color couleur,int coef_position,int size_font_x,int size_font_y){
 
 	SDL_Surface* texte_menu_surface = TTF_RenderText_Solid(font_general_menu, texte , couleur);
@@ -156,7 +162,9 @@ int dessin_menu_menu(){
 		dessin_texte_menu("Quitter",couleur_font_selection,3,400,100);	
 	}
 }
+/*------------------------------------------*/
 
+//Fonction relative au input du joueur
 int input_menu(){
 	SDL_Event touche;
 
@@ -204,7 +212,9 @@ int input_menu(){
 			}
 		}
 	}
+/*------------------------------------------*/
 
+//Fonction initialisation
 int init_menu(){
 
 	if(SDL_Init(SDL_INIT_VIDEO < 0)){
@@ -244,7 +254,9 @@ int init_menu(){
 
     font_general_menu = TTF_OpenFont("./Font/font.ttf", 16);
 }
+/*------------------------------------------*/
 
+//Fonction qui vont permettre de gérer le delay, la fermetture et changement de fenetre ou encore de récuperer la taille de la fenetre afficher
 int delay_game_menu(){
 	int lastTicks = 0;
 	int maxFPS = 60;
@@ -286,3 +298,4 @@ int switch_screen_menu(char *mode){
 	}
 	return 0;
 }
+/*------------------------------------------*/

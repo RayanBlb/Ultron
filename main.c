@@ -14,6 +14,7 @@
 #include "ia.h"
 #include "mode_ia.h"
 
+//Le main appel uniquement la fonction menu avec un niveau de difficulter de normal
 int main(int argc, char const *argv[])
 {
 	menu(2);

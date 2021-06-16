@@ -32,6 +32,7 @@ SDL_Renderer* renduPrincipale_high_score = NULL;
 
 TTF_Font* font_general_high_score = NULL;
 
+//Boucle principale
 int high_score(){
 	reinitialisation_high_score();
 	init_high_score();
@@ -44,20 +45,24 @@ int high_score(){
 	}
 	return 0;
 }
+/*------------------------------------------*/
 
+//Fonction de réinitialisation des variable global
 int reinitialisation_high_score(){
 	etat_high_score = TABLEAU_SURVIE;
 	return 0;
 }
+/*------------------------------------------*/
 
-
+//Fonction d'affichage du high score
 int set_high_score(){
 	dessin_fond_high_score();
 	dessin_high_score_high_score();
 	SDL_RenderPresent(renduPrincipale_high_score);
 }
+/*------------------------------------------*/
 
-
+//Fonction qui vont permettre de dessiner les différents éléments à afficher
 int dessin_texte_high_score(char *texte, SDL_Color couleur,int coef_position,int size_font_x,int size_font_y){
 
 	SDL_Surface* texte_high_score_surface = TTF_RenderText_Solid(font_general_high_score, texte , couleur);
@@ -136,7 +141,9 @@ int read_high_score(char *file_name){
 
 	return 0;
 }
+/*------------------------------------------*/
 
+//Fonction qui vont permettre de supprimer le contenu d'un fichier
 int supprimer_classement_high_score(){
 	if(etat_high_score == TABLEAU_SURVIE){
 		write_high_score("./score_survie.txt");
@@ -152,7 +159,9 @@ int write_high_score(char *file_name){
 	fichier = fopen(file_name, "w");
 	fclose(fichier);
 }
+/*------------------------------------------*/
 
+//Fonction relative au input du joueur
 int input_high_score(){
 	SDL_Event touche;
 
@@ -191,7 +200,9 @@ int input_high_score(){
 			}
 		}
 	}
+/*------------------------------------------*/
 
+//Fonction initialisation
 int init_high_score(){
 
 	if(SDL_Init(SDL_INIT_VIDEO < 0)){
@@ -231,7 +242,9 @@ int init_high_score(){
 
     font_general_high_score = TTF_OpenFont("./Font/font.ttf", 16);
 }
+/*------------------------------------------*/
 
+//Fonction qui vont permettre de gérer le delay, la fermetture et changement de fenetre ou encore de récuperer la taille de la fenetre afficher
 int delay_game_high_score(){
 	int lastTicks = 0;
 	int maxFPS = 60;
@@ -263,3 +276,4 @@ int switch_screen_high_score(){
 	menu(0);
 	return 0;
 }
+/*------------------------------------------*/
