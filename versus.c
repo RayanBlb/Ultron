@@ -335,7 +335,7 @@ void input_versus(){
 				input_versus();
 				break;
 			case SDL_QUIT:
-				fermeture_sdl_outils(fenetrePrincipale_versus,renduPrincipale_versus,explosion_versus,main_surface_versus,main_texture_versus,deuxieme_surface_versus,deuxieme_texture_versus);
+				fermeture_sdl_outils(fenetrePrincipale_versus,renduPrincipale_versus,explosion_versus,main_surface_versus,main_texture_versus,deuxieme_surface_versus,deuxieme_texture_versus,font_general_versus);
 				break;
 
 			case SDL_KEYDOWN:
@@ -370,7 +370,7 @@ void input_versus(){
 					etat_deuxieme_versus = PAUSE;
 
 				}else if(touche.key.keysym.sym == SDLK_ESCAPE){
-					switch_screen_outils(fenetrePrincipale_versus,renduPrincipale_versus,music_de_fond_versus,main_surface_versus,main_texture_versus, etat_versus,deuxieme_surface_versus,deuxieme_texture_versus);
+					switch_screen_outils(fenetrePrincipale_versus,renduPrincipale_versus,music_de_fond_versus,main_surface_versus,main_texture_versus, etat_versus,deuxieme_surface_versus,deuxieme_texture_versus,font_general_versus);
 				}
 
 				if(etat_versus == START){
@@ -399,7 +399,7 @@ void input_high_score_versus(){
 				input_menu();
 				break;
 			case SDL_QUIT:
-				fermeture_sdl_outils(fenetrePrincipale_versus,renduPrincipale_versus,explosion_versus,main_surface_versus,main_texture_versus,deuxieme_surface_versus,deuxieme_texture_versus);
+				fermeture_sdl_outils(fenetrePrincipale_versus,renduPrincipale_versus,explosion_versus,main_surface_versus,main_texture_versus,deuxieme_surface_versus,deuxieme_texture_versus,font_general_versus);
 				break;
 
 			case SDL_KEYDOWN:
@@ -411,11 +411,11 @@ void input_high_score_versus(){
 					strcpy(&nom_high_score_versus[compteur],"");
 				}else if(touche.key.keysym.sym == SDLK_RETURN){
 					read_file_high_score_outils("./score_versus.txt",nom_high_score_versus,score_versus,pFirst_versus);
-					switch_screen_outils(fenetrePrincipale_versus,renduPrincipale_versus,music_de_fond_versus,main_surface_versus,main_texture_versus,etat_versus,deuxieme_surface_versus,deuxieme_texture_versus);
+					switch_screen_outils(fenetrePrincipale_versus,renduPrincipale_versus,music_de_fond_versus,main_surface_versus,main_texture_versus,etat_versus,deuxieme_surface_versus,deuxieme_texture_versus,font_general_versus);
 				}else if(touche.key.keysym.sym == SDLK_LSHIFT){
 				}else if(touche.key.keysym.sym == SDLK_RSHIFT){
 				}else if(touche.key.keysym.sym == SDLK_ESCAPE){
-					switch_screen_outils(fenetrePrincipale_versus,renduPrincipale_versus,music_de_fond_versus,main_surface_versus,main_texture_versus, etat_versus,deuxieme_surface_versus,deuxieme_texture_versus);
+					switch_screen_outils(fenetrePrincipale_versus,renduPrincipale_versus,music_de_fond_versus,main_surface_versus,main_texture_versus, etat_versus,deuxieme_surface_versus,deuxieme_texture_versus,font_general_versus);
 				}
 				break;
 			}

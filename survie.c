@@ -294,7 +294,7 @@ void input_survie(){
 				input_survie();
 				break;
 			case SDL_QUIT:
-				fermeture_sdl_outils(fenetrePrincipale_survie,renduPrincipale_survie,explosion_survie,main_surface_survie,main_texture_survie,NULL,NULL);
+				fermeture_sdl_outils(fenetrePrincipale_survie,renduPrincipale_survie,explosion_survie,main_surface_survie,main_texture_survie,NULL,NULL,font_general_survie);
 				break;
 
 			case SDL_KEYDOWN:
@@ -314,7 +314,7 @@ void input_survie(){
 					etat_survie = PAUSE;
 
 				}else if(touche.key.keysym.sym == SDLK_ESCAPE){
-					switch_screen_outils(fenetrePrincipale_survie,renduPrincipale_survie,music_de_fond_survie,main_surface_survie,main_texture_survie, etat_survie,NULL,NULL);
+					switch_screen_outils(fenetrePrincipale_survie,renduPrincipale_survie,music_de_fond_survie,main_surface_survie,main_texture_survie, etat_survie,NULL,NULL,font_general_survie);
 				}
 				break;
 			}
@@ -330,7 +330,7 @@ void input_high_score_survie(){
 				input_menu();
 				break;
 			case SDL_QUIT:
-				fermeture_sdl_outils(fenetrePrincipale_survie,renduPrincipale_survie,explosion_survie,main_surface_survie,main_texture_survie,NULL,NULL);
+				fermeture_sdl_outils(fenetrePrincipale_survie,renduPrincipale_survie,explosion_survie,main_surface_survie,main_texture_survie,NULL,NULL,font_general_survie);
 				break;
 
 			case SDL_KEYDOWN:
@@ -342,11 +342,11 @@ void input_high_score_survie(){
 					strcpy(&nom_high_score_survie[compteur],"");
 				}else if(touche.key.keysym.sym == SDLK_RETURN){
 					read_file_high_score_outils("./score_survie.txt",nom_high_score_survie,score_survie,pFirst_survie);
-					switch_screen_outils(fenetrePrincipale_survie,renduPrincipale_survie,music_de_fond_survie,main_surface_survie,main_texture_survie, etat_survie,NULL,NULL);
+					switch_screen_outils(fenetrePrincipale_survie,renduPrincipale_survie,music_de_fond_survie,main_surface_survie,main_texture_survie, etat_survie,NULL,NULL,font_general_survie);
 				}else if(touche.key.keysym.sym == SDLK_LSHIFT){
 				}else if(touche.key.keysym.sym == SDLK_RSHIFT){
 				}else if(touche.key.keysym.sym == SDLK_ESCAPE){
-					switch_screen_outils(fenetrePrincipale_survie,renduPrincipale_survie,music_de_fond_survie,main_surface_survie,main_texture_survie, etat_survie,NULL,NULL);
+					switch_screen_outils(fenetrePrincipale_survie,renduPrincipale_survie,music_de_fond_survie,main_surface_survie,main_texture_survie, etat_survie,NULL,NULL,font_general_survie);
 				}
 				break;
 			}

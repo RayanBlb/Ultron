@@ -274,6 +274,7 @@ void get_screensize_menu(){
 void fermeture_sdl_menu(){
 	SDL_DestroyRenderer(renduPrincipale_menu);
 	SDL_DestroyWindow(fenetrePrincipale_menu);
+	TTF_CloseFont(font_general_menu);
 	SDL_Quit();
 	exit(EXIT_SUCCESS);
 }
@@ -281,6 +282,7 @@ void fermeture_sdl_menu(){
 void switch_screen_menu(char *mode){
 	SDL_DestroyRenderer(renduPrincipale_menu);
 	SDL_DestroyWindow(fenetrePrincipale_menu);
+	TTF_CloseFont(font_general_menu);
 	if(strcmp(mode,"survie") == 0){
 		survie(mode_difficulte_menu);
 	}else if(strcmp(mode,"high_score") == 0){

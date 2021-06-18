@@ -227,6 +227,7 @@ void get_screensize_mode_ia(){
 void fermeture_sdl_mode_ia(){
 	SDL_DestroyRenderer(renduPrincipale_mode_ia);
 	SDL_DestroyWindow(fenetrePrincipale_mode_ia);
+	TTF_CloseFont(font_general_mode_ia);
 	SDL_Quit();
 	exit(EXIT_SUCCESS);
 }
@@ -234,12 +235,14 @@ void fermeture_sdl_mode_ia(){
 void switch_screen_type_ia(int mode_difficulte,int type_ia){
 	SDL_DestroyRenderer(renduPrincipale_mode_ia);
 	SDL_DestroyWindow(fenetrePrincipale_mode_ia);
+	TTF_CloseFont(font_general_mode_ia);
 	ia(mode_difficulte,type_ia);
 }
 
 void switch_screen_mode_ia(int mode_difficulte){
 	SDL_DestroyRenderer(renduPrincipale_mode_ia);
 	SDL_DestroyWindow(fenetrePrincipale_mode_ia);
+	TTF_CloseFont(font_general_mode_ia);
 	menu(mode_difficulte);
 }
 /*------------------------------------------*/

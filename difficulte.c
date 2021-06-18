@@ -204,7 +204,7 @@ int init_difficulte(){
 
     SDL_SetWindowTitle(fenetrePrincipale_difficulte, "Ultron");
 
-    SDL_Surface* icon_programme_survie = SDL_LoadBMP("./Sprites/icon.bmp");
+    SDL_Surface *icon_programme_survie = SDL_LoadBMP("./Sprites/icon.bmp");
 	SDL_SetWindowIcon(fenetrePrincipale_difficulte, icon_programme_survie);
 
     font_general_difficulte = TTF_OpenFont("./Font/font.ttf", 16);
@@ -233,6 +233,7 @@ void get_screensize_difficulte(){
 void fermeture_sdl_difficulte(){
 	SDL_DestroyRenderer(renduPrincipale_difficulte);
 	SDL_DestroyWindow(fenetrePrincipale_difficulte);
+	TTF_CloseFont(font_general_difficulte);
 	SDL_Quit();
 	exit(EXIT_SUCCESS);
 }
@@ -240,6 +241,7 @@ void fermeture_sdl_difficulte(){
 void switch_screen_difficulte(int mode_difficulte){
 	SDL_DestroyRenderer(renduPrincipale_difficulte);
 	SDL_DestroyWindow(fenetrePrincipale_difficulte);
+	TTF_CloseFont(font_general_difficulte);
 	menu(mode_difficulte);
 }
 /*------------------------------------------*/

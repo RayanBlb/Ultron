@@ -260,6 +260,7 @@ void get_screensize_high_score(){
 void fermeture_sdl_high_score(){
 	SDL_DestroyRenderer(renduPrincipale_high_score);
 	SDL_DestroyWindow(fenetrePrincipale_high_score);
+	TTF_CloseFont(font_general_high_score);
 	SDL_Quit();
 	exit(EXIT_SUCCESS);
 }
@@ -267,6 +268,7 @@ void fermeture_sdl_high_score(){
 void switch_screen_high_score(){
 	SDL_DestroyRenderer(renduPrincipale_high_score);
 	SDL_DestroyWindow(fenetrePrincipale_high_score);
+	TTF_CloseFont(font_general_high_score);
 	menu(0);
 }
 /*------------------------------------------*/

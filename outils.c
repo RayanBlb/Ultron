@@ -195,7 +195,7 @@ int compte_nom_high_score_outils(char *nom_high_score_survie){
 /*------------------------------------------*/
 
 //Fonction de transition pour fermer une fenetre ou changer de fenetre
-void fermeture_sdl_outils(SDL_Window *fenetrePrincipale_survie, SDL_Renderer *renduPrincipale_survie, Mix_Chunk *explosion_survie, SDL_Surface *main_surface_survie, SDL_Texture *main_texture_survie,SDL_Surface *deuxieme_surface_versus,SDL_Texture *deuxieme_texture_versus){
+void fermeture_sdl_outils(SDL_Window *fenetrePrincipale_survie, SDL_Renderer *renduPrincipale_survie, Mix_Chunk *explosion_survie, SDL_Surface *main_surface_survie, SDL_Texture *main_texture_survie,SDL_Surface *deuxieme_surface_versus,SDL_Texture *deuxieme_texture_versus,TTF_Font* font_general){
 	SDL_DestroyRenderer(renduPrincipale_survie);
 	SDL_DestroyWindow(fenetrePrincipale_survie);
 
@@ -209,12 +209,14 @@ void fermeture_sdl_outils(SDL_Window *fenetrePrincipale_survie, SDL_Renderer *re
 		SDL_FreeSurface(deuxieme_surface_versus);
 	}
 
+	TTF_CloseFont(font_general);
+
 	SDL_Quit();
 
 	exit(EXIT_SUCCESS);
 }
 
-void switch_screen_outils(SDL_Window *fenetrePrincipale_survie, SDL_Renderer *renduPrincipale_survie, Mix_Music *music_de_fond_survie, SDL_Surface *main_surface_survie, SDL_Texture *main_texture_survie, int etat_survie,SDL_Surface *deuxieme_surface_versus,SDL_Texture *deuxieme_texture_versus){
+void switch_screen_outils(SDL_Window *fenetrePrincipale_survie, SDL_Renderer *renduPrincipale_survie, Mix_Music *music_de_fond_survie, SDL_Surface *main_surface_survie, SDL_Texture *main_texture_survie, int etat_survie,SDL_Surface *deuxieme_surface_versus,SDL_Texture *deuxieme_texture_versus,TTF_Font* font_general){
 	SDL_DestroyRenderer(renduPrincipale_survie);
 	SDL_DestroyWindow(fenetrePrincipale_survie);
 
@@ -232,6 +234,8 @@ void switch_screen_outils(SDL_Window *fenetrePrincipale_survie, SDL_Renderer *re
 		SDL_DestroyTexture(deuxieme_texture_versus);
 		SDL_FreeSurface(deuxieme_surface_versus);
 	}
+
+	TTF_CloseFont(font_general);
 
 	menu(0);
 }

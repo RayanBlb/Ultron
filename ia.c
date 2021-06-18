@@ -380,7 +380,7 @@ void input_ia(){
 				input_ia();
 				break;
 			case SDL_QUIT:
-				fermeture_sdl_outils(fenetrePrincipale_ia,renduPrincipale_ia,explosion_ia,main_surface_ia,main_texture_ia,deuxieme_surface_ia,deuxieme_texture_ia);
+				fermeture_sdl_outils(fenetrePrincipale_ia,renduPrincipale_ia,explosion_ia,main_surface_ia,main_texture_ia,deuxieme_surface_ia,deuxieme_texture_ia,font_general_ia);
 				break;
 
 			case SDL_KEYDOWN:
@@ -403,7 +403,7 @@ void input_ia(){
 					etat_deuxieme_ia = PAUSE;
 
 				}else if(touche.key.keysym.sym == SDLK_ESCAPE){
-					switch_screen_outils(fenetrePrincipale_ia,renduPrincipale_ia,music_de_fond_ia,main_surface_ia,main_texture_ia, etat_ia,deuxieme_surface_ia,deuxieme_texture_ia);
+					switch_screen_outils(fenetrePrincipale_ia,renduPrincipale_ia,music_de_fond_ia,main_surface_ia,main_texture_ia, etat_ia,deuxieme_surface_ia,deuxieme_texture_ia,font_general_ia);
 				}
 
 				if(etat_ia == START && etat_main_ia != START){
@@ -430,7 +430,7 @@ void input_high_score_ia(){
 				input_menu();
 				break;
 			case SDL_QUIT:
-				fermeture_sdl_outils(fenetrePrincipale_ia,renduPrincipale_ia,explosion_ia,main_surface_ia,main_texture_ia,deuxieme_surface_ia,deuxieme_texture_ia);
+				fermeture_sdl_outils(fenetrePrincipale_ia,renduPrincipale_ia,explosion_ia,main_surface_ia,main_texture_ia,deuxieme_surface_ia,deuxieme_texture_ia,font_general_ia);
 				break;
 
 			case SDL_KEYDOWN:
@@ -442,11 +442,11 @@ void input_high_score_ia(){
 					strcpy(&nom_high_score_ia[compteur],"");
 				}else if(touche.key.keysym.sym == SDLK_RETURN){
 					read_file_high_score_outils("./score_ia.txt",nom_high_score_ia,score_ia,pFirst_ia);
-					switch_screen_outils(fenetrePrincipale_ia,renduPrincipale_ia,music_de_fond_ia,main_surface_ia,main_texture_ia,etat_ia,deuxieme_surface_ia,deuxieme_texture_ia);
+					switch_screen_outils(fenetrePrincipale_ia,renduPrincipale_ia,music_de_fond_ia,main_surface_ia,main_texture_ia,etat_ia,deuxieme_surface_ia,deuxieme_texture_ia,font_general_ia);
 				}else if(touche.key.keysym.sym == SDLK_LSHIFT){
 				}else if(touche.key.keysym.sym == SDLK_RSHIFT){
 				}else if(touche.key.keysym.sym == SDLK_ESCAPE){
-					switch_screen_outils(fenetrePrincipale_ia,renduPrincipale_ia,music_de_fond_ia,main_surface_ia,main_texture_ia, etat_ia,deuxieme_surface_ia,deuxieme_texture_ia);
+					switch_screen_outils(fenetrePrincipale_ia,renduPrincipale_ia,music_de_fond_ia,main_surface_ia,main_texture_ia, etat_ia,deuxieme_surface_ia,deuxieme_texture_ia,font_general_ia);
 				}
 				break;
 			}
