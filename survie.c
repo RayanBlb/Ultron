@@ -65,7 +65,7 @@ void survie(int mode_difficulte){
 	SDL_GetWindowSize(fenetrePrincipale_survie, &width_windows_survie, &height_windows_survie);
 	reinitialisation_survie(mode_difficulte);
 	allocation_tableau_outils(&tableau_deplacement_survie,width_windows_survie,height_windows_survie);
-	initialisation_position_main_survie();
+	initialisation_position_main_survie(mode_difficulte);
 	play_musique_outils(&music_de_fond_survie);
 	set_start_survie();
 	while(etat_survie != GAME_OVER){
@@ -146,11 +146,24 @@ void reinitialisation_survie(int mode_difficulte){
 	terrain_y_survie = height_windows_survie;
 }
 
-void initialisation_position_main_survie(){
-	int x = (rand() % (45))*size_main_survie;
-	int y = (rand() % (25))*size_main_survie;
-	posi_main_survie.x = x;
-	posi_main_survie.y = y;
+void initialisation_position_main_survie(int mode_difficulte){
+	srand(time(0));
+
+	int x = (rand() % (40))*size_main_survie;
+	int y = (rand() % (20))*size_main_survie;
+
+	int coef_coordonne = 0;
+
+	if(mode_difficulte == 1){
+		coef_coordonne = 4;
+	}else if(mode_difficulte == 2){
+		coef_coordonne = 2;
+	}else if(mode_difficulte == 3){
+		coef_coordonne = 1;
+	}
+
+	posi_main_survie.x = x*coef_coordonne;
+	posi_main_survie.y = y*coef_coordonne;
 
 	tab_deplacement_survie(posi_main_survie.x,posi_main_survie.y);
 }

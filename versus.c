@@ -85,7 +85,7 @@ void versus(int mode_difficulte){
 	SDL_GetWindowSize(fenetrePrincipale_versus, &width_windows_versus, &height_windows_versus);
 	reinitialisation_versus(mode_difficulte);
 	allocation_tableau_outils(&tableau_deplacement_versus,width_windows_versus,height_windows_versus);
-	initialisation_position_main_versus();
+	initialisation_position_main_versus(mode_difficulte);
 	play_musique_outils(&music_de_fond_versus);
 	set_start_versus();
 	while(etat_versus < GAME_OVER_1_win){
@@ -171,17 +171,26 @@ void reinitialisation_versus(int mode_difficulte){
 	terrain_y_versus = height_windows_versus;
 }
 
-void initialisation_position_main_versus(){
-	int x = (rand() % (45 + 1 - 23) + 23)*size_main_versus;
-	int y = (rand() % (25 + 1 - 13) + 13)*size_main_versus;
-	int i = (rand() % (22 + 1 - 10) + 10)*size_main_versus;
-	int j = (rand() % (12 + 1 - 5) + 5)*size_main_versus;
+void initialisation_position_main_versus(int mode_difficulte){
+	srand(time(0));
 
-	posi_main_versus.x = i;
-	posi_main_versus.y = j;
+	int y = (rand() % (20))*size_main_versus;
 
-	posi_deuxieme_versus.x = x;
-	posi_deuxieme_versus.y = y;
+	int coef_coordonne = 0;
+
+	if(mode_difficulte == 1){
+		coef_coordonne = 4;
+	}else if(mode_difficulte == 2){
+		coef_coordonne = 2;
+	}else if(mode_difficulte == 3){
+		coef_coordonne = 1;
+	}
+
+	posi_main_versus.x = size_main_versus*4;
+	posi_main_versus.y = y*coef_coordonne;
+
+	posi_deuxieme_versus.x = terrain_x_versus-size_main_versus*5;
+	posi_deuxieme_versus.y = y*coef_coordonne;
 
 	tab_deplacement_versus(posi_main_versus.x,posi_main_versus.y,1);
 	tab_deplacement_versus(posi_deuxieme_versus.x,posi_deuxieme_versus.y,2);
@@ -366,7 +375,7 @@ void input_versus(){
 
 				if(etat_versus == START){
 					etat_versus = IN_GAME;
-					if(etat_deuxieme_versus == START)etat_deuxieme_versus = RIGHT_2;
+					if(etat_deuxieme_versus == START)etat_deuxieme_versus = LEFT_2;
 					if(etat_main_versus == START)etat_main_versus = RIGHT_1;
 				}
 

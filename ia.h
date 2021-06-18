@@ -26,7 +26,7 @@ void dessin_high_score_ia(void);
 void set_high_score_ia(void);
 void dessin_background_high_score_ia(void);
 void write_high_score_ia(void);
-void initialisation_position_main_ia(int mode_ia);
+void initialisation_position_main_ia(int mode_ia, int mode_difficulte);
 void brain_ia(void);
 void choix_depart_ia(void);
 void changement_aleatoire_ia(void);

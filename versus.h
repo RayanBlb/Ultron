@@ -26,7 +26,7 @@ void dessin_high_score_versus(void);
 void set_high_score_versus(void);
 void dessin_background_high_score_versus(void);
 void write_high_score_versus(void);
-void initialisation_position_main_versus(void);
+void initialisation_position_main_versus(int mode_difficulte);
 int init_versus(void);
 int tab_deplacement_versus(int x, int y,int joueur);
 

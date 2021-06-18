@@ -91,7 +91,7 @@ void ia(int mode_difficulte,int mode_ia){
 	SDL_GetWindowSize(fenetrePrincipale_ia, &width_windows_ia, &height_windows_ia);
 	reinitialisation_ia(mode_difficulte);
 	allocation_tableau_outils(&tableau_deplacement_ia,width_windows_ia,height_windows_ia);
-	initialisation_position_main_ia(mode_ia);
+	initialisation_position_main_ia(mode_ia,mode_difficulte);
 	play_musique_outils(&music_de_fond_ia);
 	set_start_ia();
 	while(etat_ia < GAME_OVER_1_win){
@@ -180,26 +180,60 @@ void reinitialisation_ia(int mode_difficulte){
 	terrain_y_ia = height_windows_ia;
 }
 
-void initialisation_position_main_ia(int mode_ia){
+void initialisation_position_main_ia(int mode_ia,int mode_difficulte){
 	srand(time(0));
-	
-	if(mode_ia == 3){
+
+	int x = (rand() % (40 + 1 - 23) + 23)*size_main_ia;
+	int y = (rand() % (20))*size_main_ia;
+
+	int coef_coordonne = 0;
+
+	if(mode_ia == 2){
+
+		posi_deuxieme_ia.x = 0;
+		posi_deuxieme_ia.y = 0;
+
+		if(mode_difficulte == 1){
+			coef_coordonne = 4;
+		}else if(mode_difficulte == 2){
+			coef_coordonne = 2;
+		}else if(mode_difficulte == 3){
+			coef_coordonne = 1;
+		}
+
+		posi_main_ia.x = x*coef_coordonne;
+		posi_main_ia.y = y*coef_coordonne;
+
+	}else if(mode_ia == 3){
+		if(mode_difficulte == 1){
+			coef_coordonne = 4;
+		}else if(mode_difficulte == 2){
+			coef_coordonne = 2;
+		}else if(mode_difficulte == 3){
+			coef_coordonne = 1;
+		}
+
 		posi_main_ia.x = 0;
-		posi_main_ia.y = 0;
+		posi_main_ia.y = y*coef_coordonne;
 
 		posi_deuxieme_ia.x = terrain_x_ia-size_main_ia;
-		posi_deuxieme_ia.y = 0;
-	}else{
-		int x = (rand() % (45 + 1 - 23) + 23)*size_main_ia;
-		int y = (rand() % (25 + 1 - 13) + 13)*size_main_ia;
-		int i = (rand() % (22 + 1 - 10) + 10)*size_main_ia;
-		int j = (rand() % (12 + 1 - 5) + 5)*size_main_ia;
+		posi_deuxieme_ia.y = y*coef_coordonne;
+	}
+	else{
 
-		posi_main_ia.x = i;
-		posi_main_ia.y = j;
+		if(mode_difficulte == 1){
+			coef_coordonne = 4;
+		}else if(mode_difficulte == 2){
+			coef_coordonne = 2;
+		}else if(mode_difficulte == 3){
+			coef_coordonne = 1;
+		}
 
-		posi_deuxieme_ia.x = x;
-		posi_deuxieme_ia.y = y;
+		posi_main_ia.x = size_main_ia*4;
+		posi_main_ia.y = y*coef_coordonne;
+
+		posi_deuxieme_ia.x = terrain_x_ia-size_main_ia*5;
+		posi_deuxieme_ia.y = y*coef_coordonne;
 	}
 
 	tab_deplacement_ia(posi_main_ia.x,posi_main_ia.y,1);
@@ -596,6 +630,8 @@ int init_ia(){
 
 //gestion de l'ia
 int chance_ia(int choix1,int choix2){
+	srand(time(0));
+
 	if((rand() % (2 - 1 + 1)) + 1 == 1){
 		return choix1;
 	}else{
@@ -651,7 +687,7 @@ void brain_classique_ia(){
 	int coordonne_x = terrain_x_ia-posi_deuxieme_ia.x;
 	int coordonne_y = terrain_y_ia-posi_deuxieme_ia.y;
 
-	int vision = size_main_ia*5;
+	int vision = size_main_ia*3;
 
 	if(posi_deuxieme_ia.y < vision){
 		UP = 1;
@@ -753,12 +789,8 @@ void brain_classique_ia(){
 
 void brain_ia(){
 
-	srand(time(0));
-
 	int UP = 0;
 	int DOWN = 0;
-	int LEFT = 0;
-	int RIGHT = 0;
 
 	int vision = size_main_ia*2;
 
@@ -785,30 +817,6 @@ void brain_ia(){
 			}
 		}
 	}
-
-	if(posi_deuxieme_ia.x > terrain_x_ia-vision){
-		RIGHT = 1;
-	}else{
-		if(etat_deuxieme_ia == RIGHT_2){
-			for (int i = 1; i < 2; ++i){
-				if(tableau_deplacement_ia[posi_deuxieme_ia.x+size_main_ia*i][posi_deuxieme_ia.y] != 0){
-					RIGHT = 1;
-				}
-			}
-		}
-	}
-
-	if(posi_deuxieme_ia.x < vision){
-		LEFT = 1;
-	}else{
-		if(etat_deuxieme_ia == LEFT_2){
-			for (int i = 1; i < 2; ++i){
-				if(tableau_deplacement_ia[posi_deuxieme_ia.x-size_main_ia*i][posi_deuxieme_ia.y] != 0){
-					LEFT = 1;
-				}
-			}
-		}
-	}
 	
 	if(etat_ia == IN_GAME && etat_main_ia != PAUSE){
 		if(UP == 1 && timer_deplacement_ia == 0 && changement_direction_ia == 0){
@@ -823,7 +831,7 @@ void brain_ia(){
 				etat_deuxieme_ia = DOWN_2;
 			}
 
-			timer_deplacement_ia = (rand() % (3 - 1 + 1)) + 1;
+			timer_deplacement_ia = 2;
 		}else if(DOWN == 1 && timer_deplacement_ia == 0 && changement_direction_ia == 0){
 			if(etat_deuxieme_ia == UP_2){
 				etat_deuxieme_ia = UP_2;
@@ -836,97 +844,7 @@ void brain_ia(){
 				etat_deuxieme_ia = DOWN_2;
 			}
 
-			timer_deplacement_ia = (rand() % (3 - 1 + 1)) + 1;
-		}else if(LEFT == 1 && timer_deplacement_ia == 0 && changement_direction_ia == 0){
-			if(etat_deuxieme_ia == UP_2){
-				etat_deuxieme_ia = RIGHT_2;
-			}else if(etat_deuxieme_ia == DOWN_2){
-				etat_deuxieme_ia = RIGHT_2;
-			}else if(etat_deuxieme_ia == LEFT_2){
-				etat_deuxieme_ia = UP_2;
-				changement_direction_ia = 4;
-			}else if(etat_deuxieme_ia == RIGHT_2){
-				etat_deuxieme_ia = RIGHT_2;
-			}
-
-			timer_deplacement_ia = (rand() % (3 - 1 + 1)) + 1;
-		}else if(RIGHT == 1 && timer_deplacement_ia == 0 && changement_direction_ia == 0){
-			if(etat_deuxieme_ia == UP_2){
-				etat_deuxieme_ia = LEFT_2;
-			}else if(etat_deuxieme_ia == DOWN_2){
-				etat_deuxieme_ia = LEFT_2;
-			}else if(etat_deuxieme_ia == LEFT_2){
-				etat_deuxieme_ia = LEFT_2;
-			}else if(etat_deuxieme_ia == RIGHT_2){
-				etat_deuxieme_ia = UP_2;
-				changement_direction_ia = 3;
-			}
-
-			timer_deplacement_ia = (rand() % (3 - 1 + 1)) + 1;
-		}else if(LEFT == 1 && UP == 1 && timer_deplacement_ia == 0 && changement_direction_ia == 0){
-			if(etat_deuxieme_ia == UP_2){
-				etat_deuxieme_ia = RIGHT_2;
-				changement_direction_ia = 1;
-			}else if(etat_deuxieme_ia == DOWN_2){
-				etat_deuxieme_ia = DOWN_2;
-				changement_direction_ia = 4;
-			}else if(etat_deuxieme_ia == LEFT_2){
-				etat_deuxieme_ia = DOWN_2;
-				changement_direction_ia = 4;
-			}else if(etat_deuxieme_ia == RIGHT_2){
-				etat_deuxieme_ia = RIGHT_2;
-				changement_direction_ia = 1;
-			}
-
-			timer_deplacement_ia = (rand() % (3 - 1 + 1)) + 1;
-		}else if(RIGHT == 1 && UP == 1 && timer_deplacement_ia == 0 && changement_direction_ia == 0){
-			if(etat_deuxieme_ia == UP_2){
-				etat_deuxieme_ia = LEFT_2;
-				changement_direction_ia = 1;
-			}else if(etat_deuxieme_ia == DOWN_2){
-				etat_deuxieme_ia = DOWN_2;
-				changement_direction_ia = 3;
-			}else if(etat_deuxieme_ia == LEFT_2){
-				etat_deuxieme_ia = LEFT_2;
-				changement_direction_ia = 1;
-			}else if(etat_deuxieme_ia == RIGHT_2){
-				etat_deuxieme_ia = DOWN_2;
-				changement_direction_ia = 3;
-			}
-
-			timer_deplacement_ia = (rand() % (3 - 1 + 1)) + 1;
-		}else if(LEFT == 1 && DOWN == 1 && timer_deplacement_ia == 0 && changement_direction_ia == 0){
-			if(etat_deuxieme_ia == UP_2){
-				etat_deuxieme_ia = UP_2;
-				changement_direction_ia = 4;
-			}else if(etat_deuxieme_ia == DOWN_2){
-				etat_deuxieme_ia = RIGHT_2;
-				changement_direction_ia = 2;
-			}else if(etat_deuxieme_ia == LEFT_2){
-				etat_deuxieme_ia = UP_2;
-				changement_direction_ia = 4;
-			}else if(etat_deuxieme_ia == RIGHT_2){
-				etat_deuxieme_ia = RIGHT_2;
-				changement_direction_ia = 2;
-			}
-
-			timer_deplacement_ia = (rand() % (3 - 1 + 1)) + 1;
-		}else if(RIGHT == 1 && DOWN == 1 && timer_deplacement_ia == 0 && changement_direction_ia == 0){
-			if(etat_deuxieme_ia == UP_2){
-				etat_deuxieme_ia = UP_2;
-				changement_direction_ia = 3;
-			}else if(etat_deuxieme_ia == DOWN_2){
-				etat_deuxieme_ia = LEFT_2;
-				changement_direction_ia = 2;
-			}else if(etat_deuxieme_ia == LEFT_2){
-				etat_deuxieme_ia = LEFT_2;
-				changement_direction_ia = 2;
-			}else if(etat_deuxieme_ia == RIGHT_2){
-				etat_deuxieme_ia = UP_2;
-				changement_direction_ia = 4;
-			}
-
-			timer_deplacement_ia = (rand() % (3 - 1 + 1)) + 1;
+			timer_deplacement_ia = 2;
 		}else if(changement_direction_ia == 1 && timer_deplacement_ia == 0){
 			etat_deuxieme_ia = DOWN_2;
 
@@ -935,18 +853,11 @@ void brain_ia(){
 			etat_deuxieme_ia = UP_2;
 
 			changement_direction_ia = 0;
-		}else if(changement_direction_ia == 3 && timer_deplacement_ia == 0){
-			etat_deuxieme_ia = LEFT_2;
-
-			changement_direction_ia = 0;
-		}else if(changement_direction_ia == 4 && timer_deplacement_ia == 0){
-			etat_deuxieme_ia = RIGHT_2;
-
-			changement_direction_ia = 0;
-		}else if(UP == 0 && DOWN == 0 && LEFT == 0 && RIGHT == 0 && start_ia != 0 && timer_deplacement_ia == 0){
+		}else if(UP == 0 && DOWN == 0 && start_ia != 0 && timer_deplacement_ia == 0){
 			etat_deuxieme_ia = etat_deuxieme_ia;
 		}else if(start_ia == 0){
-			choix_depart_ia();
+			etat_deuxieme_ia = RIGHT_2;
+			timer_deplacement_ia = 4;
 			start_ia = 1;
 		}
 	}

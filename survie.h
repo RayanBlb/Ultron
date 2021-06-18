@@ -27,6 +27,6 @@ void dessin_high_score_survie(void);
 void set_high_score_survie(void);
 void dessin_background_high_score_survie(void);
 void write_high_score_survie(void);
-void initialisation_position_main_survie(void);
+void initialisation_position_main_survie(int mode_difficulte);
 
 #endif
