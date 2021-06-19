@@ -15,7 +15,7 @@
 #include "mode_ia.h"
 
 //Fonction de tri de liste high score
-void read_file_high_score_outils(char *chemin,char *nom_high_score_survie,int score_survie,liste *pFirst){
+void read_file_high_score_outils(char *chemin,char *nom_high_score_survie,int score_survie,liste *pFirst){//Permet d'ajouter un nouveau score dans les high score
 	FILE *fichier;
 	char ligne[128];
 
@@ -24,13 +24,13 @@ void read_file_high_score_outils(char *chemin,char *nom_high_score_survie,int sc
 
 	fichier = fopen(chemin, "r");
 
-	if(strcmp(&nom_high_score_survie[0],"") != 0){
-		tri_high_score_outils(&pFirst,nom_high_score_survie,score_survie);
+	if(strcmp(&nom_high_score_survie[0],"") != 0){//Vérifie si le joueur a bien rentrer un nom
+		tri_high_score_outils(&pFirst,nom_high_score_survie,score_survie);//Ajoute le joueur dans la liste
 	}else if(strcmp(&nom_high_score_survie[0],"") == 0){
 		tri_high_score_outils(&pFirst,"Joueur inconnu",score_survie);
 	}
 
-	while(fgets(ligne, sizeof(ligne), fichier) != NULL){
+	while(fgets(ligne, sizeof(ligne), fichier) != NULL){//Récupere les autres high score du fichier txt et les met dans la liste
 
 		char *nom = strtok(ligne,":");
 		int score = strtol(strtok(NULL,":"),NULL,10);
@@ -40,12 +40,12 @@ void read_file_high_score_outils(char *chemin,char *nom_high_score_survie,int sc
 
 	fclose(fichier);
 
-	sup_liste_high_score_outils(chemin);
-	write_liste_high_score_outils(pFirst,chemin);
-	free_liste_high_score_outils(&pFirst);
+	sup_liste_high_score_outils(chemin);//Supprime le contenu du fichier avec l'ancienne liste
+	write_liste_high_score_outils(pFirst,chemin);//Réécris la nouvelle liste
+	free_liste_high_score_outils(&pFirst);//free la liste
 }
 
-int tri_high_score_outils(liste **pFirst,char *nom,int score){
+int tri_high_score_outils(liste **pFirst,char *nom,int score){//algo de tri afin de trier la liste du plus grand au plus petit
 	liste *temp = *pFirst;
 
 	liste *a_ajouter = (liste *)malloc(sizeof(liste));
@@ -86,7 +86,7 @@ int tri_high_score_outils(liste **pFirst,char *nom,int score){
 	return 0;
 }
 
-void write_liste_high_score_outils(liste *pFirst,char *chemin){
+void write_liste_high_score_outils(liste *pFirst,char *chemin){//Viens écrire ma liste dans un fichier
 	liste *pTemp = pFirst;
 	int compteur = 0;
 
@@ -97,20 +97,20 @@ void write_liste_high_score_outils(liste *pFirst,char *chemin){
 	}
 }
 
-void sup_liste_high_score_outils(char *chemin){
+void sup_liste_high_score_outils(char *chemin){//Permet de vider le contenu d'un fichier high score
 	FILE *fichier;
 	fichier = fopen (chemin,"w");
 	fclose(fichier);
 }
 
-void write_file_outils(char *nom, int score,char *chemin){
+void write_file_outils(char *nom, int score,char *chemin){//permet d'ecrire dans mes fichier high score
 	FILE *fichier;
 	fichier = fopen (chemin,"a");
 	fprintf (fichier,"%s:%d \n",nom,score);
 	fclose(fichier);
 }
 
-void free_liste_high_score_outils(liste **pFirst){
+void free_liste_high_score_outils(liste **pFirst){//Permet de free ma liste
 	liste *temp_un = *pFirst;
 	liste *temp_deux = NULL;
 
@@ -133,10 +133,10 @@ void delay_game_outils(int etat_survie, int mode_de_jeu){
 
 	if(mode_de_jeu == 0){
 		if(etat_survie != 0) maxFPS_survie = 15; //Enleve le petit décalage de lancement
-		if(etat_survie == 6) maxFPS_survie = 60;
+		if(etat_survie == 6) maxFPS_survie = 60;//Passe en mode 60 fps pour ecrire son nom de high score
 	}else if(mode_de_jeu == 1){
 		if(etat_survie != 1) maxFPS_survie = 15; //Enleve le petit décalage de lancement
-		if(etat_survie >= 12) maxFPS_survie = 60;
+		if(etat_survie >= 12) maxFPS_survie = 60;//Passe en mode 60 fps pour ecrire son nom de high score
 	}
 
 	lastTicks_survie = SDL_GetTicks();
@@ -148,19 +148,19 @@ void delay_game_outils(int etat_survie, int mode_de_jeu){
 /*------------------------------------------*/
 
 //Gestion de la musique
-void play_musique_outils(Mix_Music **music_de_fond_survie){
+void play_musique_outils(Mix_Music **music_de_fond_survie){//Viens jouer la musique
 	*music_de_fond_survie = Mix_LoadMUS("./Musique/music.mp3");
 	Mix_PlayMusic(*music_de_fond_survie, -1);
 }
 
-void play_explosion_outils(Mix_Chunk **explosion_survie){
+void play_explosion_outils(Mix_Chunk **explosion_survie){//Viens jouer le bruit d'explosion
 	*explosion_survie = Mix_LoadWAV("./Musique/explosion.wav");
 	Mix_PlayChannel(-1, *explosion_survie, 0);
 }
 /*------------------------------------------*/
 
 //Gestion du tableau allocation memoire
-void allocation_tableau_outils(int ***tableau_deplacement, int width_windows_survie, int height_windows_survie){
+void allocation_tableau_outils(int ***tableau_deplacement, int width_windows_survie, int height_windows_survie){//Viens allouer la memoire nécessaire afin de créer un tableau et viens renplir tout le tableau de 0
   
     (*tableau_deplacement) = (int **)malloc(width_windows_survie * sizeof(int *));
 
@@ -175,7 +175,7 @@ void allocation_tableau_outils(int ***tableau_deplacement, int width_windows_sur
     }
 }
 
-void free_tableau_outils(int ***tableau_deplacement, int width_windows_survie){
+void free_tableau_outils(int ***tableau_deplacement, int width_windows_survie){//Viens free le tableau
 	for (int i = 0; i < width_windows_survie ; ++i){
 			free((*tableau_deplacement)[i]);
 		}
@@ -195,6 +195,7 @@ int compte_nom_high_score_outils(char *nom_high_score_survie){
 /*------------------------------------------*/
 
 //Fonction de transition pour fermer une fenetre ou changer de fenetre
+//ces fonction viennent détruire les différents élèments créer en fonction du mode
 void fermeture_sdl_outils(SDL_Window *fenetrePrincipale_survie, SDL_Renderer *renduPrincipale_survie, Mix_Chunk *explosion_survie, SDL_Surface *main_surface_survie, SDL_Texture *main_texture_survie,SDL_Surface *deuxieme_surface_versus,SDL_Texture *deuxieme_texture_versus,TTF_Font* font_general){
 	SDL_DestroyRenderer(renduPrincipale_survie);
 	SDL_DestroyWindow(fenetrePrincipale_survie);
@@ -204,7 +205,7 @@ void fermeture_sdl_outils(SDL_Window *fenetrePrincipale_survie, SDL_Renderer *re
 	SDL_DestroyTexture(main_texture_survie);
 	SDL_FreeSurface(main_surface_survie);
 
-	if(deuxieme_surface_versus != NULL && deuxieme_texture_versus != NULL){
+	if(deuxieme_surface_versus != NULL && deuxieme_texture_versus != NULL){//dans le cas ou il y a un deuxieme joueur a detruire
 		SDL_DestroyTexture(deuxieme_texture_versus);
 		SDL_FreeSurface(deuxieme_surface_versus);
 	}
@@ -221,7 +222,7 @@ void switch_screen_outils(SDL_Window *fenetrePrincipale_survie, SDL_Renderer *re
 	SDL_DestroyWindow(fenetrePrincipale_survie);
 
 	if(etat_survie != 6 && deuxieme_surface_versus == NULL && deuxieme_texture_versus == NULL){
-		Mix_FreeMusic(music_de_fond_survie);
+		Mix_FreeMusic(music_de_fond_survie);//Dans le cas ou il y a encore de la musique jouer car pas de game over (le game over arrete la musique)
 	}
 
 	SDL_DestroyTexture(main_texture_survie);
@@ -229,9 +230,9 @@ void switch_screen_outils(SDL_Window *fenetrePrincipale_survie, SDL_Renderer *re
 
 	if(deuxieme_surface_versus != NULL && deuxieme_texture_versus != NULL){
 		if(etat_survie < 12){
-			Mix_FreeMusic(music_de_fond_survie);
+			Mix_FreeMusic(music_de_fond_survie);//Dans le cas ou il y a encore de la musique jouer car pas de game over (le game over arrete la musique)
 		}
-		SDL_DestroyTexture(deuxieme_texture_versus);
+		SDL_DestroyTexture(deuxieme_texture_versus);//dans le cas ou il y a un deuxieme joueur a detruire
 		SDL_FreeSurface(deuxieme_surface_versus);
 	}
 

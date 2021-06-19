@@ -35,9 +35,9 @@
 
 liste *pFirst_versus = NULL;
 
-int etat_versus = START;
-int etat_main_versus = START;
-int etat_deuxieme_versus = START;
+int etat_versus = START;//Etat de la partie global
+int etat_main_versus = START;//etat du joueur 1 (blanc)
+int etat_deuxieme_versus = START;//etat du joueur 2 (rouge)
 
 int prev_etat_main_versus = START;
 int prev_etat_deuxieme_versus = START;
@@ -50,11 +50,11 @@ int score_versus = 0;
 int terrain_x_versus = 0;
 int terrain_y_versus = 0;
 
-int size_main_versus = 32;//8/16/32
+int size_main_versus = 32;//correspond a la taille du personnage, mais également au carreaux du terrain
 
 int **tableau_deplacement_versus;
 
-char nom_high_score_versus[30];
+char nom_high_score_versus[30];//correspond au nom a entrer dans les high score
 
 position_versus posi_main_versus = {0,0};
 position_versus posi_deuxieme_versus = {0,0};
@@ -81,18 +81,18 @@ Mix_Chunk *explosion_versus = NULL;
 
 //Boucle principale
 void versus(int mode_difficulte){
-	init_versus();
-	SDL_GetWindowSize(fenetrePrincipale_versus, &width_windows_versus, &height_windows_versus);
-	reinitialisation_versus(mode_difficulte);
-	allocation_tableau_outils(&tableau_deplacement_versus,width_windows_versus,height_windows_versus);
-	initialisation_position_main_versus(mode_difficulte);
-	play_musique_outils(&music_de_fond_versus);
-	set_start_versus();
+	init_versus();//Initialisation de SDL et des autre bibliothéque 
+	SDL_GetWindowSize(fenetrePrincipale_versus, &width_windows_versus, &height_windows_versus);//récuperation de la taille de la fenetre
+	reinitialisation_versus(mode_difficulte);//Réinitialisation des variables globales
+	allocation_tableau_outils(&tableau_deplacement_versus,width_windows_versus,height_windows_versus);//Allocation du tableau de déplacement
+	initialisation_position_main_versus(mode_difficulte);//Initialisation position des joueurs
+	play_musique_outils(&music_de_fond_versus);//Lancement de la musique
+	set_start_versus();//Affichage des différents éléments du terrain
 	while(etat_versus < GAME_OVER_1_win){
-		input_versus();
-		update_versus();
-		set_versus();
-		delay_game_outils(etat_versus,1);
+		input_versus();//input déplacement joueur 1 et 2
+		update_versus();//actualisation des coordonnée de l'ia et du joueur
+		set_versus();//actualisation terrain
+		delay_game_outils(etat_versus,1);//gestion du taux de rafraîchissement
 		//SDL_Log("1 - debug : etat_versus = %d , etat_main_versus = %d , etat_deuxieme_versus = %d\n 2 - debug : terrain_x_versus : %d , terrain_y_versus : %d \n",etat_versus,etat_main_versus,etat_deuxieme_versus,terrain_x_versus,terrain_y_versus);
 	}
 	set_game_over_versus();
@@ -100,7 +100,7 @@ void versus(int mode_difficulte){
 /*------------------------------------------*/
 
 //Fonction d'affichage en fonction de l'état de versus
-void set_versus(){
+void set_versus(){//Permet d'afficher les déplacement des joueurs
 	if(etat_versus && etat_versus < GAME_OVER_1_win && (etat_main_versus != PAUSE || etat_deuxieme_versus != PAUSE)){
 		dessin_main_versus();
 		dessin_deuxieme_versus();
@@ -115,7 +115,7 @@ void set_versus(){
 	}
 }
 
-void set_start_versus(){
+void set_start_versus(){//permet d'initialiser le terrain ainsi que les joueurs
 	if(etat_versus == START){
 		dessin_fond_versus();
 		dessin_background_score_versus();
@@ -126,7 +126,7 @@ void set_start_versus(){
 	}
 }
 
-void set_game_over_versus(){
+void set_game_over_versus(){//Affichage du game over ainsi que de la possibilité de rentrer un pseudo pour le high score
 	if(etat_versus >= GAME_OVER_1_win){
 		dessin_fond_versus();
 		dessin_background_score_versus();
@@ -144,8 +144,8 @@ void set_game_over_versus(){
 /*------------------------------------------*/
 
 //Fonction de réinitialisation des variable global
-void reinitialisation_versus(int mode_difficulte){
-	if(mode_difficulte == 1){
+void reinitialisation_versus(int mode_difficulte){//Réinitialisation des variables globale
+	if(mode_difficulte == 1){//changement de la taille du terrain en fonction de la difficulté
 		size_main_versus = 8;
 	}else if(mode_difficulte == 2){
 		size_main_versus = 16;
@@ -171,14 +171,13 @@ void reinitialisation_versus(int mode_difficulte){
 	terrain_y_versus = height_windows_versus;
 }
 
-void initialisation_position_main_versus(int mode_difficulte){
+void initialisation_position_main_versus(int mode_difficulte){//Initialisation du spawn des joueurs en fonction du mode de jeu choisi
 	srand(time(0));
 
-	int y = (rand() % (20))*size_main_versus;
+	int y = (rand() % (20))*size_main_versus;//size main augmente ou diminue en fonction du niveau de difficulté
+	int coef_coordonne = 0;//on multipliant plus bas par "coef_coordonne" cela permet d'avoir des coordonées qui couvre tous le terrain
 
-	int coef_coordonne = 0;
-
-	if(mode_difficulte == 1){
+	if(mode_difficulte == 1){//permet d'avoir des coordonnées aléatoire sur tout le terrain en fonction du mode de diffculté
 		coef_coordonne = 4;
 	}else if(mode_difficulte == 2){
 		coef_coordonne = 2;
@@ -198,22 +197,22 @@ void initialisation_position_main_versus(int mode_difficulte){
 /*------------------------------------------*/
 
 //Fonction qui vont permettre de dessiner les différents éléments à afficher
-void dessin_main_versus(){
+void dessin_main_versus(){//création du premier joueurs (joueur blanc)
 	SDL_Rect dest = { posi_main_versus.x,posi_main_versus.y, size_main_versus, size_main_versus};
 	SDL_RenderCopy(renduPrincipale_versus,main_texture_versus,NULL,&dest);
 }
 
-void dessin_deuxieme_versus(){
+void dessin_deuxieme_versus(){//Création du deuxieme joueur (joueur rouge)
 	SDL_Rect dest = { posi_deuxieme_versus.x,posi_deuxieme_versus.y, size_main_versus, size_main_versus};
 	SDL_RenderCopy(renduPrincipale_versus,deuxieme_texture_versus,NULL,&dest);
 }
 
-void dessin_background_score_versus(){
+void dessin_background_score_versus(){//création du background du score en haut a droite
 	SDL_Rect dest = { terrain_x_versus+1, 0, width_windows_versus - terrain_x_versus , height_windows_versus};
 	SDL_RenderCopy(renduPrincipale_versus,background_score_texture_versus,NULL,&dest);
 }
 
-void dessin_score_versus(){
+void dessin_score_versus(){//création du score en haut a droite
 	char score_texte[20];
 	SDL_Color couleur_font = {255, 255, 255};
 
@@ -230,7 +229,7 @@ void dessin_score_versus(){
 	SDL_FreeSurface(score_surface);
 }
 
-void dessin_game_over_versus(){
+void dessin_game_over_versus(){//création du game over ainsi que du score
 	char game_over_texte[43];
 	SDL_Color couleur_font = {255, 255, 255};
 
@@ -261,7 +260,7 @@ void dessin_game_over_versus(){
 	SDL_FreeSurface(score_surface);
 }
 
-void dessin_pause_versus(){
+void dessin_pause_versus(){//création de la pause
 	SDL_Color couleur_font = {255, 255, 255};
 
 	SDL_Surface* score_surface = TTF_RenderText_Solid(font_general_versus,"PAUSE", couleur_font);
@@ -275,7 +274,7 @@ void dessin_pause_versus(){
 	SDL_FreeSurface(score_surface);
 }
 
-void dessin_fond_versus(){
+void dessin_fond_versus(){//création du fond quadrillé
 
 	SDL_SetRenderDrawColor(renduPrincipale_versus,22, 22, 22, 255);
 	SDL_RenderClear(renduPrincipale_versus);
@@ -290,7 +289,7 @@ void dessin_fond_versus(){
 	}
 }
 
-void dessin_high_score_versus(){
+void dessin_high_score_versus(){//Affichage au fur et a mesure du nom du joueur lorsqu'il tape son nom
 	char game_over_texte[43];
 	SDL_Color couleur_font = {255, 255, 255};
 
@@ -313,7 +312,7 @@ void dessin_high_score_versus(){
 	SDL_FreeSurface(score_surface);
 }
 
-void dessin_background_high_score_versus(){
+void dessin_background_high_score_versus(){//Affichage du carré gris derriere le nom du joueur lorsqu'il tape son nom
 	int size_game_over_x = 1100;
 	int size_game_over_y = 175;
 
@@ -326,7 +325,7 @@ void dessin_background_high_score_versus(){
 /*------------------------------------------*/
 
 //Fonction relative au input du joueur
-void input_versus(){
+void input_versus(){//Gestion des input de déplacement des joueurs
 	SDL_Event touche;
 
 	if(SDL_PollEvent(&touche)){
@@ -390,7 +389,7 @@ void input_versus(){
 		}
 	}
 
-void input_high_score_versus(){
+void input_high_score_versus(){//gestion des input lorsque le joueur tape son nom
 	SDL_Event touche;
 
 	if(SDL_PollEvent(&touche)){
@@ -424,7 +423,7 @@ void input_high_score_versus(){
 /*------------------------------------------*/
 
 //Fonction gestion enregistrement de déplacement
-void update_versus(){
+void update_versus(){//modification des coordonnées des joueurs ainsi que augmentation du score
 
 	switch(etat_main_versus){
 		case UP_1:
@@ -463,7 +462,7 @@ void update_versus(){
 			break;
 	}
 
-	if(etat_versus < GAME_OVER_1_win){
+	if(etat_versus < GAME_OVER_1_win){//permet de ne pas voir de déplacement du joueur 2 après le game over
 		switch(etat_deuxieme_versus){
 			case UP_2:
 				if(posi_deuxieme_versus.y<0){
@@ -507,7 +506,7 @@ void update_versus(){
 	}
 }
 
-int tab_deplacement_versus(int x, int y,int joueur){
+int tab_deplacement_versus(int x, int y,int joueur){//permet d'ajouter les déplacement du joueur dans le tableau déplacement
 	if(tableau_deplacement_versus[x][y] == 1 && joueur != 1){
 		etat_versus = GAME_OVER_1_win;
 		Mix_FreeMusic(music_de_fond_versus);
@@ -542,7 +541,7 @@ int tab_deplacement_versus(int x, int y,int joueur){
 /*------------------------------------------*/
 
 //Fonction initialisation
-int init_versus(){
+int init_versus(){//Fonction qui initialise SDL ainsi que c'est bibliothéque, donne un titre a la fenetre ainsi qu'un icon, viens initialisé la font ainsi que les différents sprite utiliser dans le mode ia
 
 	if(SDL_Init(SDL_INIT_VIDEO < 0)){
 		printf("Erreur d'initialisation de SDL VIDEO: %s",SDL_GetError());

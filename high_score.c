@@ -20,7 +20,7 @@
 #define QUITTER 4
 
 
-int etat_high_score = TABLEAU_SURVIE;
+int etat_high_score = TABLEAU_SURVIE; //Etat du menu high score
 
 int width_windows_high_score = 0;
 int height_windows_high_score = 0;
@@ -34,13 +34,13 @@ TTF_Font* font_general_high_score = NULL;
 
 //Boucle principale
 void high_score(){
-	reinitialisation_high_score();
-	init_high_score();
-	get_screensize_high_score();
-	set_high_score();
+	reinitialisation_high_score();//Réinitialisation des variables globales
+	init_high_score();//Initialisation de SDL et des autre bibliothéque 
+	get_screensize_high_score();//Récuperation de la taille de la fenetre
+	set_high_score();//Affichage du High score + fond + titre
 	while(1){
-		input_high_score();
-		delay_game_high_score();
+		input_high_score();//Changement d'état du menu en fonction des input
+		delay_game_high_score();//Taux de rafraîchissement de 60 fps
 		//SDL_Log("etat : %d ",etat_high_score);
 	}
 }
@@ -54,15 +54,15 @@ void reinitialisation_high_score(){
 
 //Fonction d'affichage du high score
 void set_high_score(){
-	dessin_fond_high_score();
-	dessin_high_score_high_score();
-	SDL_RenderPresent(renduPrincipale_high_score);
+	dessin_fond_high_score();//création fond quadrillé
+	dessin_high_score_high_score();//Affichage du classement en fonction du mode de jeu
+	SDL_RenderPresent(renduPrincipale_high_score);//Actualisation de la fenetre
 }
 /*------------------------------------------*/
 
 //Fonction qui vont permettre de dessiner les différents éléments à afficher
-void dessin_texte_high_score(char *texte, SDL_Color couleur,int coef_position,int size_font_x,int size_font_y){
-
+void dessin_texte_high_score(char *texte, SDL_Color couleur,int coef_position,int size_font_x,int size_font_y){/*Fonction qui prend en argument un texte a écrire, la couleur de ce texte, la taille du texte ainsi que la position x et y
+permet donc de facilité l'affichage de texte*/
 	SDL_Surface* texte_high_score_surface = TTF_RenderText_Solid(font_general_high_score, texte , couleur);
 	SDL_Texture* texte_high_score_texture = SDL_CreateTextureFromSurface(renduPrincipale_high_score, texte_high_score_surface);
 
@@ -79,8 +79,8 @@ void dessin_texte_high_score(char *texte, SDL_Color couleur,int coef_position,in
 	SDL_FreeSurface(texte_high_score_surface);
 }
 
-void dessin_fond_high_score(){
-	int size_high_score = 32;
+void dessin_fond_high_score(){//création du fond quadrillé
+	int size_high_score = 32;//Correspond a la taille des carreaux du quadrillage
 
 	SDL_SetRenderDrawColor(renduPrincipale_high_score,22, 22, 22, 255);
 	SDL_RenderClear(renduPrincipale_high_score);
@@ -96,7 +96,7 @@ void dessin_fond_high_score(){
 	}
 }
 
-void dessin_high_score_high_score(){
+void dessin_high_score_high_score(){//Affichage du high score en fonction du mode de jeu selectionner
 	if(etat_high_score == TABLEAU_SURVIE){
 		dessin_texte_high_score("HIGH SCORE",couleur_font_high_score,-2,600,175);
 		dessin_texte_high_score("Mode : Survie",couleur_font_high_score,-2,400,110);
@@ -112,24 +112,25 @@ void dessin_high_score_high_score(){
 	}
 }
 
-void read_high_score(char *file_name){
+void read_high_score(char *file_name){ //Permet de lire le fichier high score afin de l'afficher
 	FILE *fichier;
 	char ligne[128];
 
 	int compteur = -1;
 
-	fichier = fopen(file_name, "a");
+	fichier = fopen(file_name, "a");//créer un fichier dans le cas ou le fichier n'est pas créer
 	fclose(fichier);
 
 	fichier = fopen(file_name, "r");
 
 	while(fgets(ligne, sizeof(ligne), fichier) != NULL){
 		int len = strlen(ligne);
-		if(strcmp(&ligne[len-1],"\n") == 0){
+
+		if(strcmp(&ligne[len-1],"\n") == 0){//Permet de retier le caracter saut de ligne
 			strcpy(&ligne[len-1],"");
 		}
 
-		dessin_texte_high_score(ligne,couleur_font_high_score,compteur,400,100);
+		dessin_texte_high_score(ligne,couleur_font_high_score,compteur,400,100);//Permet d'afficher la ligne du fichier
 		compteur++;
 	}
 
@@ -138,7 +139,7 @@ void read_high_score(char *file_name){
 /*------------------------------------------*/
 
 //Fonction qui vont permettre de supprimer le contenu d'un fichier
-void supprimer_classement_high_score(){
+void supprimer_classement_high_score(){//Permet de supprimer le high score d'un mode
 	if(etat_high_score == TABLEAU_SURVIE){
 		write_high_score("./score_survie.txt");
 	}else if(etat_high_score == TABLEAU_VERSUS){
@@ -148,7 +149,7 @@ void supprimer_classement_high_score(){
 	}
 }
 
-void write_high_score(char *file_name){
+void write_high_score(char *file_name){//Permet de vider un fichier
 	FILE *fichier;
 	fichier = fopen(file_name, "w");
 	fclose(fichier);
@@ -156,7 +157,7 @@ void write_high_score(char *file_name){
 /*------------------------------------------*/
 
 //Fonction relative au input du joueur
-void input_high_score(){
+void input_high_score(){//permet de changer de high score ainsi que supprimer le high score avec le clavier
 	SDL_Event touche;
 
 	if(SDL_PollEvent(&touche)){
@@ -197,7 +198,7 @@ void input_high_score(){
 /*------------------------------------------*/
 
 //Fonction initialisation
-int init_high_score(){
+int init_high_score(){//Fonction qui initialise SDL ainsi que c'est bibliothéque, donne un titre a la fenetre ainsi qu'un icon, viens initialisé la font
 
 	if(SDL_Init(SDL_INIT_VIDEO < 0)){
 		printf("Erreur d'initialisation de SDL VIDEO: %s",SDL_GetError());
@@ -241,7 +242,7 @@ int init_high_score(){
 /*------------------------------------------*/
 
 //Fonction qui vont permettre de gérer le delay, la fermetture et changement de fenetre ou encore de récuperer la taille de la fenetre afficher
-void delay_game_high_score(){
+void delay_game_high_score(){//Permet de gerer le taux de réfréchissement de l'écran
 	int lastTicks = 0;
 	int maxFPS = 60;
 	int delay = 0;
@@ -253,11 +254,11 @@ void delay_game_high_score(){
 	}
 }
 
-void get_screensize_high_score(){
+void get_screensize_high_score(){//Récuperer la taille de la fenetre
 	SDL_GetWindowSize(fenetrePrincipale_high_score, &width_windows_high_score, &height_windows_high_score);
 }
 
-void fermeture_sdl_high_score(){
+void fermeture_sdl_high_score(){//Permet de fermet la fenetre
 	SDL_DestroyRenderer(renduPrincipale_high_score);
 	SDL_DestroyWindow(fenetrePrincipale_high_score);
 	TTF_CloseFont(font_general_high_score);
@@ -265,7 +266,7 @@ void fermeture_sdl_high_score(){
 	exit(EXIT_SUCCESS);
 }
 
-void switch_screen_high_score(){
+void switch_screen_high_score(){//Permet de revenir au menu principale
 	SDL_DestroyRenderer(renduPrincipale_high_score);
 	SDL_DestroyWindow(fenetrePrincipale_high_score);
 	TTF_CloseFont(font_general_high_score);

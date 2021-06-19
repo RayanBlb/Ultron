@@ -36,20 +36,20 @@ TTF_Font* font_general_menu = NULL;
 
 //Boucle principale
 void menu(int mode_difficulte){
-	reinitialisation_menu(mode_difficulte);
-	init_menu();
-	get_screensize_menu();
-	set_fond_menu_menu();
+	reinitialisation_menu(mode_difficulte);//Réinitialisation des variables globales
+	init_menu();//Initialisation de SDL et des autre bibliothéque 
+	get_screensize_menu();//Récuperation de la taille de la fenetre
+	set_fond_menu_menu();//Affichage du fond, du titre ainsi que du menu
 	while(1){
-		input_menu();
-		delay_game_menu();
+		input_menu();//affichage du menu en fonction de l'input du joueur
+		delay_game_menu();//Taux de rafraîchissement de 60 fps
 		//SDL_Log("etat : %d ",etat_menu);
 	}
 }
 /*------------------------------------------*/
 
 //Fonction de réinitialisation des variable global
-void reinitialisation_menu(int mode_difficulte){
+void reinitialisation_menu(int mode_difficulte){//Viens changer la varible globale de difficulté en fonction de la variable placer en paramètre de la fonction menu
 	if(mode_difficulte == 1){
 		mode_difficulte_menu = 1;
 	}else if(mode_difficulte == 2){
@@ -63,21 +63,21 @@ void reinitialisation_menu(int mode_difficulte){
 
 //Fonction d'affichage du menu
 void set_menu(){
-	dessin_menu_menu();
+	dessin_menu_menu();//Affiche le menu en fonction de l'état qui a été changer par le joueur
 	SDL_RenderPresent(renduPrincipale_menu);
 }
 
-void set_fond_menu_menu(){
-	dessin_fond_menu();
-	dessin_texte_menu("ULTRON",couleur_font_menu,-2,600,175);
-	dessin_menu_menu();
+void set_fond_menu_menu(){//Fonction affichage du menu
+	dessin_fond_menu();//création fond quadrillé
+	dessin_texte_menu("ULTRON",couleur_font_menu,-2,600,175);//Affichage du titre
+	dessin_menu_menu();//Affichage du menu
 	SDL_RenderPresent(renduPrincipale_menu);
 }
 /*------------------------------------------*/
 
 //Fonction qui vont permettre de dessiner les différents éléments à afficher
-void dessin_texte_menu(char *texte, SDL_Color couleur,int coef_position,int size_font_x,int size_font_y){
-
+void dessin_texte_menu(char *texte, SDL_Color couleur,int coef_position,int size_font_x,int size_font_y){/*Fonction qui prend en argument un texte a écrire, la couleur de ce texte, la taille du texte ainsi que la position x et y
+permet donc de facilité l'affichage de texte*/
 	SDL_Surface* texte_menu_surface = TTF_RenderText_Solid(font_general_menu, texte , couleur);
 	SDL_Texture* texte_menu_texture = SDL_CreateTextureFromSurface(renduPrincipale_menu, texte_menu_surface);
 
@@ -94,8 +94,8 @@ void dessin_texte_menu(char *texte, SDL_Color couleur,int coef_position,int size
 	SDL_FreeSurface(texte_menu_surface);
 }
 
-void dessin_fond_menu(){
-	int size_menu = 32;
+void dessin_fond_menu(){//création du fond quadrillé
+	int size_menu = 32;//Correspond a la taille des carreaux du quadrillage
 
 	SDL_SetRenderDrawColor(renduPrincipale_menu,22, 22, 22, 255);
 	SDL_RenderClear(renduPrincipale_menu);
@@ -111,7 +111,7 @@ void dessin_fond_menu(){
 	}
 }
 
-void dessin_menu_menu(){
+void dessin_menu_menu(){//Affiche du menu en fonction de l'onglet selectionner
 	SDL_Color couleur_font_selection = {255, 0, 0};
 
 	if(etat_menu == START_SURVIE){
@@ -161,7 +161,7 @@ void dessin_menu_menu(){
 /*------------------------------------------*/
 
 //Fonction relative au input du joueur
-void input_menu(){
+void input_menu(){//Permet de naviger dans le menu via les fleches, permet également de lancer en onglet en appuyant sur entrer
 	SDL_Event touche;
 
 	if(SDL_PollEvent(&touche)){
@@ -211,7 +211,7 @@ void input_menu(){
 /*------------------------------------------*/
 
 //Fonction initialisation
-int init_menu(){
+int init_menu(){//Fonction qui initialise SDL ainsi que c'est bibliothéque, donne un titre a la fenetre ainsi qu'un icon, viens initialisé la font
 
 	if(SDL_Init(SDL_INIT_VIDEO < 0)){
 		printf("Erreur d'initialisation de SDL VIDEO: %s",SDL_GetError());
@@ -255,7 +255,7 @@ int init_menu(){
 /*------------------------------------------*/
 
 //Fonction qui vont permettre de gérer le delay, la fermetture et changement de fenetre ou encore de récuperer la taille de la fenetre afficher
-void delay_game_menu(){
+void delay_game_menu(){//Permet de gerer le taux de réfréchissement de l'écran
 	int lastTicks = 0;
 	int maxFPS = 60;
 	int delay = 0;
@@ -267,11 +267,11 @@ void delay_game_menu(){
 	}
 }
 
-void get_screensize_menu(){
+void get_screensize_menu(){//Récuperer la taille de la fenetre
 	SDL_GetWindowSize(fenetrePrincipale_menu, &width_windows_menu, &height_windows_menu);
 }
 
-void fermeture_sdl_menu(){
+void fermeture_sdl_menu(){//Permet de fermet la fenetre
 	SDL_DestroyRenderer(renduPrincipale_menu);
 	SDL_DestroyWindow(fenetrePrincipale_menu);
 	TTF_CloseFont(font_general_menu);
@@ -279,7 +279,7 @@ void fermeture_sdl_menu(){
 	exit(EXIT_SUCCESS);
 }
 
-void switch_screen_menu(char *mode){
+void switch_screen_menu(char *mode){//permet de changer de fenetre en fonction du mode passer en paramètre
 	SDL_DestroyRenderer(renduPrincipale_menu);
 	SDL_DestroyWindow(fenetrePrincipale_menu);
 	TTF_CloseFont(font_general_menu);

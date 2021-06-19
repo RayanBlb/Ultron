@@ -32,13 +32,13 @@ TTF_Font* font_general_mode_ia = NULL;
 
 //Boucle principale
 void mode_ia(int mode_difficulte){
-	reinitialisation_mode_ia(mode_difficulte);
-	init_mode_ia();
-	get_screensize_mode_ia();
-	set_fond_menu_mode_ia();
+	reinitialisation_mode_ia(mode_difficulte);//Réinitialisation des variables globales
+	init_mode_ia();//Initialisation de SDL et des autre bibliothéque 
+	get_screensize_mode_ia();//Récuperation de la taille de la fenetre
+	set_fond_menu_mode_ia();//Affichage du menu mode ai + fond + titre
 	while(1){
-		input_mode_ia(mode_difficulte);
-		delay_game_mode_ia();
+		input_mode_ia(mode_difficulte);//Changement d'état du menu en fonction des input
+		delay_game_mode_ia();//Taux de rafraîchissement de 60 fps
 		//SDL_Log("etat : %d ",etat_mode_ia);
 	}
 }
@@ -51,12 +51,12 @@ void reinitialisation_mode_ia(int mode_difficulte){
 /*------------------------------------------*/
 
 //Fonction d'affichage du menu du choix de l'ia
-void set_mode_ia(){
+void set_mode_ia(){//Viens modifier l'affichage du menu en fonction des input du joueur
 	dessin_menu_mode_ia();
 	SDL_RenderPresent(renduPrincipale_mode_ia);
 }
 
-void set_fond_menu_mode_ia(){
+void set_fond_menu_mode_ia(){//affichage du fond + titre + menu
 	dessin_fond_mode_ia();
 	dessin_texte_mode_ia("ULTRON",couleur_font_mode_ia,-2,600,175);
 	dessin_menu_mode_ia();
@@ -65,8 +65,8 @@ void set_fond_menu_mode_ia(){
 /*------------------------------------------*/
 
 //Fonction qui vont permettre de dessiner les différents éléments à afficher
-void dessin_texte_mode_ia(char *texte, SDL_Color couleur,int coef_position,int size_font_x,int size_font_y){
-
+void dessin_texte_mode_ia(char *texte, SDL_Color couleur,int coef_position,int size_font_x,int size_font_y){/*Fonction qui prend en argument un texte a écrire, la couleur de ce texte, la taille du texte ainsi que la position x et y
+permet donc de facilité l'affichage de texte*/
 	SDL_Surface* texte_mode_ia_surface = TTF_RenderText_Solid(font_general_mode_ia, texte , couleur);
 	SDL_Texture* texte_mode_ia_texture = SDL_CreateTextureFromSurface(renduPrincipale_mode_ia, texte_mode_ia_surface);
 
@@ -83,8 +83,8 @@ void dessin_texte_mode_ia(char *texte, SDL_Color couleur,int coef_position,int s
 	SDL_FreeSurface(texte_mode_ia_surface);
 }
 
-void dessin_fond_mode_ia(){
-	int size_mode_ia = 32;
+void dessin_fond_mode_ia(){//création du fond quadrillé
+	int size_mode_ia = 32;//Correspond a la taille des carreaux du quadrillage
 
 	SDL_SetRenderDrawColor(renduPrincipale_mode_ia,22, 22, 22, 255);
 	SDL_RenderClear(renduPrincipale_mode_ia);
@@ -100,7 +100,7 @@ void dessin_fond_mode_ia(){
 	}
 }
 
-void dessin_menu_mode_ia(){
+void dessin_menu_mode_ia(){//Création du menu en fonction de la selection du joueur
 	SDL_Color couleur_font_selection = {255, 0, 0};
 
 	if(etat_mode_ia == CLASSIQUE){
@@ -120,7 +120,7 @@ void dessin_menu_mode_ia(){
 /*------------------------------------------*/
 
 //Fonction relative au input du joueur
-void input_mode_ia(int mode_difficulte){
+void input_mode_ia(int mode_difficulte){//Fonction qui gérer la monter et descente dans le menu, ainsi que le lancement de l'ai choisi par le joueur
 	SDL_Event touche;
 
 	if(SDL_PollEvent(&touche)){
@@ -164,7 +164,7 @@ void input_mode_ia(int mode_difficulte){
 /*------------------------------------------*/
 
 //Fonction initialisation
-int init_mode_ia(){
+int init_mode_ia(){//Fonction qui initialise SDL ainsi que c'est bibliothéque, donne un titre a la fenetre ainsi qu'un icon, viens initialisé la font
 
 	if(SDL_Init(SDL_INIT_VIDEO < 0)){
 		printf("Erreur d'initialisation de SDL VIDEO: %s",SDL_GetError());
@@ -208,7 +208,7 @@ int init_mode_ia(){
 /*------------------------------------------*/
 
 //Fonction qui vont permettre de gérer le delay, la fermetture et changement de fenetre ou encore de récuperer la taille de la fenetre afficher
-void delay_game_mode_ia(){
+void delay_game_mode_ia(){//Permet de gerer le taux de réfréchissement de l'écran
 	int lastTicks = 0;
 	int maxFPS = 60;
 	int delay = 0;
@@ -220,11 +220,11 @@ void delay_game_mode_ia(){
 	}
 }
 
-void get_screensize_mode_ia(){
+void get_screensize_mode_ia(){//Récuperer la taille de la fenetre
 	SDL_GetWindowSize(fenetrePrincipale_mode_ia, &width_windows_mode_ia, &height_windows_mode_ia);
 }
 
-void fermeture_sdl_mode_ia(){
+void fermeture_sdl_mode_ia(){//Permet de fermet la fenetre
 	SDL_DestroyRenderer(renduPrincipale_mode_ia);
 	SDL_DestroyWindow(fenetrePrincipale_mode_ia);
 	TTF_CloseFont(font_general_mode_ia);
@@ -232,14 +232,14 @@ void fermeture_sdl_mode_ia(){
 	exit(EXIT_SUCCESS);
 }
 
-void switch_screen_type_ia(int mode_difficulte,int type_ia){
+void switch_screen_type_ia(int mode_difficulte,int type_ia){//Permet de lancer le mode d'ia choisi
 	SDL_DestroyRenderer(renduPrincipale_mode_ia);
 	SDL_DestroyWindow(fenetrePrincipale_mode_ia);
 	TTF_CloseFont(font_general_mode_ia);
 	ia(mode_difficulte,type_ia);
 }
 
-void switch_screen_mode_ia(int mode_difficulte){
+void switch_screen_mode_ia(int mode_difficulte){//Permet de revenir au menu principale
 	SDL_DestroyRenderer(renduPrincipale_mode_ia);
 	SDL_DestroyWindow(fenetrePrincipale_mode_ia);
 	TTF_CloseFont(font_general_mode_ia);
