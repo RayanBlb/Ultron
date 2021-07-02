@@ -116,6 +116,7 @@ void free_liste_high_score_outils(liste **pFirst){//Permet de free ma liste
 
 	while(temp_un != NULL){
 		temp_deux = temp_un->pNext;
+		free(temp_un->nom);
 		free(temp_un);
 		temp_un = temp_deux;
 	}
