@@ -24,6 +24,8 @@
 
 liste *pFirst_survie = NULL;
 
+listePosition *pFirstPosition_survie = NULL;
+
 int etat_survie = START;//etat du joueur 1 (blanc)
 
 int width_windows_survie = 0;
@@ -67,7 +69,7 @@ void survie(int mode_difficulte){
 	allocation_tableau_outils(&tableau_deplacement_survie,width_windows_survie,height_windows_survie);//Allocation du tableau de déplacement
 	initialisation_position_main_survie(mode_difficulte);//Initialisation position des joueurs
 	play_musique_outils(&music_de_fond_survie);//Lancement de la musique
-	set_start_survie();//Affichage des différents éléments du terrain
+	set_survie();//Affichage des différents éléments du terrain
 	while(etat_survie != GAME_OVER){
 		input_survie();//input déplacement joueur principale
 		update_survie();//actualisation des coordonnée du joueur
@@ -81,35 +83,18 @@ void survie(int mode_difficulte){
 
 //Fonction d'affichage en fonction de l'état de survie
 void set_survie(){//Permet d'afficher les déplacement du joueur
-	if(etat_survie && etat_survie != GAME_OVER && etat_survie != PAUSE){
-		dessin_main_survie();
-		dessin_background_score_survie();
-		dessin_score_survie();
-		SDL_RenderPresent(renduPrincipale_survie);
-	}else if (etat_survie == PAUSE){
-		dessin_background_score_survie();
-		dessin_score_survie();
-		dessin_pause_survie();
-		SDL_RenderPresent(renduPrincipale_survie);
-	}
-}
-
-void set_start_survie(){//permet d'initialiser le terrain ainsi que le joueur
-	if(etat_survie == START){
+	if(etat_survie != GAME_OVER){
 		dessin_fond_survie();
+		dessin_personnage_outils(pFirstPosition_survie,renduPrincipale_survie,main_texture_survie,size_main_survie);
 		dessin_background_score_survie();
-		dessin_main_survie();
 		dessin_score_survie();
 		SDL_RenderPresent(renduPrincipale_survie);
 	}
 }
 
 void set_game_over_survie(){//Affichage du game over ainsi que de la possibilité de rentrer un pseudo pour le high score
-	if(etat_survie == GAME_OVER){
-		dessin_fond_survie();
-		dessin_background_score_survie();
-	}
 	while(1){
+		dessin_fond_survie();
 		dessin_background_high_score_survie();
 		input_high_score_survie();
 		dessin_high_score_survie();
@@ -136,6 +121,10 @@ void reinitialisation_survie(int mode_difficulte){//Réinitialisation des variab
 
 	if(tableau_deplacement_survie){
 		free_tableau_outils(&tableau_deplacement_survie,width_windows_survie);
+	}
+
+	if(pFirstPosition_survie){
+		free_log_deplacement_outils(&pFirstPosition_survie);
 	}
 
 	strcpy(nom_high_score_survie,"");
@@ -170,10 +159,7 @@ void initialisation_position_main_survie(int mode_difficulte){//Initialisation d
 /*------------------------------------------*/
 
 //Fonction qui vont permettre de dessiner les différents éléments à afficher
-void dessin_main_survie(){//création du premier joueurs (joueur blanc)
-	SDL_Rect dest = { posi_main_survie.x,posi_main_survie.y, size_main_survie, size_main_survie};
-	SDL_RenderCopy(renduPrincipale_survie,main_texture_survie,NULL,&dest);
-}
+
 
 void dessin_background_score_survie(){//création du background du score en haut a droite
 	SDL_Rect dest = { terrain_x_survie+1, 0, width_windows_survie - terrain_x_survie , height_windows_survie};
@@ -400,6 +386,7 @@ void update_survie(){//modification des coordonnées des joueurs ainsi que augme
 }
 
 void tab_deplacement_survie(int x, int y){//permet d'ajouter les déplacement du joueur dans le tableau déplacement
+	log_deplacement_outils(&pFirstPosition_survie,x,y);
 	if(tableau_deplacement_survie[x][y] == 1){
 		etat_survie = GAME_OVER;
 		Mix_FreeMusic(music_de_fond_survie);
@@ -434,7 +421,7 @@ int init_survie(){//Fonction qui initialise SDL ainsi que c'est bibliothéque, d
 		printf("Audio mix : %s", Mix_GetError());
 	}
 
-	if(SDL_CreateWindowAndRenderer(1600, 900, SDL_WINDOW_SHOWN, &fenetrePrincipale_survie, &renduPrincipale_survie) < 0){
+	if(SDL_CreateWindowAndRenderer(1920, 1080, SDL_WINDOW_SHOWN, &fenetrePrincipale_survie, &renduPrincipale_survie) < 0){
 		printf("Erreur création fenetre : %s",SDL_GetError());
 		SDL_Quit();
 		return EXIT_FAILURE;

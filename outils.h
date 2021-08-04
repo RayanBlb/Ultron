@@ -7,6 +7,12 @@ typedef struct liste{
 	struct liste *pNext;
 }liste;
 
+typedef struct listePosition{
+	int x;
+	int y;
+	struct listePosition *pNext;
+}listePosition;
+
 void free_liste_high_score_outils(liste **pFirst);
 void read_file_high_score_outils(char *chemin,char *nom_high_score_survie,int score_survie,liste *pFirst);
 void write_liste_high_score_outils(liste *pFirst,char *chemin);
@@ -19,7 +25,10 @@ void play_musique_outils(Mix_Music **music_de_fond_survie);
 void play_explosion_outils(Mix_Chunk **explosion_survie);
 void allocation_tableau_outils(int ***tableau_deplacement, int width_windows_survie, int height_windows_survie);
 void free_tableau_outils(int ***tableau_deplacement, int width_windows_survie);
+void dessin_personnage_outils(listePosition *pFirst,SDL_Renderer *renduPrincipale_survie,SDL_Texture *main_texture_survie,int size_main_survie);
+void free_log_deplacement_outils(listePosition **pFirst);
 int tri_high_score_outils(liste **pFirst,char *nom,int score);int compte_nom_high_score_outils(char *nom_high_score_survie);
 int compte_nom_high_score_outils(char *nom_high_score_survie);
+int log_deplacement_outils(listePosition **pFirst,int position_x,int position_y);
 
 #endif

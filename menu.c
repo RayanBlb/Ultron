@@ -63,13 +63,13 @@ void reinitialisation_menu(int mode_difficulte){//Viens changer la varible globa
 
 //Fonction d'affichage du menu
 void set_menu(){
+	dessin_fond_menu();//création fond quadrillé
 	dessin_menu_menu();//Affiche le menu en fonction de l'état qui a été changer par le joueur
 	SDL_RenderPresent(renduPrincipale_menu);
 }
 
 void set_fond_menu_menu(){//Fonction affichage du menu
 	dessin_fond_menu();//création fond quadrillé
-	dessin_texte_menu("ULTRON",couleur_font_menu,-2,600,175);//Affichage du titre
 	dessin_menu_menu();//Affichage du menu
 	SDL_RenderPresent(renduPrincipale_menu);
 }
@@ -113,6 +113,8 @@ void dessin_fond_menu(){//création du fond quadrillé
 
 void dessin_menu_menu(){//Affiche du menu en fonction de l'onglet selectionner
 	SDL_Color couleur_font_selection = {255, 0, 0};
+
+	dessin_texte_menu("ULTRON",couleur_font_menu,-2,600,175);//Affichage du titre
 
 	if(etat_menu == START_SURVIE){
 		dessin_texte_menu("Survie",couleur_font_selection,-2,400,100);
@@ -234,7 +236,7 @@ int init_menu(){//Fonction qui initialise SDL ainsi que c'est bibliothéque, don
 		printf("Audio mix : %s", Mix_GetError());
 	}
 
-	if(SDL_CreateWindowAndRenderer(1600, 900, SDL_WINDOW_SHOWN, &fenetrePrincipale_menu, &renduPrincipale_menu) < 0){
+	if(SDL_CreateWindowAndRenderer(1920, 1080, SDL_WINDOW_SHOWN, &fenetrePrincipale_menu, &renduPrincipale_menu) < 0){
 		printf("Erreur création fenetre : %s",SDL_GetError());
 		SDL_Quit();
 		return EXIT_FAILURE;

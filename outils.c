@@ -242,3 +242,54 @@ void switch_screen_outils(SDL_Window *fenetrePrincipale_survie, SDL_Renderer *re
 	menu(0);
 }
 /*------------------------------------------*/
+
+//dessin personnage via liste
+int log_deplacement_outils(listePosition **pFirst,int position_x,int position_y){
+	listePosition *a_ajouter = (listePosition *)malloc(sizeof(listePosition));
+
+	listePosition *temp = *pFirst;
+
+	a_ajouter->x = position_x;
+	a_ajouter->y = position_y;
+	a_ajouter->pNext = NULL;
+
+	if(pFirst == NULL)return 0;
+
+	if(*pFirst == NULL){
+		*pFirst = a_ajouter;
+		return 0;
+	}
+
+	while(temp->pNext != NULL){
+		temp = temp->pNext;
+	}
+
+	temp->pNext = a_ajouter;
+
+	return 0;
+}
+
+void dessin_personnage_outils(listePosition *pFirst,SDL_Renderer *renduPrincipale,SDL_Texture *main_texture,int size_main){//création du premier joueurs (joueur blanc)
+	listePosition *pTemp = pFirst;
+
+	while(pTemp != NULL){
+		SDL_Rect dest = {pTemp->x, pTemp->y, size_main, size_main};
+		SDL_RenderCopy(renduPrincipale,main_texture,NULL,&dest);
+		pTemp=pTemp->pNext;
+	}
+}
+
+void free_log_deplacement_outils(listePosition **pFirst){//Permet de free ma liste
+	listePosition *temp_un = *pFirst;
+	listePosition *temp_deux = NULL;
+
+	while(temp_un != NULL){
+		temp_deux = temp_un->pNext;
+		free(temp_un);
+		temp_un = temp_deux;
+	}
+
+	*pFirst = NULL;
+}
+
+/*------------------------------------------*/

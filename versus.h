@@ -9,8 +9,6 @@ typedef struct position_struct_versus{
 void input_versus(void);
 void update_versus(void);
 void set_versus(void);
-void dessin_main_versus(void);
-void dessin_deuxieme_versus(void);
 void dessin_fond_versus(void);
 void get_screensize_versus(void);
 void dessin_background_score_versus(void);
@@ -19,7 +17,6 @@ void dessin_game_over_versus(void);
 void versus(int mode);
 void reinitialisation_versus(int mode);
 void dessin_pause_versus(void);
-void set_start_versus(void);
 void set_game_over_versus(void);
 void input_high_score_versus(void);
 void dessin_high_score_versus(void);

@@ -35,6 +35,9 @@
 
 liste *pFirst_versus = NULL;
 
+listePosition *pFirstPositionMain_versus = NULL;
+listePosition *pFirstPositionSeconde_versus = NULL;
+
 int etat_versus = START;//Etat de la partie global
 int etat_main_versus = START;//etat du joueur 1 (blanc)
 int etat_deuxieme_versus = START;//etat du joueur 2 (rouge)
@@ -87,7 +90,7 @@ void versus(int mode_difficulte){
 	allocation_tableau_outils(&tableau_deplacement_versus,width_windows_versus,height_windows_versus);//Allocation du tableau de déplacement
 	initialisation_position_main_versus(mode_difficulte);//Initialisation position des joueurs
 	play_musique_outils(&music_de_fond_versus);//Lancement de la musique
-	set_start_versus();//Affichage des différents éléments du terrain
+	set_versus();//Affichage des différents éléments du terrain
 	while(etat_versus < GAME_OVER_1_win){
 		input_versus();//input déplacement joueur 1 et 2
 		update_versus();//actualisation des coordonnée de l'ia et du joueur
@@ -101,9 +104,10 @@ void versus(int mode_difficulte){
 
 //Fonction d'affichage en fonction de l'état de versus
 void set_versus(){//Permet d'afficher les déplacement des joueurs
-	if(etat_versus && etat_versus < GAME_OVER_1_win && (etat_main_versus != PAUSE || etat_deuxieme_versus != PAUSE)){
-		dessin_main_versus();
-		dessin_deuxieme_versus();
+	if(etat_main_versus != PAUSE || etat_deuxieme_versus != PAUSE){
+		dessin_fond_versus();
+		dessin_personnage_outils(pFirstPositionMain_versus,renduPrincipale_versus,main_texture_versus,size_main_versus);
+		dessin_personnage_outils(pFirstPositionSeconde_versus,renduPrincipale_versus,deuxieme_texture_versus,size_main_versus);
 		dessin_background_score_versus();
 		dessin_score_versus();
 		SDL_RenderPresent(renduPrincipale_versus);
@@ -115,23 +119,9 @@ void set_versus(){//Permet d'afficher les déplacement des joueurs
 	}
 }
 
-void set_start_versus(){//permet d'initialiser le terrain ainsi que les joueurs
-	if(etat_versus == START){
-		dessin_fond_versus();
-		dessin_background_score_versus();
-		dessin_main_versus();
-		dessin_deuxieme_versus();
-		dessin_score_versus();
-		SDL_RenderPresent(renduPrincipale_versus);
-	}
-}
-
 void set_game_over_versus(){//Affichage du game over ainsi que de la possibilité de rentrer un pseudo pour le high score
-	if(etat_versus >= GAME_OVER_1_win){
-		dessin_fond_versus();
-		dessin_background_score_versus();
-	}
 	while(1){
+		dessin_fond_versus();
 		dessin_background_high_score_versus();
 		input_high_score_versus();
 		dessin_high_score_versus();
@@ -161,6 +151,14 @@ void reinitialisation_versus(int mode_difficulte){//Réinitialisation des variab
 
 	if(tableau_deplacement_versus){
 		free_tableau_outils(&tableau_deplacement_versus,width_windows_versus);
+	}
+
+	if(pFirstPositionMain_versus){
+		free_log_deplacement_outils(&pFirstPositionMain_versus);
+	}
+
+	if(pFirstPositionSeconde_versus){
+		free_log_deplacement_outils(&pFirstPositionSeconde_versus);
 	}
 
 	strcpy(nom_high_score_versus,"");
@@ -197,16 +195,6 @@ void initialisation_position_main_versus(int mode_difficulte){//Initialisation d
 /*------------------------------------------*/
 
 //Fonction qui vont permettre de dessiner les différents éléments à afficher
-void dessin_main_versus(){//création du premier joueurs (joueur blanc)
-	SDL_Rect dest = { posi_main_versus.x,posi_main_versus.y, size_main_versus, size_main_versus};
-	SDL_RenderCopy(renduPrincipale_versus,main_texture_versus,NULL,&dest);
-}
-
-void dessin_deuxieme_versus(){//Création du deuxieme joueur (joueur rouge)
-	SDL_Rect dest = { posi_deuxieme_versus.x,posi_deuxieme_versus.y, size_main_versus, size_main_versus};
-	SDL_RenderCopy(renduPrincipale_versus,deuxieme_texture_versus,NULL,&dest);
-}
-
 void dessin_background_score_versus(){//création du background du score en haut a droite
 	SDL_Rect dest = { terrain_x_versus+1, 0, width_windows_versus - terrain_x_versus , height_windows_versus};
 	SDL_RenderCopy(renduPrincipale_versus,background_score_texture_versus,NULL,&dest);
@@ -507,30 +495,37 @@ void update_versus(){//modification des coordonnées des joueurs ainsi que augme
 }
 
 int tab_deplacement_versus(int x, int y,int joueur){//permet d'ajouter les déplacement du joueur dans le tableau déplacement
+
 	if(tableau_deplacement_versus[x][y] == 1 && joueur != 1){
+		log_deplacement_outils(&pFirstPositionMain_versus,x,y);
 		etat_versus = GAME_OVER_1_win;
 		Mix_FreeMusic(music_de_fond_versus);
 		play_explosion_outils(&explosion_versus);
 		return 0;
 	}else if(tableau_deplacement_versus[x][y] == 1 && joueur == 1){
+		log_deplacement_outils(&pFirstPositionMain_versus,x,y);
 		etat_versus = GAME_OVER_1_suicide;
 		Mix_FreeMusic(music_de_fond_versus);
 		play_explosion_outils(&explosion_versus);
 		return 0;
 	}else if(tableau_deplacement_versus[x][y] == 2 && joueur != 2){
+		log_deplacement_outils(&pFirstPositionSeconde_versus,x,y);
 		etat_versus = GAME_OVER_2_win;
 		Mix_FreeMusic(music_de_fond_versus);
 		play_explosion_outils(&explosion_versus);
 		return 0;
 	}else if(tableau_deplacement_versus[x][y] == 2 && joueur == 2){
+		log_deplacement_outils(&pFirstPositionSeconde_versus,x,y);
 		etat_versus = GAME_OVER_2_suicide;
 		Mix_FreeMusic(music_de_fond_versus);
 		play_explosion_outils(&explosion_versus);
 		return 0;
 	}else if(tableau_deplacement_versus[x][y] == 0 && joueur == 1){
+		log_deplacement_outils(&pFirstPositionMain_versus,x,y);
 		tableau_deplacement_versus[x][y] = 1;
 		return 0;
 	}else if(tableau_deplacement_versus[x][y] == 0 && joueur == 2){
+		log_deplacement_outils(&pFirstPositionSeconde_versus,x,y);
 		tableau_deplacement_versus[x][y] = 2;
 		return 0;
 	}
@@ -564,7 +559,7 @@ int init_versus(){//Fonction qui initialise SDL ainsi que c'est bibliothéque, d
 		printf("Audio mix : %s", Mix_GetError());
 	}
 
-	if(SDL_CreateWindowAndRenderer(1600, 900, SDL_WINDOW_SHOWN, &fenetrePrincipale_versus, &renduPrincipale_versus) < 0){
+	if(SDL_CreateWindowAndRenderer(1920, 1080, SDL_WINDOW_SHOWN, &fenetrePrincipale_versus, &renduPrincipale_versus) < 0){
 		printf("Erreur création fenetre : %s",SDL_GetError());
 		SDL_Quit();
 		return EXIT_FAILURE;

@@ -58,13 +58,13 @@ void reinitialisation_difficulte(int mode_difficulte){
 
 //Fonction d'affichage du menu
 void set_difficulte(){ //Viens modifier l'affichage du menu de difficulté en fonction des input du joueur
+	dessin_fond_difficulte();
 	dessin_menu_difficulte();
 	SDL_RenderPresent(renduPrincipale_difficulte); //Actualisation du rendu principale
 }
 
 void set_fond_menu_difficulte(){ //Affichage du fond + titre + menu
 	dessin_fond_difficulte();
-	dessin_texte_difficulte("ULTRON",couleur_font_difficulte,-2,600,175);
 	dessin_menu_difficulte();
 	SDL_RenderPresent(renduPrincipale_difficulte);
 }
@@ -108,6 +108,8 @@ void dessin_fond_difficulte(){ //création du fond quadrillé
 
 void dessin_menu_difficulte(){ //Création du menu en fonction de la selection du joueur
 	SDL_Color couleur_font_selection = {255, 0, 0};
+
+	dessin_texte_difficulte("ULTRON",couleur_font_difficulte,-2,600,175);
 
 	if(etat_difficulte == FACILE){
 		dessin_texte_difficulte("Facile",couleur_font_selection,-2,400,100);
@@ -193,7 +195,7 @@ int init_difficulte(){//Fonction qui initialise SDL ainsi que c'est bibliothéqu
 		printf("Audio mix : %s", Mix_GetError());
 	}
 
-	if(SDL_CreateWindowAndRenderer(1600, 900, SDL_WINDOW_SHOWN, &fenetrePrincipale_difficulte, &renduPrincipale_difficulte) < 0){
+	if(SDL_CreateWindowAndRenderer(1920, 1080, SDL_WINDOW_SHOWN, &fenetrePrincipale_difficulte, &renduPrincipale_difficulte) < 0){
 		printf("Erreur création fenetre : %s",SDL_GetError());
 		SDL_Quit();
 		return EXIT_FAILURE;
