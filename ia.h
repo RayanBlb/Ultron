@@ -9,7 +9,6 @@ typedef struct position_struct_ia{
 void input_ia(void);
 void update_ia(void);
 void set_ia(void);
-void dessin_fond_ia(void);
 void get_screensize_ia(void);
 void dessin_background_score_ia(void);
 void dessin_score_ia(void);

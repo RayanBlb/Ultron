@@ -7,8 +7,6 @@ typedef struct position_struct_high_score{
 }position_high_score;
 
 void dessin_menu_high_score(void);
-void dessin_texte_high_score(char *texte, SDL_Color couleur,int coef_position,int size_font_x,int size_font_y);
-void dessin_fond_high_score(void);
 void dessin_high_score_high_score(void);
 void input_high_score(void);
 void delay_game_high_score(void);

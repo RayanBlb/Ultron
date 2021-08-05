@@ -54,60 +54,25 @@ void reinitialisation_high_score(){
 
 //Fonction d'affichage du high score
 void set_high_score(){
-	dessin_fond_high_score();//création fond quadrillé
+	dessin_fond_outils(32,renduPrincipale_high_score,width_windows_high_score,height_windows_high_score);//création fond quadrillé
 	dessin_high_score_high_score();//Affichage du classement en fonction du mode de jeu
 	SDL_RenderPresent(renduPrincipale_high_score);//Actualisation de la fenetre
 }
 /*------------------------------------------*/
 
 //Fonction qui vont permettre de dessiner les différents éléments à afficher
-void dessin_texte_high_score(char *texte, SDL_Color couleur,int coef_position,int size_font_x,int size_font_y){/*Fonction qui prend en argument un texte a écrire, la couleur de ce texte, la taille du texte ainsi que la position x et y
-permet donc de facilité l'affichage de texte*/
-	SDL_Surface* texte_high_score_surface = TTF_RenderText_Solid(font_general_high_score, texte , couleur);
-	SDL_Texture* texte_high_score_texture = SDL_CreateTextureFromSurface(renduPrincipale_high_score, texte_high_score_surface);
-
-	int x_centre = (width_windows_high_score - size_font_x)/2;
-	int y_centre = (height_windows_high_score - size_font_y)/2;
-
-	position_high_score posi_texte_high_score = {x_centre,y_centre+size_font_y*coef_position};
-	
-	SDL_Rect texte_high_score = {posi_texte_high_score.x, posi_texte_high_score.y, size_font_x, size_font_y};
-
-	SDL_RenderCopy(renduPrincipale_high_score, texte_high_score_texture, NULL, &texte_high_score);
-
-	SDL_DestroyTexture(texte_high_score_texture);
-	SDL_FreeSurface(texte_high_score_surface);
-}
-
-void dessin_fond_high_score(){//création du fond quadrillé
-	int size_high_score = 32;//Correspond a la taille des carreaux du quadrillage
-
-	SDL_SetRenderDrawColor(renduPrincipale_high_score,22, 22, 22, 255);
-	SDL_RenderClear(renduPrincipale_high_score);
-	SDL_SetRenderDrawColor(renduPrincipale_high_score,77, 77, 77, 255);
-
-
-	for(int x = 0; x <= width_windows_high_score; x += size_high_score){
-		SDL_RenderDrawLine(renduPrincipale_high_score, x, 0, x, height_windows_high_score);
-	}
-
-	for(int y = 0; y < height_windows_high_score; y += size_high_score){
-		SDL_RenderDrawLine(renduPrincipale_high_score, 0, y, width_windows_high_score, y);
-	}
-}
-
 void dessin_high_score_high_score(){//Affichage du high score en fonction du mode de jeu selectionner
 	if(etat_high_score == TABLEAU_SURVIE){
-		dessin_texte_high_score("HIGH SCORE",couleur_font_high_score,-2,600,175);
-		dessin_texte_high_score("Mode : Survie",couleur_font_high_score,-2,400,110);
+		dessin_texte_outils("HIGH SCORE",couleur_font_high_score,-2,600,175,font_general_high_score,width_windows_high_score,height_windows_high_score,renduPrincipale_high_score);
+		dessin_texte_outils("Mode : Survie",couleur_font_high_score,-2,400,110,font_general_high_score,width_windows_high_score,height_windows_high_score,renduPrincipale_high_score);
 		read_high_score("./score_survie.txt");
 	}else if(etat_high_score == TABLEAU_VERSUS){
-		dessin_texte_high_score("HIGH SCORE",couleur_font_high_score,-2,600,175);
-		dessin_texte_high_score("Mode : Versus",couleur_font_high_score,-2,400,110);
+		dessin_texte_outils("HIGH SCORE",couleur_font_high_score,-2,600,175,font_general_high_score,width_windows_high_score,height_windows_high_score,renduPrincipale_high_score);
+		dessin_texte_outils("Mode : Versus",couleur_font_high_score,-2,400,110,font_general_high_score,width_windows_high_score,height_windows_high_score,renduPrincipale_high_score);
 		read_high_score("./score_versus.txt");
 	}else if(etat_high_score == TABLEAU_IA){
-		dessin_texte_high_score("HIGH SCORE",couleur_font_high_score,-2,600,175);
-		dessin_texte_high_score("Mode : IA",couleur_font_high_score,-2,400,110);
+		dessin_texte_outils("HIGH SCORE",couleur_font_high_score,-2,600,175,font_general_high_score,width_windows_high_score,height_windows_high_score,renduPrincipale_high_score);
+		dessin_texte_outils("Mode : IA",couleur_font_high_score,-2,400,110,font_general_high_score,width_windows_high_score,height_windows_high_score,renduPrincipale_high_score);
 		read_high_score("./score_ia.txt");
 	}
 }
@@ -130,7 +95,7 @@ void read_high_score(char *file_name){ //Permet de lire le fichier high score af
 			strcpy(&ligne[len-1],"");
 		}
 
-		dessin_texte_high_score(ligne,couleur_font_high_score,compteur,400,100);//Permet d'afficher la ligne du fichier
+		dessin_texte_outils(ligne,couleur_font_high_score,compteur,400,100,font_general_high_score,width_windows_high_score,height_windows_high_score,renduPrincipale_high_score);//Permet d'afficher la ligne du fichier
 		compteur++;
 	}
 

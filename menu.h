@@ -7,8 +7,6 @@ typedef struct position_struct_menu{
 }position_menu;
 
 void dessin_menu_menu(void);
-void dessin_texte_menu(char *texte, SDL_Color couleur,int coef_position,int size_font_x,int size_font_y);
-void dessin_fond_menu();
 void set_menu(void);
 void input_menu(void);
 void delay_game_menu(void);

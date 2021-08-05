@@ -112,7 +112,7 @@ void ia(int mode_difficulte,int mode_ia){
 //Fonction d'affichage en fonction de l'état des joueurs
 void set_ia(){//Permet d'afficher les déplacement des joueurs
 	if((etat_main_ia != PAUSE || etat_deuxieme_ia != PAUSE)){
-		dessin_fond_ia();
+		dessin_fond_outils(size_main_ia,renduPrincipale_ia,width_windows_ia,height_windows_ia);
 		dessin_personnage_outils(pFirstPositionMain_ia,renduPrincipale_ia,main_texture_ia,size_main_ia);
 		dessin_personnage_outils(pFirstPositionSeconde_ia,renduPrincipale_ia,deuxieme_texture_ia,size_main_ia);
 		dessin_background_score_ia();
@@ -128,7 +128,7 @@ void set_ia(){//Permet d'afficher les déplacement des joueurs
 
 void set_game_over_ia(){//Affichage du game over ainsi que de la possibilité de rentrer un pseudo pour le high score
 	while(1){
-		dessin_fond_ia();
+		dessin_fond_outils(size_main_ia,renduPrincipale_ia,width_windows_ia,height_windows_ia);
 		dessin_background_high_score_ia();
 		input_high_score_ia();
 		dessin_high_score_ia();
@@ -305,21 +305,6 @@ void dessin_pause_ia(){//création de la pause
 
 	SDL_DestroyTexture(score_texture);
 	SDL_FreeSurface(score_surface);
-}
-
-void dessin_fond_ia(){//création du fond quadrillé
-
-	SDL_SetRenderDrawColor(renduPrincipale_ia,22, 22, 22, 255);
-	SDL_RenderClear(renduPrincipale_ia);
-	SDL_SetRenderDrawColor(renduPrincipale_ia,77, 77, 77, 255);
-
-	for(int x = 0; x <= terrain_x_ia; x += size_main_ia){
-		SDL_RenderDrawLine(renduPrincipale_ia, x, 0, x, height_windows_ia);
-	}
-
-	for(int y = 0; y < terrain_y_ia; y += size_main_ia){
-		SDL_RenderDrawLine(renduPrincipale_ia, 0, y, terrain_x_ia, y);
-	}
 }
 
 void dessin_high_score_ia(){//Affichage au fur et a mesure du nom du joueur lorsqu'il tape son nom

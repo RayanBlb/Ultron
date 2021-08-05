@@ -63,101 +63,66 @@ void reinitialisation_menu(int mode_difficulte){//Viens changer la varible globa
 
 //Fonction d'affichage du menu
 void set_menu(){
-	dessin_fond_menu();//création fond quadrillé
+	dessin_fond_outils(32,renduPrincipale_menu,width_windows_menu,height_windows_menu);//création fond quadrillé
 	dessin_menu_menu();//Affiche le menu en fonction de l'état qui a été changer par le joueur
 	SDL_RenderPresent(renduPrincipale_menu);
 }
 
 void set_fond_menu_menu(){//Fonction affichage du menu
-	dessin_fond_menu();//création fond quadrillé
+	dessin_fond_outils(32,renduPrincipale_menu,width_windows_menu,height_windows_menu);//création fond quadrillé
 	dessin_menu_menu();//Affichage du menu
 	SDL_RenderPresent(renduPrincipale_menu);
 }
 /*------------------------------------------*/
 
 //Fonction qui vont permettre de dessiner les différents éléments à afficher
-void dessin_texte_menu(char *texte, SDL_Color couleur,int coef_position,int size_font_x,int size_font_y){/*Fonction qui prend en argument un texte a écrire, la couleur de ce texte, la taille du texte ainsi que la position x et y
-permet donc de facilité l'affichage de texte*/
-	SDL_Surface* texte_menu_surface = TTF_RenderText_Solid(font_general_menu, texte , couleur);
-	SDL_Texture* texte_menu_texture = SDL_CreateTextureFromSurface(renduPrincipale_menu, texte_menu_surface);
-
-	int x_centre = (width_windows_menu - size_font_x)/2;
-	int y_centre = (height_windows_menu - size_font_y)/2;
-
-	position_menu posi_texte_menu = {x_centre,y_centre+size_font_y*coef_position};
-	
-	SDL_Rect texte_menu = {posi_texte_menu.x, posi_texte_menu.y, size_font_x, size_font_y};
-
-	SDL_RenderCopy(renduPrincipale_menu, texte_menu_texture, NULL, &texte_menu);
-
-	SDL_DestroyTexture(texte_menu_texture);
-	SDL_FreeSurface(texte_menu_surface);
-}
-
-void dessin_fond_menu(){//création du fond quadrillé
-	int size_menu = 32;//Correspond a la taille des carreaux du quadrillage
-
-	SDL_SetRenderDrawColor(renduPrincipale_menu,22, 22, 22, 255);
-	SDL_RenderClear(renduPrincipale_menu);
-	SDL_SetRenderDrawColor(renduPrincipale_menu,77, 77, 77, 255);
-
-
-	for(int x = 0; x <= width_windows_menu; x += size_menu){
-		SDL_RenderDrawLine(renduPrincipale_menu, x, 0, x, height_windows_menu);
-	}
-
-	for(int y = 0; y < height_windows_menu; y += size_menu){
-		SDL_RenderDrawLine(renduPrincipale_menu, 0, y, width_windows_menu, y);
-	}
-}
-
 void dessin_menu_menu(){//Affiche du menu en fonction de l'onglet selectionner
 	SDL_Color couleur_font_selection = {255, 0, 0};
 
-	dessin_texte_menu("ULTRON",couleur_font_menu,-2,600,175);//Affichage du titre
+	dessin_texte_outils("ULTRON",couleur_font_menu,-2,600,175,font_general_menu,width_windows_menu,height_windows_menu,renduPrincipale_menu);//Affichage du titre
 
 	if(etat_menu == START_SURVIE){
-		dessin_texte_menu("Survie",couleur_font_selection,-2,400,100);
-		dessin_texte_menu("1 VS 1",couleur_font_menu,-1,400,100);
-		dessin_texte_menu("VS IA",couleur_font_menu,0,400,100);
-		dessin_texte_menu("Difficulte",couleur_font_menu,1,400,100);
-		dessin_texte_menu("High Score",couleur_font_menu,2,400,100);
-		dessin_texte_menu("Quitter",couleur_font_menu,3,400,100);
+		dessin_texte_outils("Survie",couleur_font_selection,-2,400,100,font_general_menu,width_windows_menu,height_windows_menu,renduPrincipale_menu);
+		dessin_texte_outils("1 VS 1",couleur_font_menu,-1,400,100,font_general_menu,width_windows_menu,height_windows_menu,renduPrincipale_menu);
+		dessin_texte_outils("VS IA",couleur_font_menu,0,400,100,font_general_menu,width_windows_menu,height_windows_menu,renduPrincipale_menu);
+		dessin_texte_outils("Difficulte",couleur_font_menu,1,400,100,font_general_menu,width_windows_menu,height_windows_menu,renduPrincipale_menu);
+		dessin_texte_outils("High Score",couleur_font_menu,2,400,100,font_general_menu,width_windows_menu,height_windows_menu,renduPrincipale_menu);
+		dessin_texte_outils("Quitter",couleur_font_menu,3,400,100,font_general_menu,width_windows_menu,height_windows_menu,renduPrincipale_menu);
 	}else if(etat_menu == START_VERSUS ){
-		dessin_texte_menu("Survie",couleur_font_menu,-2,400,100);
-		dessin_texte_menu("1 VS 1",couleur_font_selection,-1,400,100);
-		dessin_texte_menu("VS IA",couleur_font_menu,0,400,100);
-		dessin_texte_menu("Difficulte",couleur_font_menu,1,400,100);
-		dessin_texte_menu("High Score",couleur_font_menu,2,400,100);
-		dessin_texte_menu("Quitter",couleur_font_menu,3,400,100);
+		dessin_texte_outils("Survie",couleur_font_menu,-2,400,100,font_general_menu,width_windows_menu,height_windows_menu,renduPrincipale_menu);
+		dessin_texte_outils("1 VS 1",couleur_font_selection,-1,400,100,font_general_menu,width_windows_menu,height_windows_menu,renduPrincipale_menu);
+		dessin_texte_outils("VS IA",couleur_font_menu,0,400,100,font_general_menu,width_windows_menu,height_windows_menu,renduPrincipale_menu);
+		dessin_texte_outils("Difficulte",couleur_font_menu,1,400,100,font_general_menu,width_windows_menu,height_windows_menu,renduPrincipale_menu);
+		dessin_texte_outils("High Score",couleur_font_menu,2,400,100,font_general_menu,width_windows_menu,height_windows_menu,renduPrincipale_menu);
+		dessin_texte_outils("Quitter",couleur_font_menu,3,400,100,font_general_menu,width_windows_menu,height_windows_menu,renduPrincipale_menu);
 	}else if(etat_menu == START_IA ){
-		dessin_texte_menu("Survie",couleur_font_menu,-2,400,100);
-		dessin_texte_menu("1 VS 1",couleur_font_menu,-1,400,100);
-		dessin_texte_menu("VS IA",couleur_font_selection,0,400,100);
-		dessin_texte_menu("Difficulte",couleur_font_menu,1,400,100);
-		dessin_texte_menu("High Score",couleur_font_menu,2,400,100);
-		dessin_texte_menu("Quitter",couleur_font_menu,3,400,100);
+		dessin_texte_outils("Survie",couleur_font_menu,-2,400,100,font_general_menu,width_windows_menu,height_windows_menu,renduPrincipale_menu);
+		dessin_texte_outils("1 VS 1",couleur_font_menu,-1,400,100,font_general_menu,width_windows_menu,height_windows_menu,renduPrincipale_menu);
+		dessin_texte_outils("VS IA",couleur_font_selection,0,400,100,font_general_menu,width_windows_menu,height_windows_menu,renduPrincipale_menu);
+		dessin_texte_outils("Difficulte",couleur_font_menu,1,400,100,font_general_menu,width_windows_menu,height_windows_menu,renduPrincipale_menu);
+		dessin_texte_outils("High Score",couleur_font_menu,2,400,100,font_general_menu,width_windows_menu,height_windows_menu,renduPrincipale_menu);
+		dessin_texte_outils("Quitter",couleur_font_menu,3,400,100,font_general_menu,width_windows_menu,height_windows_menu,renduPrincipale_menu);
 	}else if(etat_menu == OPTION ){
-		dessin_texte_menu("Survie",couleur_font_menu,-2,400,100);
-		dessin_texte_menu("1 VS 1",couleur_font_menu,-1,400,100);
-		dessin_texte_menu("VS IA",couleur_font_menu,0,400,100);
-		dessin_texte_menu("Difficulte",couleur_font_selection,1,400,100);
-		dessin_texte_menu("High Score",couleur_font_menu,2,400,100);
-		dessin_texte_menu("Quitter",couleur_font_menu,3,400,100);
+		dessin_texte_outils("Survie",couleur_font_menu,-2,400,100,font_general_menu,width_windows_menu,height_windows_menu,renduPrincipale_menu);
+		dessin_texte_outils("1 VS 1",couleur_font_menu,-1,400,100,font_general_menu,width_windows_menu,height_windows_menu,renduPrincipale_menu);
+		dessin_texte_outils("VS IA",couleur_font_menu,0,400,100,font_general_menu,width_windows_menu,height_windows_menu,renduPrincipale_menu);
+		dessin_texte_outils("Difficulte",couleur_font_selection,1,400,100,font_general_menu,width_windows_menu,height_windows_menu,renduPrincipale_menu);
+		dessin_texte_outils("High Score",couleur_font_menu,2,400,100,font_general_menu,width_windows_menu,height_windows_menu,renduPrincipale_menu);
+		dessin_texte_outils("Quitter",couleur_font_menu,3,400,100,font_general_menu,width_windows_menu,height_windows_menu,renduPrincipale_menu);
 	}else if(etat_menu == HIGH_SCORE ){
-		dessin_texte_menu("Survie",couleur_font_menu,-2,400,100);
-		dessin_texte_menu("1 VS 1",couleur_font_menu,-1,400,100);
-		dessin_texte_menu("VS IA",couleur_font_menu,0,400,100);
-		dessin_texte_menu("Difficulte",couleur_font_menu,1,400,100);
-		dessin_texte_menu("High Score",couleur_font_selection,2,400,100);
-		dessin_texte_menu("Quitter",couleur_font_menu,3,400,100);
+		dessin_texte_outils("Survie",couleur_font_menu,-2,400,100,font_general_menu,width_windows_menu,height_windows_menu,renduPrincipale_menu);
+		dessin_texte_outils("1 VS 1",couleur_font_menu,-1,400,100,font_general_menu,width_windows_menu,height_windows_menu,renduPrincipale_menu);
+		dessin_texte_outils("VS IA",couleur_font_menu,0,400,100,font_general_menu,width_windows_menu,height_windows_menu,renduPrincipale_menu);
+		dessin_texte_outils("Difficulte",couleur_font_menu,1,400,100,font_general_menu,width_windows_menu,height_windows_menu,renduPrincipale_menu);
+		dessin_texte_outils("High Score",couleur_font_selection,2,400,100,font_general_menu,width_windows_menu,height_windows_menu,renduPrincipale_menu);
+		dessin_texte_outils("Quitter",couleur_font_menu,3,400,100,font_general_menu,width_windows_menu,height_windows_menu,renduPrincipale_menu);
 	}else if(etat_menu == QUITTER ){
-		dessin_texte_menu("Survie",couleur_font_menu,-2,400,100);
-		dessin_texte_menu("1 VS 1",couleur_font_menu,-1,400,100);
-		dessin_texte_menu("VS IA",couleur_font_menu,0,400,100);
-		dessin_texte_menu("Difficulte",couleur_font_menu,1,400,100);
-		dessin_texte_menu("High Score",couleur_font_menu,2,400,100);
-		dessin_texte_menu("Quitter",couleur_font_selection,3,400,100);	
+		dessin_texte_outils("Survie",couleur_font_menu,-2,400,100,font_general_menu,width_windows_menu,height_windows_menu,renduPrincipale_menu);
+		dessin_texte_outils("1 VS 1",couleur_font_menu,-1,400,100,font_general_menu,width_windows_menu,height_windows_menu,renduPrincipale_menu);
+		dessin_texte_outils("VS IA",couleur_font_menu,0,400,100,font_general_menu,width_windows_menu,height_windows_menu,renduPrincipale_menu);
+		dessin_texte_outils("Difficulte",couleur_font_menu,1,400,100,font_general_menu,width_windows_menu,height_windows_menu,renduPrincipale_menu);
+		dessin_texte_outils("High Score",couleur_font_menu,2,400,100,font_general_menu,width_windows_menu,height_windows_menu,renduPrincipale_menu);
+		dessin_texte_outils("Quitter",couleur_font_selection,3,400,100,font_general_menu,width_windows_menu,height_windows_menu,renduPrincipale_menu);	
 	}
 }
 /*------------------------------------------*/

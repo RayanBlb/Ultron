@@ -10,7 +10,6 @@ int init_survie(void);
 void input_survie(void);
 void update_survie(void);
 void set_survie(void);
-void dessin_fond_survie(void);
 void get_screensize_survie(void);
 void tab_deplacement_survie(int x, int y);
 void dessin_background_score_survie(void);

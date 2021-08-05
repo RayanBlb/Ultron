@@ -52,69 +52,36 @@ void reinitialisation_mode_ia(int mode_difficulte){
 
 //Fonction d'affichage du menu du choix de l'ia
 void set_mode_ia(){//Viens modifier l'affichage du menu en fonction des input du joueur
+	dessin_fond_outils(32,renduPrincipale_mode_ia,width_windows_mode_ia,height_windows_mode_ia);
 	dessin_menu_mode_ia();
 	SDL_RenderPresent(renduPrincipale_mode_ia);
 }
 
 void set_fond_menu_mode_ia(){//affichage du fond + titre + menu
-	dessin_fond_mode_ia();
-	dessin_texte_mode_ia("ULTRON",couleur_font_mode_ia,-2,600,175);
+	dessin_fond_outils(32,renduPrincipale_mode_ia,width_windows_mode_ia,height_windows_mode_ia);
 	dessin_menu_mode_ia();
 	SDL_RenderPresent(renduPrincipale_mode_ia);
 }
 /*------------------------------------------*/
 
 //Fonction qui vont permettre de dessiner les différents éléments à afficher
-void dessin_texte_mode_ia(char *texte, SDL_Color couleur,int coef_position,int size_font_x,int size_font_y){/*Fonction qui prend en argument un texte a écrire, la couleur de ce texte, la taille du texte ainsi que la position x et y
-permet donc de facilité l'affichage de texte*/
-	SDL_Surface* texte_mode_ia_surface = TTF_RenderText_Solid(font_general_mode_ia, texte , couleur);
-	SDL_Texture* texte_mode_ia_texture = SDL_CreateTextureFromSurface(renduPrincipale_mode_ia, texte_mode_ia_surface);
-
-	int x_centre = (width_windows_mode_ia - size_font_x)/2;
-	int y_centre = (height_windows_mode_ia - size_font_y)/2;
-
-	position_mode_ia posi_texte_mode_ia = {x_centre,y_centre+size_font_y*coef_position};
-	
-	SDL_Rect texte_mode_ia = {posi_texte_mode_ia.x, posi_texte_mode_ia.y, size_font_x, size_font_y};
-
-	SDL_RenderCopy(renduPrincipale_mode_ia, texte_mode_ia_texture, NULL, &texte_mode_ia);
-
-	SDL_DestroyTexture(texte_mode_ia_texture);
-	SDL_FreeSurface(texte_mode_ia_surface);
-}
-
-void dessin_fond_mode_ia(){//création du fond quadrillé
-	int size_mode_ia = 32;//Correspond a la taille des carreaux du quadrillage
-
-	SDL_SetRenderDrawColor(renduPrincipale_mode_ia,22, 22, 22, 255);
-	SDL_RenderClear(renduPrincipale_mode_ia);
-	SDL_SetRenderDrawColor(renduPrincipale_mode_ia,77, 77, 77, 255);
-
-
-	for(int x = 0; x <= width_windows_mode_ia; x += size_mode_ia){
-		SDL_RenderDrawLine(renduPrincipale_mode_ia, x, 0, x, height_windows_mode_ia);
-	}
-
-	for(int y = 0; y < height_windows_mode_ia; y += size_mode_ia){
-		SDL_RenderDrawLine(renduPrincipale_mode_ia, 0, y, width_windows_mode_ia, y);
-	}
-}
-
 void dessin_menu_mode_ia(){//Création du menu en fonction de la selection du joueur
 	SDL_Color couleur_font_selection = {255, 0, 0};
 
+	dessin_texte_outils("ULTRON",couleur_font_mode_ia,-2,600,175,font_general_mode_ia,width_windows_mode_ia,height_windows_mode_ia,renduPrincipale_mode_ia);
+
 	if(etat_mode_ia == CLASSIQUE){
-		dessin_texte_mode_ia("CLASSIQUE",couleur_font_selection,-1,400,100);
-		dessin_texte_mode_ia("DE HAUTE EN BAS",couleur_font_mode_ia,0,400,100);
-		dessin_texte_mode_ia("MIROIR",couleur_font_mode_ia,1,400,100);
+		dessin_texte_outils("CLASSIQUE",couleur_font_selection,-1,400,100,font_general_mode_ia,width_windows_mode_ia,height_windows_mode_ia,renduPrincipale_mode_ia);
+		dessin_texte_outils("DE HAUTE EN BAS",couleur_font_mode_ia,0,400,100,font_general_mode_ia,width_windows_mode_ia,height_windows_mode_ia,renduPrincipale_mode_ia);
+		dessin_texte_outils("MIROIR",couleur_font_mode_ia,1,400,100,font_general_mode_ia,width_windows_mode_ia,height_windows_mode_ia,renduPrincipale_mode_ia);
 	}else if(etat_mode_ia == DE_HAUTE_EN_BAS ){
-		dessin_texte_mode_ia("CLASSIQUE",couleur_font_mode_ia,-1,400,100);
-		dessin_texte_mode_ia("DE HAUTE EN BAS",couleur_font_selection,0,400,100);
-		dessin_texte_mode_ia("MIROIR",couleur_font_mode_ia,1,400,100);
+		dessin_texte_outils("CLASSIQUE",couleur_font_mode_ia,-1,400,100,font_general_mode_ia,width_windows_mode_ia,height_windows_mode_ia,renduPrincipale_mode_ia);
+		dessin_texte_outils("DE HAUTE EN BAS",couleur_font_selection,0,400,100,font_general_mode_ia,width_windows_mode_ia,height_windows_mode_ia,renduPrincipale_mode_ia);
+		dessin_texte_outils("MIROIR",couleur_font_mode_ia,1,400,100,font_general_mode_ia,width_windows_mode_ia,height_windows_mode_ia,renduPrincipale_mode_ia);
 	}else if(etat_mode_ia == MIRROIR ){
-		dessin_texte_mode_ia("CLASSIQUE",couleur_font_mode_ia,-1,400,100);
-		dessin_texte_mode_ia("DE HAUTE EN BAS",couleur_font_mode_ia,0,400,100);
-		dessin_texte_mode_ia("MIROIR",couleur_font_selection,1,400,100);
+		dessin_texte_outils("CLASSIQUE",couleur_font_mode_ia,-1,400,100,font_general_mode_ia,width_windows_mode_ia,height_windows_mode_ia,renduPrincipale_mode_ia);
+		dessin_texte_outils("DE HAUTE EN BAS",couleur_font_mode_ia,0,400,100,font_general_mode_ia,width_windows_mode_ia,height_windows_mode_ia,renduPrincipale_mode_ia);
+		dessin_texte_outils("MIROIR",couleur_font_selection,1,400,100,font_general_mode_ia,width_windows_mode_ia,height_windows_mode_ia,renduPrincipale_mode_ia);
 	}
 }
 /*------------------------------------------*/

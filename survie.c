@@ -84,7 +84,7 @@ void survie(int mode_difficulte){
 //Fonction d'affichage en fonction de l'état de survie
 void set_survie(){//Permet d'afficher les déplacement du joueur
 	if(etat_survie != GAME_OVER){
-		dessin_fond_survie();
+		dessin_fond_outils(size_main_survie,renduPrincipale_survie,width_windows_survie,height_windows_survie);
 		dessin_personnage_outils(pFirstPosition_survie,renduPrincipale_survie,main_texture_survie,size_main_survie);
 		dessin_background_score_survie();
 		dessin_score_survie();
@@ -94,7 +94,7 @@ void set_survie(){//Permet d'afficher les déplacement du joueur
 
 void set_game_over_survie(){//Affichage du game over ainsi que de la possibilité de rentrer un pseudo pour le high score
 	while(1){
-		dessin_fond_survie();
+		dessin_fond_outils(size_main_survie,renduPrincipale_survie,width_windows_survie,height_windows_survie);
 		dessin_background_high_score_survie();
 		input_high_score_survie();
 		dessin_high_score_survie();
@@ -218,21 +218,6 @@ void dessin_pause_survie(){//création de la pause
 
 	SDL_DestroyTexture(score_texture);
 	SDL_FreeSurface(score_surface);
-}
-
-void dessin_fond_survie(){//création du fond quadrillé
-
-	SDL_SetRenderDrawColor(renduPrincipale_survie,22, 22, 22, 255);
-	SDL_RenderClear(renduPrincipale_survie);
-	SDL_SetRenderDrawColor(renduPrincipale_survie,77, 77, 77, 255);
-
-	for(int x = 0; x <= terrain_x_survie; x += size_main_survie){
-		SDL_RenderDrawLine(renduPrincipale_survie, x, 0, x, height_windows_survie);
-	}
-
-	for(int y = 0; y < terrain_y_survie; y += size_main_survie){
-		SDL_RenderDrawLine(renduPrincipale_survie, 0, y, terrain_x_survie, y);
-	}
 }
 
 void dessin_high_score_survie(){//Affichage au fur et a mesure du nom du joueur lorsqu'il tape son nom

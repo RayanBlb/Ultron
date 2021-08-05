@@ -25,10 +25,10 @@ int height_windows_difficulte = 0; //Largeur de la fenetre
 
 SDL_Color couleur_font_difficulte = {255, 255, 255}; //Couleur blanche
 
-SDL_Window* fenetrePrincipale_difficulte = NULL;
-SDL_Renderer* renduPrincipale_difficulte = NULL;
+SDL_Window *fenetrePrincipale_difficulte = NULL;
+SDL_Renderer *renduPrincipale_difficulte = NULL;
 
-TTF_Font* font_general_difficulte = NULL;
+TTF_Font *font_general_difficulte = NULL;
 
 //Boucle principale
 void difficulte(int mode_difficulte){
@@ -58,71 +58,36 @@ void reinitialisation_difficulte(int mode_difficulte){
 
 //Fonction d'affichage du menu
 void set_difficulte(){ //Viens modifier l'affichage du menu de difficulté en fonction des input du joueur
-	dessin_fond_difficulte();
+	dessin_fond_outils(32,renduPrincipale_difficulte,width_windows_difficulte,height_windows_difficulte);
 	dessin_menu_difficulte();
 	SDL_RenderPresent(renduPrincipale_difficulte); //Actualisation du rendu principale
 }
 
 void set_fond_menu_difficulte(){ //Affichage du fond + titre + menu
-	dessin_fond_difficulte();
+	dessin_fond_outils(32,renduPrincipale_difficulte,width_windows_difficulte,height_windows_difficulte);
 	dessin_menu_difficulte();
 	SDL_RenderPresent(renduPrincipale_difficulte);
 }
 /*------------------------------------------*/
 
 //Fonction qui vont permettre de dessiner les différents éléments à afficher
-void dessin_texte_difficulte(char *texte, SDL_Color couleur,int coef_position,int size_font_x,int size_font_y){ /*Fonction qui prend en argument un texte a écrire, la couleur de ce texte, la taille du texte ainsi que la position x et y
-permet donc de facilité l'affichage de texte*/
-	SDL_Surface* texte_difficulte_surface = TTF_RenderText_Solid(font_general_difficulte, texte , couleur);
-	SDL_Texture* texte_difficulte_texture = SDL_CreateTextureFromSurface(renduPrincipale_difficulte, texte_difficulte_surface);
-
-	int x_centre = (width_windows_difficulte - size_font_x)/2;
-	int y_centre = (height_windows_difficulte - size_font_y)/2;
-
-	position_difficulte posi_texte_difficulte = {x_centre,y_centre+size_font_y*coef_position};
-	
-	SDL_Rect texte_difficulte = {posi_texte_difficulte.x, posi_texte_difficulte.y, size_font_x, size_font_y};
-
-	SDL_RenderCopy(renduPrincipale_difficulte, texte_difficulte_texture, NULL, &texte_difficulte);
-
-	SDL_DestroyTexture(texte_difficulte_texture);
-	SDL_FreeSurface(texte_difficulte_surface);
-}
-
-void dessin_fond_difficulte(){ //création du fond quadrillé
-	int size_difficulte = 32; //Correspond a la taille des carreaux du quadrillage
-
-	SDL_SetRenderDrawColor(renduPrincipale_difficulte,22, 22, 22, 255);
-	SDL_RenderClear(renduPrincipale_difficulte);
-	SDL_SetRenderDrawColor(renduPrincipale_difficulte,77, 77, 77, 255);
-
-
-	for(int x = 0; x <= width_windows_difficulte; x += size_difficulte){
-		SDL_RenderDrawLine(renduPrincipale_difficulte, x, 0, x, height_windows_difficulte);
-	}
-
-	for(int y = 0; y < height_windows_difficulte; y += size_difficulte){
-		SDL_RenderDrawLine(renduPrincipale_difficulte, 0, y, width_windows_difficulte, y);
-	}
-}
-
 void dessin_menu_difficulte(){ //Création du menu en fonction de la selection du joueur
 	SDL_Color couleur_font_selection = {255, 0, 0};
 
-	dessin_texte_difficulte("ULTRON",couleur_font_difficulte,-2,600,175);
+	dessin_texte_outils("ULTRON",couleur_font_difficulte,-2,600,175,font_general_difficulte,width_windows_difficulte,height_windows_difficulte,renduPrincipale_difficulte);
 
 	if(etat_difficulte == FACILE){
-		dessin_texte_difficulte("Facile",couleur_font_selection,-2,400,100);
-		dessin_texte_difficulte("Normal",couleur_font_difficulte,-1,400,100);
-		dessin_texte_difficulte("Difficile",couleur_font_difficulte,0,400,100);
+		dessin_texte_outils("Facile",couleur_font_selection,-2,400,100,font_general_difficulte,width_windows_difficulte,height_windows_difficulte,renduPrincipale_difficulte);
+		dessin_texte_outils("Normal",couleur_font_difficulte,-1,400,100,font_general_difficulte,width_windows_difficulte,height_windows_difficulte,renduPrincipale_difficulte);
+		dessin_texte_outils("Difficile",couleur_font_difficulte,0,400,100,font_general_difficulte,width_windows_difficulte,height_windows_difficulte,renduPrincipale_difficulte);
 	}else if(etat_difficulte == NORMAL ){
-		dessin_texte_difficulte("Facile",couleur_font_difficulte,-2,400,100);
-		dessin_texte_difficulte("Normal",couleur_font_selection,-1,400,100);
-		dessin_texte_difficulte("Difficile",couleur_font_difficulte,0,400,100);
+		dessin_texte_outils("Facile",couleur_font_difficulte,-2,400,100,font_general_difficulte,width_windows_difficulte,height_windows_difficulte,renduPrincipale_difficulte);
+		dessin_texte_outils("Normal",couleur_font_selection,-1,400,100,font_general_difficulte,width_windows_difficulte,height_windows_difficulte,renduPrincipale_difficulte);
+		dessin_texte_outils("Difficile",couleur_font_difficulte,0,400,100,font_general_difficulte,width_windows_difficulte,height_windows_difficulte,renduPrincipale_difficulte);
 	}else if(etat_difficulte == DIFFICILE ){
-		dessin_texte_difficulte("Facile",couleur_font_difficulte,-2,400,100);
-		dessin_texte_difficulte("Normal",couleur_font_difficulte,-1,400,100);
-		dessin_texte_difficulte("Difficile",couleur_font_selection,0,400,100);
+		dessin_texte_outils("Facile",couleur_font_difficulte,-2,400,100,font_general_difficulte,width_windows_difficulte,height_windows_difficulte,renduPrincipale_difficulte);
+		dessin_texte_outils("Normal",couleur_font_difficulte,-1,400,100,font_general_difficulte,width_windows_difficulte,height_windows_difficulte,renduPrincipale_difficulte);
+		dessin_texte_outils("Difficile",couleur_font_selection,0,400,100,font_general_difficulte,width_windows_difficulte,height_windows_difficulte,renduPrincipale_difficulte);
 	}
 }
 /*------------------------------------------*/

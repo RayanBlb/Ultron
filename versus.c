@@ -105,7 +105,7 @@ void versus(int mode_difficulte){
 //Fonction d'affichage en fonction de l'état de versus
 void set_versus(){//Permet d'afficher les déplacement des joueurs
 	if(etat_main_versus != PAUSE || etat_deuxieme_versus != PAUSE){
-		dessin_fond_versus();
+		dessin_fond_outils(size_main_versus,renduPrincipale_versus,width_windows_versus,height_windows_versus);
 		dessin_personnage_outils(pFirstPositionMain_versus,renduPrincipale_versus,main_texture_versus,size_main_versus);
 		dessin_personnage_outils(pFirstPositionSeconde_versus,renduPrincipale_versus,deuxieme_texture_versus,size_main_versus);
 		dessin_background_score_versus();
@@ -121,7 +121,7 @@ void set_versus(){//Permet d'afficher les déplacement des joueurs
 
 void set_game_over_versus(){//Affichage du game over ainsi que de la possibilité de rentrer un pseudo pour le high score
 	while(1){
-		dessin_fond_versus();
+		dessin_fond_outils(size_main_versus,renduPrincipale_versus,width_windows_versus,height_windows_versus);
 		dessin_background_high_score_versus();
 		input_high_score_versus();
 		dessin_high_score_versus();
@@ -260,21 +260,6 @@ void dessin_pause_versus(){//création de la pause
 
 	SDL_DestroyTexture(score_texture);
 	SDL_FreeSurface(score_surface);
-}
-
-void dessin_fond_versus(){//création du fond quadrillé
-
-	SDL_SetRenderDrawColor(renduPrincipale_versus,22, 22, 22, 255);
-	SDL_RenderClear(renduPrincipale_versus);
-	SDL_SetRenderDrawColor(renduPrincipale_versus,77, 77, 77, 255);
-
-	for(int x = 0; x <= terrain_x_versus; x += size_main_versus){
-		SDL_RenderDrawLine(renduPrincipale_versus, x, 0, x, height_windows_versus);
-	}
-
-	for(int y = 0; y < terrain_y_versus; y += size_main_versus){
-		SDL_RenderDrawLine(renduPrincipale_versus, 0, y, terrain_x_versus, y);
-	}
 }
 
 void dessin_high_score_versus(){//Affichage au fur et a mesure du nom du joueur lorsqu'il tape son nom

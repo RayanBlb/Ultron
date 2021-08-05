@@ -9,7 +9,6 @@ typedef struct position_struct_versus{
 void input_versus(void);
 void update_versus(void);
 void set_versus(void);
-void dessin_fond_versus(void);
 void get_screensize_versus(void);
 void dessin_background_score_versus(void);
 void dessin_score_versus(void);

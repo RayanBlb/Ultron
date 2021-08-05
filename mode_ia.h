@@ -7,8 +7,6 @@ typedef struct position_struct_mode_ia{
 }position_mode_ia;
 
 void dessin_menu_mode_ia(void);
-void dessin_texte_mode_ia(char *texte, SDL_Color couleur,int coef_position,int size_font_x,int size_font_y);
-void dessin_fond_mode_ia(void);
 void set_mode_ia(void);
 void input_mode_ia(int mode_difficulte);
 void delay_game_mode_ia(void);

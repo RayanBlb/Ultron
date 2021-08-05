@@ -291,5 +291,40 @@ void free_log_deplacement_outils(listePosition **pFirst){//Permet de free ma lis
 
 	*pFirst = NULL;
 }
-
 /*------------------------------------------*/
+
+//Fonction d'affichage commune a plusieurs fichier
+
+void dessin_texte_outils(char *texte, SDL_Color couleur,int coef_position,int size_font_x,int size_font_y,TTF_Font *font_general,int width_windows, int height_windows,SDL_Renderer *renduPrincipale){ /*Fonction qui prend en argument un texte a écrire, la couleur de ce texte, la taille du texte ainsi que la position x et y
+permet donc de facilité l'affichage de texte*/
+	SDL_Surface* texte_surface = TTF_RenderText_Solid(font_general, texte , couleur);
+	SDL_Texture* texte_texture = SDL_CreateTextureFromSurface(renduPrincipale, texte_surface);
+
+	int x_centre = (width_windows - size_font_x)/2;
+	int y_centre = (height_windows - size_font_y)/2;
+
+	position posi_texte= {x_centre,y_centre+size_font_y*coef_position};
+	
+	SDL_Rect texte_forme = {posi_texte.x, posi_texte.y, size_font_x, size_font_y};
+
+	SDL_RenderCopy(renduPrincipale, texte_texture, NULL, &texte_forme);
+
+	SDL_DestroyTexture(texte_texture);
+	SDL_FreeSurface(texte_surface);
+}
+
+void dessin_fond_outils(int taille_carreaux,SDL_Renderer *renduPrincipale,int width_windows, int height_windows){ //création du fond quadrillé
+
+	SDL_SetRenderDrawColor(renduPrincipale,22, 22, 22, 255);
+	SDL_RenderClear(renduPrincipale);
+	SDL_SetRenderDrawColor(renduPrincipale,77, 77, 77, 255);
+
+
+	for(int x = 0; x <= width_windows; x += taille_carreaux){
+		SDL_RenderDrawLine(renduPrincipale, x, 0, x, height_windows);
+	}
+
+	for(int y = 0; y < height_windows; y += taille_carreaux){
+		SDL_RenderDrawLine(renduPrincipale, 0, y, width_windows, y);
+	}
+}
