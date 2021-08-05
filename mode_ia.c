@@ -187,7 +187,7 @@ int init_mode_ia(){//Fonction qui initialise SDL ainsi que c'est bibliothéque, 
 		printf("Audio mix : %s", Mix_GetError());
 	}
 
-	if(SDL_CreateWindowAndRenderer(1920, 1080, SDL_WINDOW_SHOWN, &fenetrePrincipale_mode_ia, &renduPrincipale_mode_ia) < 0){
+	if(SDL_CreateWindowAndRenderer(1600, 900, SDL_WINDOW_SHOWN, &fenetrePrincipale_mode_ia, &renduPrincipale_mode_ia) < 0){
 		printf("Erreur création fenetre : %s",SDL_GetError());
 		SDL_Quit();
 		return EXIT_FAILURE;

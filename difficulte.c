@@ -195,7 +195,7 @@ int init_difficulte(){//Fonction qui initialise SDL ainsi que c'est bibliothéqu
 		printf("Audio mix : %s", Mix_GetError());
 	}
 
-	if(SDL_CreateWindowAndRenderer(1920, 1080, SDL_WINDOW_SHOWN, &fenetrePrincipale_difficulte, &renduPrincipale_difficulte) < 0){
+	if(SDL_CreateWindowAndRenderer(1600, 900, SDL_WINDOW_SHOWN, &fenetrePrincipale_difficulte, &renduPrincipale_difficulte) < 0){
 		printf("Erreur création fenetre : %s",SDL_GetError());
 		SDL_Quit();
 		return EXIT_FAILURE;
