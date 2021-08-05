@@ -105,7 +105,7 @@ void versus(int mode_difficulte){
 //Fonction d'affichage en fonction de l'état de versus
 void set_versus(){//Permet d'afficher les déplacement des joueurs
 	if(etat_main_versus != PAUSE || etat_deuxieme_versus != PAUSE){
-		dessin_fond_outils(size_main_versus,renduPrincipale_versus,width_windows_versus,height_windows_versus);
+		dessin_fond_outils(size_main_versus,renduPrincipale_versus,terrain_x_versus,terrain_y_versus);
 		dessin_personnage_outils(pFirstPositionMain_versus,renduPrincipale_versus,main_texture_versus,size_main_versus);
 		dessin_personnage_outils(pFirstPositionSeconde_versus,renduPrincipale_versus,deuxieme_texture_versus,size_main_versus);
 		dessin_background_score_versus();
@@ -121,7 +121,7 @@ void set_versus(){//Permet d'afficher les déplacement des joueurs
 
 void set_game_over_versus(){//Affichage du game over ainsi que de la possibilité de rentrer un pseudo pour le high score
 	while(1){
-		dessin_fond_outils(size_main_versus,renduPrincipale_versus,width_windows_versus,height_windows_versus);
+		dessin_fond_outils(size_main_versus,renduPrincipale_versus,terrain_x_versus,terrain_y_versus);
 		dessin_background_high_score_versus();
 		input_high_score_versus();
 		dessin_high_score_versus();

@@ -112,7 +112,7 @@ void ia(int mode_difficulte,int mode_ia){
 //Fonction d'affichage en fonction de l'état des joueurs
 void set_ia(){//Permet d'afficher les déplacement des joueurs
 	if((etat_main_ia != PAUSE || etat_deuxieme_ia != PAUSE)){
-		dessin_fond_outils(size_main_ia,renduPrincipale_ia,width_windows_ia,height_windows_ia);
+		dessin_fond_outils(size_main_ia,renduPrincipale_ia,terrain_x_ia,terrain_y_ia);
 		dessin_personnage_outils(pFirstPositionMain_ia,renduPrincipale_ia,main_texture_ia,size_main_ia);
 		dessin_personnage_outils(pFirstPositionSeconde_ia,renduPrincipale_ia,deuxieme_texture_ia,size_main_ia);
 		dessin_background_score_ia();
@@ -128,7 +128,7 @@ void set_ia(){//Permet d'afficher les déplacement des joueurs
 
 void set_game_over_ia(){//Affichage du game over ainsi que de la possibilité de rentrer un pseudo pour le high score
 	while(1){
-		dessin_fond_outils(size_main_ia,renduPrincipale_ia,width_windows_ia,height_windows_ia);
+		dessin_fond_outils(size_main_ia,renduPrincipale_ia,terrain_x_ia,terrain_y_ia);
 		dessin_background_high_score_ia();
 		input_high_score_ia();
 		dessin_high_score_ia();

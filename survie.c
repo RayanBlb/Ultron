@@ -84,7 +84,7 @@ void survie(int mode_difficulte){
 //Fonction d'affichage en fonction de l'état de survie
 void set_survie(){//Permet d'afficher les déplacement du joueur
 	if(etat_survie != GAME_OVER){
-		dessin_fond_outils(size_main_survie,renduPrincipale_survie,width_windows_survie,height_windows_survie);
+		dessin_fond_outils(size_main_survie,renduPrincipale_survie,terrain_x_survie,terrain_y_survie);
 		dessin_personnage_outils(pFirstPosition_survie,renduPrincipale_survie,main_texture_survie,size_main_survie);
 		dessin_background_score_survie();
 		dessin_score_survie();
@@ -94,7 +94,7 @@ void set_survie(){//Permet d'afficher les déplacement du joueur
 
 void set_game_over_survie(){//Affichage du game over ainsi que de la possibilité de rentrer un pseudo pour le high score
 	while(1){
-		dessin_fond_outils(size_main_survie,renduPrincipale_survie,width_windows_survie,height_windows_survie);
+		dessin_fond_outils(size_main_survie,renduPrincipale_survie,terrain_x_survie,terrain_y_survie);
 		dessin_background_high_score_survie();
 		input_high_score_survie();
 		dessin_high_score_survie();
