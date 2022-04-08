@@ -312,7 +312,7 @@ void input_high_score_survie(){//gestion des input lorsque le joueur tape son no
 					compteur--;
 					strcpy(&nom_high_score_survie[compteur],"");
 				}else if(touche.key.keysym.sym == SDLK_RETURN){//Entrer permet de rentrer le nouveau score dans le high score
-					read_file_high_score_outils("./score_survie.txt",nom_high_score_survie,score_survie,pFirst_survie);
+					read_file_high_score_outils("../score_survie.txt",nom_high_score_survie,score_survie,pFirst_survie);
 					switch_screen_outils(fenetrePrincipale_survie,renduPrincipale_survie,music_de_fond_survie,main_surface_survie,main_texture_survie, etat_survie,NULL,NULL,font_general_survie);
 				}else if(touche.key.keysym.sym == SDLK_LSHIFT){
 				}else if(touche.key.keysym.sym == SDLK_RSHIFT){
@@ -417,19 +417,19 @@ int init_survie(){//Fonction qui initialise SDL ainsi que c'est bibliothéque, d
 
     SDL_SetWindowTitle(fenetrePrincipale_survie, "Ultron");
 
-    SDL_Surface* icon_programme_survie = SDL_LoadBMP("./Sprites/icon.bmp");
+    SDL_Surface* icon_programme_survie = SDL_LoadBMP("../Sprites/icon.bmp");
 	SDL_SetWindowIcon(fenetrePrincipale_survie, icon_programme_survie);
 
-	main_surface_survie = SDL_LoadBMP("./Sprites/main.bmp");
+	main_surface_survie = SDL_LoadBMP("../Sprites/main.bmp");
 	main_texture_survie = SDL_CreateTextureFromSurface(renduPrincipale_survie,main_surface_survie);
 
-	background_score_surface_survie = SDL_LoadBMP("./Sprites/background_score.bmp");
+	background_score_surface_survie = SDL_LoadBMP("../Sprites/background_score.bmp");
 	background_score_texture_survie = SDL_CreateTextureFromSurface(renduPrincipale_survie,background_score_surface_survie);
 
-	background_high_score_surface_survie = SDL_LoadBMP("./Sprites/background_high_score.bmp");
+	background_high_score_surface_survie = SDL_LoadBMP("../Sprites/background_high_score.bmp");
 	background_high_score_texture_survie = SDL_CreateTextureFromSurface(renduPrincipale_survie,background_high_score_surface_survie);
 
-	font_general_survie = TTF_OpenFont("./Font/font.ttf", 16);
+	font_general_survie = TTF_OpenFont("../Font/font.ttf", 16);
 
 	return 0;
 }

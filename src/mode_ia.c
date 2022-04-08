@@ -165,10 +165,10 @@ int init_mode_ia(){//Fonction qui initialise SDL ainsi que c'est bibliothéque, 
 
     SDL_SetWindowTitle(fenetrePrincipale_mode_ia, "Ultron");
 
-    SDL_Surface* icon_programme_survie = SDL_LoadBMP("./Sprites/icon.bmp");
+    SDL_Surface* icon_programme_survie = SDL_LoadBMP("../Sprites/icon.bmp");
 	SDL_SetWindowIcon(fenetrePrincipale_mode_ia, icon_programme_survie);
 
-    font_general_mode_ia = TTF_OpenFont("./Font/font.ttf", 16);
+    font_general_mode_ia = TTF_OpenFont("../Font/font.ttf", 16);
     
     return 0;
 }

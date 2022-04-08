@@ -414,7 +414,7 @@ void input_high_score_ia(){//gestion des input lorsque le joueur tape son nom
 					compteur--;
 					strcpy(&nom_high_score_ia[compteur],"");
 				}else if(touche.key.keysym.sym == SDLK_RETURN){//Entrer permet de rentrer le nouveau score dans le high score
-					read_file_high_score_outils("./score_ia.txt",nom_high_score_ia,score_ia,pFirst_ia);
+					read_file_high_score_outils("../score_ia.txt",nom_high_score_ia,score_ia,pFirst_ia);
 					switch_screen_outils(fenetrePrincipale_ia,renduPrincipale_ia,music_de_fond_ia,main_surface_ia,main_texture_ia,etat_ia,deuxieme_surface_ia,deuxieme_texture_ia,font_general_ia);
 				}else if(touche.key.keysym.sym == SDLK_LSHIFT){
 				}else if(touche.key.keysym.sym == SDLK_RSHIFT){
@@ -586,22 +586,22 @@ int init_ia(){//Fonction qui initialise SDL ainsi que c'est bibliothéque, donne
 
     SDL_SetWindowTitle(fenetrePrincipale_ia, "Ultron");
 
-    SDL_Surface* icon_programme_ia = SDL_LoadBMP("./Sprites/icon.bmp");
+    SDL_Surface* icon_programme_ia = SDL_LoadBMP("../Sprites/icon.bmp");
 	SDL_SetWindowIcon(fenetrePrincipale_ia, icon_programme_ia);
 
-	main_surface_ia = SDL_LoadBMP("./Sprites/main.bmp");
+	main_surface_ia = SDL_LoadBMP("../Sprites/main.bmp");
 	main_texture_ia = SDL_CreateTextureFromSurface(renduPrincipale_ia,main_surface_ia);
 
-	deuxieme_surface_ia = SDL_LoadBMP("./Sprites/deuxieme.bmp");
+	deuxieme_surface_ia = SDL_LoadBMP("../Sprites/deuxieme.bmp");
 	deuxieme_texture_ia = SDL_CreateTextureFromSurface(renduPrincipale_ia,deuxieme_surface_ia);
 
-	background_score_surface_ia = SDL_LoadBMP("./Sprites/background_score.bmp");
+	background_score_surface_ia = SDL_LoadBMP("../Sprites/background_score.bmp");
 	background_score_texture_ia = SDL_CreateTextureFromSurface(renduPrincipale_ia,background_score_surface_ia);
 
-	background_high_score_surface_ia = SDL_LoadBMP("./Sprites/background_high_score.bmp");
+	background_high_score_surface_ia = SDL_LoadBMP("../Sprites/background_high_score.bmp");
 	background_high_score_texture_ia = SDL_CreateTextureFromSurface(renduPrincipale_ia,background_high_score_surface_ia);
 
-	font_general_ia = TTF_OpenFont("./Font/font.ttf", 16);
+	font_general_ia = TTF_OpenFont("../Font/font.ttf", 16);
 
 	return 0;
 }

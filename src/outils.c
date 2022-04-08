@@ -150,12 +150,12 @@ void delay_game_outils(int etat_survie, int mode_de_jeu){
 
 //Gestion de la musique
 void play_musique_outils(Mix_Music **music_de_fond_survie){//Viens jouer la musique
-	*music_de_fond_survie = Mix_LoadMUS("./Musique/music.mp3");
+	*music_de_fond_survie = Mix_LoadMUS("../Musique/music.mp3");
 	Mix_PlayMusic(*music_de_fond_survie, -1);
 }
 
 void play_explosion_outils(Mix_Chunk **explosion_survie){//Viens jouer le bruit d'explosion
-	*explosion_survie = Mix_LoadWAV("./Musique/explosion.wav");
+	*explosion_survie = Mix_LoadWAV("../Musique/explosion.wav");
 	Mix_PlayChannel(-1, *explosion_survie, 0);
 }
 /*------------------------------------------*/

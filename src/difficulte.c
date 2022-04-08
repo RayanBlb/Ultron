@@ -171,10 +171,10 @@ int init_difficulte(){//Fonction qui initialise SDL ainsi que c'est bibliothéqu
 
     SDL_SetWindowTitle(fenetrePrincipale_difficulte, "Ultron");
 
-    SDL_Surface *icon_programme_survie = SDL_LoadBMP("./Sprites/icon.bmp");
+    SDL_Surface *icon_programme_survie = SDL_LoadBMP("../Sprites/icon.bmp");
 	SDL_SetWindowIcon(fenetrePrincipale_difficulte, icon_programme_survie);
 
-    font_general_difficulte = TTF_OpenFont("./Font/font.ttf", 16);
+    font_general_difficulte = TTF_OpenFont("../Font/font.ttf", 16);
 
     return 0;
 }

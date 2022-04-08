@@ -382,7 +382,7 @@ void input_high_score_versus(){//gestion des input lorsque le joueur tape son no
 					compteur--;
 					strcpy(&nom_high_score_versus[compteur],"");
 				}else if(touche.key.keysym.sym == SDLK_RETURN){
-					read_file_high_score_outils("./score_versus.txt",nom_high_score_versus,score_versus,pFirst_versus);
+					read_file_high_score_outils("../score_versus.txt",nom_high_score_versus,score_versus,pFirst_versus);
 					switch_screen_outils(fenetrePrincipale_versus,renduPrincipale_versus,music_de_fond_versus,main_surface_versus,main_texture_versus,etat_versus,deuxieme_surface_versus,deuxieme_texture_versus,font_general_versus);
 				}else if(touche.key.keysym.sym == SDLK_LSHIFT){
 				}else if(touche.key.keysym.sym == SDLK_RSHIFT){
@@ -555,22 +555,22 @@ int init_versus(){//Fonction qui initialise SDL ainsi que c'est bibliothéque, d
 
     SDL_SetWindowTitle(fenetrePrincipale_versus, "Ultron");
 
-    SDL_Surface* icon_programme_versus = SDL_LoadBMP("./Sprites/icon.bmp");
+    SDL_Surface* icon_programme_versus = SDL_LoadBMP("../Sprites/icon.bmp");
 	SDL_SetWindowIcon(fenetrePrincipale_versus, icon_programme_versus);
 
-	main_surface_versus = SDL_LoadBMP("./Sprites/main.bmp");
+	main_surface_versus = SDL_LoadBMP("../Sprites/main.bmp");
 	main_texture_versus = SDL_CreateTextureFromSurface(renduPrincipale_versus,main_surface_versus);
 
-	deuxieme_surface_versus = SDL_LoadBMP("./Sprites/deuxieme.bmp");
+	deuxieme_surface_versus = SDL_LoadBMP("../Sprites/deuxieme.bmp");
 	deuxieme_texture_versus = SDL_CreateTextureFromSurface(renduPrincipale_versus,deuxieme_surface_versus);
 
-	background_score_surface_versus = SDL_LoadBMP("./Sprites/background_score.bmp");
+	background_score_surface_versus = SDL_LoadBMP("../Sprites/background_score.bmp");
 	background_score_texture_versus = SDL_CreateTextureFromSurface(renduPrincipale_versus,background_score_surface_versus);
 
-	background_high_score_surface_versus = SDL_LoadBMP("./Sprites/background_high_score.bmp");
+	background_high_score_surface_versus = SDL_LoadBMP("../Sprites/background_high_score.bmp");
 	background_high_score_texture_versus = SDL_CreateTextureFromSurface(renduPrincipale_versus,background_high_score_surface_versus);
 
-	font_general_versus = TTF_OpenFont("./Font/font.ttf", 16);
+	font_general_versus = TTF_OpenFont("../Font/font.ttf", 16);
 
 	return 0;
 }

@@ -65,15 +65,15 @@ void dessin_high_score_high_score(){//Affichage du high score en fonction du mod
 	if(etat_high_score == TABLEAU_SURVIE){
 		dessin_texte_outils("HIGH SCORE",couleur_font_high_score,-2,600,175,font_general_high_score,width_windows_high_score,height_windows_high_score,renduPrincipale_high_score);
 		dessin_texte_outils("Mode : Survie",couleur_font_high_score,-2,400,110,font_general_high_score,width_windows_high_score,height_windows_high_score,renduPrincipale_high_score);
-		read_high_score("./score_survie.txt");
+		read_high_score("../score_survie.txt");
 	}else if(etat_high_score == TABLEAU_VERSUS){
 		dessin_texte_outils("HIGH SCORE",couleur_font_high_score,-2,600,175,font_general_high_score,width_windows_high_score,height_windows_high_score,renduPrincipale_high_score);
 		dessin_texte_outils("Mode : Versus",couleur_font_high_score,-2,400,110,font_general_high_score,width_windows_high_score,height_windows_high_score,renduPrincipale_high_score);
-		read_high_score("./score_versus.txt");
+		read_high_score("../score_versus.txt");
 	}else if(etat_high_score == TABLEAU_IA){
 		dessin_texte_outils("HIGH SCORE",couleur_font_high_score,-2,600,175,font_general_high_score,width_windows_high_score,height_windows_high_score,renduPrincipale_high_score);
 		dessin_texte_outils("Mode : IA",couleur_font_high_score,-2,400,110,font_general_high_score,width_windows_high_score,height_windows_high_score,renduPrincipale_high_score);
-		read_high_score("./score_ia.txt");
+		read_high_score("../score_ia.txt");
 	}
 }
 
@@ -106,11 +106,11 @@ void read_high_score(char *file_name){ //Permet de lire le fichier high score af
 //Fonction qui vont permettre de supprimer le contenu d'un fichier
 void supprimer_classement_high_score(){//Permet de supprimer le high score d'un mode
 	if(etat_high_score == TABLEAU_SURVIE){
-		write_high_score("./score_survie.txt");
+		write_high_score("../score_survie.txt");
 	}else if(etat_high_score == TABLEAU_VERSUS){
-		write_high_score("./score_versus.txt");
+		write_high_score("../score_versus.txt");
 	}else if(etat_high_score == TABLEAU_IA){
-		write_high_score("./score_ia.txt");
+		write_high_score("../score_ia.txt");
 	}
 }
 
@@ -197,10 +197,10 @@ int init_high_score(){//Fonction qui initialise SDL ainsi que c'est bibliothéqu
 
     SDL_SetWindowTitle(fenetrePrincipale_high_score, "Ultron");
 
-    SDL_Surface* icon_programme_survie = SDL_LoadBMP("./Sprites/icon.bmp");
+    SDL_Surface* icon_programme_survie = SDL_LoadBMP("../Sprites/icon.bmp");
 	SDL_SetWindowIcon(fenetrePrincipale_high_score, icon_programme_survie);
 
-    font_general_high_score = TTF_OpenFont("./Font/font.ttf", 16);
+    font_general_high_score = TTF_OpenFont("../Font/font.ttf", 16);
 
     return 0;
 }
